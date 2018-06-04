@@ -43,17 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game.cs" />
     <Compile Include="Graphics\Buffers.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Helpers\Generics.cs" />
     <Compile Include="Helpers\Graphics.cs" />
     <Compile Include="Helpers\MathFuncs.cs" />
+    <Compile Include="Helpers\Meshes.cs" />
     <Compile Include="Helpers\Perlin.cs" />
     <Compile Include="Helpers\VectorMath.cs" />
     <Compile Include="Helpers\VectorUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scene.cs" />
+    <Compile Include="Structs\Transformation.cs" />
+    <Compile Include="Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
