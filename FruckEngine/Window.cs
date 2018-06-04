@@ -10,8 +10,8 @@ namespace FruckEngine
     {
         protected IGame Game;
 
-        public Window(int width, int height, GraphicsMode mode, string title, IGame game) 
-            : base(width, height, mode, title)
+        public Window(int width, int height, string title, IGame game) 
+            : base(width, height, GraphicsMode.Default, title)
         {
             Game = game;
         }
