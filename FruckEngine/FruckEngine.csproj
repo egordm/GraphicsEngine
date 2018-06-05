@@ -52,12 +52,17 @@
     <Compile Include="Helpers\Generics.cs" />
     <Compile Include="Helpers\Graphics.cs" />
     <Compile Include="Helpers\MathFuncs.cs" />
+    <Compile Include="Helpers\MeshCreator.cs" />
     <Compile Include="Helpers\Perlin.cs" />
     <Compile Include="Helpers\VectorMath.cs" />
     <Compile Include="Helpers\VectorUtils.cs" />
     <Compile Include="Helpers\WavefrontLoader.cs" />
+    <Compile Include="Objects\MeshObject.cs" />
+    <Compile Include="Objects\Object.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structs\Quad.cs" />
+    <Compile Include="Structs\Triangle.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Structs\TransformMatrix.cs" />
     <Compile Include="Window.cs" />
@@ -65,6 +70,23 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\shaders\fs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\fs_post.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\fs_test.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\vs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\vs_post.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

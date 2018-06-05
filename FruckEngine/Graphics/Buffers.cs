@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using FruckEngine.Helpers;
 using OpenTK.Graphics.OpenGL;
 
@@ -12,7 +13,7 @@ namespace FruckEngine.Graphics
     {
         void Upload(Shader s);
     }
-    
+
     /// <summary>
     /// A renderable buffer
     /// </summary>
@@ -20,6 +21,8 @@ namespace FruckEngine.Graphics
     {
         void Render(Shader s);
     }
+
+    public interface IIndexBuffer : IUploadableBuffer, IRenderableBuffer {}
 
     /// <summary>
     /// A standard buffer. Contains a pointer to the buffer and its data
@@ -29,10 +32,12 @@ namespace FruckEngine.Graphics
     {
         public int Pointer;
         public T[] Data;
+        public int ComponentCount { get; private set; }
 
-        public Buffer(T[] data)
+        protected Buffer(T[] data, int componentCount)
         {
             Data = data;
+            ComponentCount = componentCount;
             Pointer = GL.GenBuffer();
         }
 
@@ -42,15 +47,26 @@ namespace FruckEngine.Graphics
     /// <summary>
     /// Index buffer wrapper
     /// </summary>
-    public class IndexBuffer : Buffer<uint>
+    public class IndexBuffer<T> : Buffer<T>, IIndexBuffer where T : struct
     {
-        public IndexBuffer(uint[] data) : base(data) { }
+        public PrimitiveType Type { get; private set; }
+
+        public IndexBuffer(T[] data, int componentCount, PrimitiveType type) : base(data, componentCount)
+        {
+            Type = type;
+        }
 
         public override void Upload(Shader s)
         {
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, Pointer);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (Data.Length * sizeof(uint)), Data,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (Data.Length * Generics.SizeOf(typeof(T))), Data,
                 BufferUsageHint.StaticDraw);
+        }
+
+        public void Render(Shader s)
+        {
+            GL.BindBuffer( BufferTarget.ElementArrayBuffer, Pointer );
+            GL.DrawArrays( Type, 0, Data.Length * ComponentCount );
         }
     }
 
@@ -59,13 +75,16 @@ namespace FruckEngine.Graphics
     /// be an attribute in the shader
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AttribBuffer<T> : Buffer<T>, IUploadableBuffer, IRenderableBuffer where T : struct
+    public class AttribBuffer<T> : Buffer<T>, IRenderableBuffer where T : struct
     {
         public string AttributeName { private set; get; }
-
         public VertexAttribPointerType AttribPointerType { private set; get; }
+        public bool Normalized { get; set; } = false;
+        public int Stride { get; set; } = 0;
+        public int Offset { get; set; } = 0;
 
-        public AttribBuffer(T[] data, string attributeName, VertexAttribPointerType attribPointerType) : base(data)
+        public AttribBuffer(T[] data, string attributeName, VertexAttribPointerType attribPointerType, int componentCount) 
+            : base(data, componentCount)
         {
             AttributeName = attributeName;
             AttribPointerType = attribPointerType;
@@ -76,7 +95,7 @@ namespace FruckEngine.Graphics
             GL.BindBuffer(BufferTarget.ArrayBuffer, Pointer);
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (Data.Length * Generics.SizeOf(typeof(T))), Data,
                 BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(s.GetVar(AttributeName), 3, AttribPointerType, false, 0, 0);
+            GL.VertexAttribPointer(s.GetVar(AttributeName), ComponentCount, AttribPointerType, Normalized, Stride, Offset);
         }
 
         public void Render(Shader s)

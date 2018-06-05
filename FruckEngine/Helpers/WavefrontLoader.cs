@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
+using FruckEngine.Structs;
 using OpenTK;
 
 namespace FruckEngine.Helpers
 {
-    public struct WavefrontVertex
+    [StructLayout(LayoutKind.Sequential)] public struct WavefrontVertex
     {
-        public Vector3 Point;
+        public Vector3 Pos;
         public Vector2 TexCoord;
         public Vector3 Normal;
     }
@@ -23,31 +25,6 @@ namespace FruckEngine.Helpers
             Vertices = vertices;
             Triangles = triangles;
             Quads = quads;
-        }
-    }
-
-    public class Triangle
-    {
-        public int v1, v2, v3;
-
-        public Triangle(int v1, int v2, int v3)
-        {
-            this.v1 = v1;
-            this.v2 = v2;
-            this.v3 = v3;
-        }
-    }
-
-    public class Quad
-    {
-        public int v1, v2, v3, v4;
-
-        public Quad(int v1, int v2, int v3, int v4)
-        {
-            this.v1 = v1;
-            this.v2 = v2;
-            this.v3 = v3;
-            this.v4 = v4;
         }
     }
 
@@ -88,13 +65,13 @@ namespace FruckEngine.Helpers
             var subtokens = data.Split('/');
             var vertex = new WavefrontVertex();
 
-            vertex.Point = vertexCoords[int.Parse(subtokens[0])];
+            vertex.Pos = vertexCoords[int.Parse(subtokens[0])-1];
             if (subtokens.Length > 1 && !string.IsNullOrEmpty(subtokens[1])) {
-                vertex.TexCoord = texCoords[int.Parse(subtokens[1])];
+                vertex.TexCoord = texCoords[int.Parse(subtokens[1]) - 1];
             }
 
             if (subtokens.Length > 2 && !string.IsNullOrEmpty(subtokens[2])) {
-                vertex.Normal = normals[int.Parse(subtokens[2])];
+                vertex.Normal = normals[int.Parse(subtokens[2]) - 1];
             }
             
             vertices.Add(vertex);
@@ -147,6 +124,11 @@ namespace FruckEngine.Helpers
             }
 
             return new WavefrontMesh(vertices.ToArray(), triangles.ToArray(), quads.ToArray());
+        }
+
+        public static WavefrontMesh LoadOnce(string file)
+        {
+            return new WavefrontLoader().LoadMesh(file);
         }
     }
 }

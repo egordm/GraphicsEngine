@@ -10,15 +10,15 @@ namespace FruckEngine.Graphics
     public class Mesh
     {
         public List<IUploadableBuffer> Buffers;
-        public IndexBuffer IndexBuffer;
+        public List<IIndexBuffer> IndexBuffers;
         public int VBO;
 
         public Mesh() : this(new List<IUploadableBuffer>(), null) { }
 
-        public Mesh(List<IUploadableBuffer> buffers, IndexBuffer indexBuffer)
+        public Mesh(List<IUploadableBuffer> buffers, List<IIndexBuffer> indexBuffers)
         {
             Buffers = buffers;
-            IndexBuffer = indexBuffer;
+            IndexBuffers = indexBuffers;
             
             VBO = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
@@ -26,7 +26,7 @@ namespace FruckEngine.Graphics
 
         public virtual void Upload(Shader s)
         {
-            IndexBuffer.Upload(s);
+            foreach (var indexBuffer in IndexBuffers) indexBuffer.Upload(s);
             foreach (var buffer in Buffers) buffer.Upload(s);
         }
 
@@ -36,11 +36,11 @@ namespace FruckEngine.Graphics
         /// <param name="s"></param>
         public virtual void Render(Shader s)
         {
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, IndexBuffer.Pointer);
             foreach (var buffer in Buffers) {
                 if(buffer is IRenderableBuffer) (buffer as IRenderableBuffer).Render(s);
             }
-            GL.DrawElements(PrimitiveType.Triangles, IndexBuffer.Data.Length, DrawElementsType.UnsignedInt, 0);
+
+            foreach (var indexBuffer in IndexBuffers) indexBuffer.Render(s);
         }
     }
 }

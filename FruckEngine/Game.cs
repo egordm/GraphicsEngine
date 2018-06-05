@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using FruckEngine.Objects;
 using FruckEngine.Structs;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -21,13 +22,21 @@ namespace FruckEngine
         protected int Width { get; set; }
         protected int Height { get; set; }
 
-        public abstract void Init();
-        public abstract void Update();
+        public virtual void Init()
+        {
+            foreach (var o in World.Objects) o.Init();
+        }
+
+        public virtual void Update()
+        {
+            foreach (var o in World.Objects) o.Update();
+        }
 
         public virtual void Render()
         {
-            var matrix = new TransformMatrix(Matrix4.Identity, Matrix4.Identity, Matrix4.Identity);
-            // TODO: render each and very object
+            var matrix = new TransformMatrix(Matrix4.Identity, World.MainCamera.GetMatrix(), Matrix4.Identity);
+
+            foreach (var o in World.Objects) (o as IRenderable)?.Render(matrix);
         }
 
         public virtual void Resize(int width, int height)

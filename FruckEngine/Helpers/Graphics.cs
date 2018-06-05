@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Helpers
@@ -18,6 +20,13 @@ namespace FruckEngine.Helpers
             using (var sr = new StreamReader(name)) GL.ShaderSource(id, sr.ReadToEnd());
             GL.CompileShader(id);
             GL.AttachShader(program, id);
+
+            // Check if compiled
+            int status;
+            GL.GetShader(id, ShaderParameter.CompileStatus, out status);
+            if (status == 0)
+                throw new GraphicsException(String.Format("Error compiling {0} shader: {1}", type.ToString(),
+                    GL.GetShaderInfoLog(id)));
         }
     }
 }
