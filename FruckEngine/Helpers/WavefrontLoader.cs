@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using FruckEngine.Structs;
 using OpenTK;
 
 namespace FruckEngine.Helpers
 {
-    [StructLayout(LayoutKind.Sequential)] public struct WavefrontVertex
-    {
-        public Vector3 Pos;
-        public Vector2 TexCoord;
-        public Vector3 Normal;
-    }
-
     public class WavefrontMesh
     {
-        public WavefrontVertex[] Vertices;
+        public Vertex[] Vertices;
         public Triangle[] Triangles;
         public Quad[] Quads;
 
-        public WavefrontMesh(WavefrontVertex[] vertices, Triangle[] triangles, Quad[] quads)
+        public WavefrontMesh(Vertex[] vertices, Triangle[] triangles, Quad[] quads)
         {
             Vertices = vertices;
             Triangles = triangles;
@@ -33,7 +27,7 @@ namespace FruckEngine.Helpers
         private List<Vector3> vertexCoords = new List<Vector3>();
         private List<Vector2> texCoords = new List<Vector2>();
         private List<Vector3> normals = new List<Vector3>();
-        private List<WavefrontVertex> vertices = new List<WavefrontVertex>();
+        private List<Vertex> vertices = new List<Vertex>();
         private List<Triangle> triangles = new List<Triangle>();
         private List<Quad> quads = new List<Quad>();
 
@@ -63,7 +57,7 @@ namespace FruckEngine.Helpers
         private int ParseVertex(string data)
         {
             var subtokens = data.Split('/');
-            var vertex = new WavefrontVertex();
+            var vertex = new Vertex();
 
             vertex.Pos = vertexCoords[int.Parse(subtokens[0])-1];
             if (subtokens.Length > 1 && !string.IsNullOrEmpty(subtokens[1])) {
@@ -91,7 +85,7 @@ namespace FruckEngine.Helpers
 
             while ((line = file.ReadLine()) != null) {
                 if (line.Length == 0 || line[0] == '#') continue;
-                var tokens = line.Split();
+                var tokens = line.Split().Where(x => !string.IsNullOrEmpty(x)).ToArray();;
                 switch (tokens[0]) {
                     case "v":
                         vertexCoords.Add(new Vector3(float.Parse(tokens[1]), float.Parse(tokens[2]),

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -10,6 +11,7 @@ namespace FruckEngine
     {
         protected IGame Game;
 
+
         public Window(int width, int height, string title, IGame game) 
             : base(width, height, GraphicsMode.Default, title)
         {
@@ -20,6 +22,7 @@ namespace FruckEngine
         {
             Game.Resize(ClientSize.Width, ClientSize.Height);
             Game.Init();
+            Game.Clear();
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
         }
         
@@ -40,12 +43,13 @@ namespace FruckEngine
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             var keyboard = OpenTK.Input.Keyboard.GetState();
-            Game.Update();
+            Game.Update(e.Time);
             if (keyboard[OpenTK.Input.Key.Escape]) Exit();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            Game.Clear();
             Game.Render();
             SwapBuffers();
         }

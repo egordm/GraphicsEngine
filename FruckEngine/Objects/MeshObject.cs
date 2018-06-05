@@ -9,7 +9,7 @@ namespace FruckEngine.Objects
     {
         public Mesh Mesh { get; set; } = null;
         public Shader Shader { get; set; } = null;
-        
+        public Material Material = new Material();
         
         public MeshObject(Mesh mesh, Shader shader) : this(mesh, shader, Vector3.Zero, Quaternion.Identity,
             Vector3.One) { }
@@ -19,6 +19,12 @@ namespace FruckEngine.Objects
         {
             Mesh = mesh;
             Shader = shader;
+        }
+
+        public override void Init()
+        {
+            base.Init();
+            Mesh.Upload(Shader);
         }
 
         /// <summary>
@@ -32,6 +38,8 @@ namespace FruckEngine.Objects
 
             var transform = matrix.Model * matrix.View * matrix.World;
             Shader.SetVar("transform", ref transform);
+
+            (Shader as IMaterialShader)?.ApplyMaterial(Material);
         }
 
         public void Render(TransformMatrix matrix)

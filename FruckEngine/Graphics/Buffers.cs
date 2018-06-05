@@ -98,7 +98,7 @@ namespace FruckEngine.Graphics
             GL.VertexAttribPointer(s.GetVar(AttributeName), ComponentCount, AttribPointerType, Normalized, Stride, Offset);
         }
 
-        public void Render(Shader s)
+        public virtual void Render(Shader s)
         {
             GL.EnableVertexAttribArray(s.GetVar(AttributeName));
         }

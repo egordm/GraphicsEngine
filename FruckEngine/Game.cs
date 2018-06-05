@@ -9,8 +9,9 @@ namespace FruckEngine
     public interface IGame
     {
         void Init();
-        void Update();
+        void Update(double dt);
         void Render();
+        void Clear();
         void Resize(int width, int height);
         void Destroy();
     }
@@ -24,12 +25,11 @@ namespace FruckEngine
 
         public virtual void Init()
         {
-            foreach (var o in World.Objects) o.Init();
         }
 
-        public virtual void Update()
+        public virtual void Update(double dt)
         {
-            foreach (var o in World.Objects) o.Update();
+            foreach (var o in World.Objects) o.Update(dt);
         }
 
         public virtual void Render()
