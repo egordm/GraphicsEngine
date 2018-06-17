@@ -12,10 +12,10 @@ namespace FruckEngine {
             base.OnKeyboardUpdate(state);
             if (state[Key.W]) World.MainCamera.Position += World.MainCamera.Direction * Velocity;
             if (state[Key.S]) World.MainCamera.Position -= World.MainCamera.Direction * Velocity;
-            if (state[Key.A]) World.MainCamera.Position += World.MainCamera.Right * Velocity;
-            if (state[Key.D]) World.MainCamera.Position -= World.MainCamera.Right * Velocity;
-            if (state[Key.E]) World.MainCamera.Position += World.MainCamera.Up * Velocity;
+            if (state[Key.A]) World.MainCamera.Position -= World.MainCamera.Right * Velocity;
+            if (state[Key.D]) World.MainCamera.Position += World.MainCamera.Right * Velocity;
             if (state[Key.Q]) World.MainCamera.Position -= World.MainCamera.Up * Velocity;
+            if (state[Key.E]) World.MainCamera.Position += World.MainCamera.Up * Velocity;
         }
 
         public override void OnMouseMove(double dx, double dy) {
@@ -24,7 +24,7 @@ namespace FruckEngine {
             dx *= Sensitivity;
             dy *= Sensitivity;
 
-            float yaw = (float) (World.MainCamera.Yaw + dx);
+            float yaw = (float) (World.MainCamera.Yaw - dx);
             float pitch = (float) (World.MainCamera.Pitch + dy);
             
             World.MainCamera.SetRotation(pitch, yaw);

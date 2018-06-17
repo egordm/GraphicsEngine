@@ -30,7 +30,6 @@ namespace FruckEngine {
 
         public Matrix4 GetProjectionMatrix() {
             var ret = Matrix4.CreatePerspectiveFieldOfView(Fovy, Aspect, ZNear, ZFar);
-            ret *= Matrix4.CreateScale(1, -1, 1);
             return ret;
         }
 
