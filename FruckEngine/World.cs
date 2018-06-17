@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using FruckEngine.Graphics;
 using FruckEngine.Objects;
 using FruckEngine.Structs;
+using OpenTK;
 
 namespace FruckEngine
 {
@@ -15,11 +17,12 @@ namespace FruckEngine
         public ReadOnlyCollection<Object> Objects => _objects.AsReadOnly();
         public ReadOnlyCollection<Light> Lights => _lights.AsReadOnly();
 
-        public Environment Environment;
+        public Environment Environment = new Environment();
 
-        public World(Camera mainCamera)
+        public World()
         {
-            MainCamera = mainCamera;
+            MainCamera = new Camera(Vector3.Zero, 0, 0, Vector3.UnitY);
+            MainCamera.SetFOV(100);
         }
 
         public void AddObject(Object obj)
@@ -31,6 +34,15 @@ namespace FruckEngine
         public void AddLight(Light light)
         {
             _lights.Add(light);
+        }
+
+        public void Draw(Shader shader, MaterialType materialType) {
+            var coordSystem = InitialCoordSystem();
+            foreach (var o in Objects) o.Draw(coordSystem, shader, materialType);
+        }
+        
+        protected CoordSystem InitialCoordSystem() {
+            return new CoordSystem(MainCamera.GetProjectionMatrix(), MainCamera.GetViewMatrix(), Matrix4.Identity);
         }
     }
 }

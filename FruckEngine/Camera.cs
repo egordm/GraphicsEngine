@@ -3,12 +3,12 @@ using OpenTK;
 
 namespace FruckEngine {
     public class Camera {
-        protected Vector3 Direction { get; private set; }
-        protected Vector3 Up { get; private set; }
-        protected Vector3 Right { get; private set; }
-        protected Vector3 WorldUp { get; private set; }
-        protected float Pitch { get; private set; }
-        protected float Yaw { get; private set; }
+        public Vector3 Direction { get; private set; }
+        public Vector3 Up { get; private set; }
+        public Vector3 Right { get; private set; }
+        public Vector3 WorldUp { get; private set; }
+        public float Pitch { get; private set; }
+        public float Yaw { get; private set; }
         public float Fovy { get; set; }
         public float Aspect { get; set; } = 16f / 9f;
         public float ZNear { get; set; } = 0.1f;
@@ -56,7 +56,7 @@ namespace FruckEngine {
         }
 
         public void SetFOV(float angle) {
-            Fovy = MathHelper.DegreesToRadians(angle) * Aspect;
+            Fovy = MathHelper.DegreesToRadians(angle) / Aspect;
         }
 
         private void UpdateDirection() {

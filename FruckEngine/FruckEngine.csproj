@@ -49,11 +49,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="CoolGame.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Projection.cs" />

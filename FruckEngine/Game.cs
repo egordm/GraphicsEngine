@@ -1,66 +1,52 @@
 ﻿using System.Drawing;
+using FruckEngine.Graphics;
 using FruckEngine.Objects;
 using FruckEngine.Structs;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
-namespace FruckEngine
-{
-    public interface IGame
-    {
-        void Init();
-        void Update(double dt);
-        void Render();
-        void Clear();
-        void Resize(int width, int height);
-        void Destroy();
-    }
-    
-    public abstract class Game : IGame
-    {
+namespace FruckEngine {
+    public abstract class Game {
         public World World;
-        
+        public double Time;
+
         protected int Width { get; set; }
         protected int Height { get; set; }
 
-        public virtual void Init()
-        {
-        }
+        public virtual void Init() { }
 
-        public virtual void Update(double dt)
-        {
+        public virtual void Update(double dt) {
+            Time += dt;
             foreach (var o in World.Objects) o.Update(dt);
         }
 
-        public virtual void Render()
-        {
-            var matrix = new CoordSystem(Matrix4.Identity, World.MainCamera.GetMatrix(), Matrix4.Identity);
+        public abstract void Render();
 
-            //foreach (var o in World.Objects) (o as IDrawable)?.Draw(matrix);
-        }
-
-        public virtual void Resize(int width, int height)
-        {
+        public virtual void Resize(int width, int height) {
             Width = width;
             Height = height;
+            World.MainCamera.Aspect = width / (float)height;
         }
 
         public virtual void Destroy() { }
 
-        /// <summary>
-        /// Clear the screen
-        /// </summary>
-        public virtual void Clear()
-        {
+        public virtual void Clear() {
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.DepthTest);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            
+
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
         }
+        
+        public virtual void OnMouseMove(double dx, double dy) { }
+
+        public virtual void OnMouseScroll(double ds) { }
+
+        public virtual void OnKeyboardUpdate(KeyboardState state) {}
     }
 }

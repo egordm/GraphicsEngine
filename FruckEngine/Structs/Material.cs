@@ -3,8 +3,19 @@ using FruckEngine.Graphics;
 using OpenTK;
 
 namespace FruckEngine.Structs {
+    public enum MaterialType {
+        Any,
+        Legacy,
+        PBR,
+    }
+    
     public abstract class Material {
         public List<Texture> Textures = new List<Texture>();
+        public MaterialType Type;
+
+        protected Material(MaterialType type) {
+            Type = type;
+        }
 
         public void Apply(Shader shader) {
             ApplyProperties(shader);
@@ -30,6 +41,8 @@ namespace FruckEngine.Structs {
         public Vector3 Specular = Vector3.Zero;
         public float Shinyness = 16;
 
+        public LegacyMaterial() : base(MaterialType.Legacy) { }
+
         protected override void ApplyProperties(Shader shader) {
             shader.SetVec3("uMaterial.diffuse", Diffuse);
             shader.SetVec3("uMaterial.specular", Specular);
@@ -51,6 +64,8 @@ namespace FruckEngine.Structs {
         public Vector3 Albedo = Vector3.One;
         public float Metallic = 0;
         public float Roughness = 1;
+
+        public PBRMaterial() : base(MaterialType.PBR) { }
 
         protected override void ApplyProperties(Shader shader) {
             shader.SetVec3("uMaterial.albedo", Albedo);
