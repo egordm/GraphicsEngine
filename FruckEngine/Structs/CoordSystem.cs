@@ -2,13 +2,13 @@
 
 namespace FruckEngine.Structs
 {
-    public struct TransformMatrix
+    public struct CoordSystem
     {
         public Matrix4 World;
         public Matrix4 View;
         public Matrix4 Model;
 
-        public TransformMatrix(Matrix4 world, Matrix4 view, Matrix4 model)
+        public CoordSystem(Matrix4 world, Matrix4 view, Matrix4 model)
         {
             World = world;
             View = view;

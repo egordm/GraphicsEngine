@@ -52,54 +52,54 @@ namespace FruckEngine.Graphics {
             return AttribPointers[name];
         }
 
-        int GetVar(string name) {
+        public int GetVar(string name) {
             if (!AttribPointers.ContainsKey(name)) return -1;
             return AttribPointers[name];
         }
         
-        void setBool(string name, bool value) {
+        public void SetBool(string name, bool value) {
             GL.Uniform1(GetVar(name), value ? 1 : 0);
         }
         
-        void setInt(string name, int value) {
+        public void SetInt(string name, int value) {
             GL.Uniform1(GetVar(name), value);
         }
         
-        void setFloat(string name, float value) {
+        public void SetFloat(string name, float value) {
             GL.Uniform1(GetVar(name), value);
         }
         
-        void setVec2(string name, Vector2 value) {
+        public void SetVec2(string name, Vector2 value) {
             GL.Uniform2(GetVar(name), value);
         }
         
-        void setVec2(string name, float x, float y) {
+        public void SetVec2(string name, float x, float y) {
             GL.Uniform2(GetVar(name), x, y);
         }
         
-        void setVec3(string name, Vector3 value) {
+        public void SetVec3(string name, Vector3 value) {
             GL.Uniform3(GetVar(name), value);
         }
-        void setVec3(string name, float x, float y, float z) {
+        public void SetVec3(string name, float x, float y, float z) {
             GL.Uniform3(GetVar(name), x, y, z);
         }
         
-        void setVec4(string name, Vector4 value) {
+        public void SetVec4(string name, Vector4 value) {
             GL.Uniform4(GetVar(name), value);
         }
-        void setVec4(string name, float x, float y, float z, float w) {
+        public void SetVec4(string name, float x, float y, float z, float w) {
             GL.Uniform4(GetVar(name), x, y, z, w);
         }
         
-        void setMat2(string name, Matrix2 mat) {
+        public void SetMat2(string name, Matrix2 mat) {
             GL.UniformMatrix2(GetVar(name), false, ref mat);
         }
         
-        void setMat3(string name, Matrix3 mat) {
+        public void SetMat3(string name, Matrix3 mat) {
             GL.UniformMatrix3(GetVar(name), false, ref mat);
         }
         
-        void setMat4(string name, Matrix4 mat) {
+        public void SetMat4(string name, Matrix4 mat) {
             GL.UniformMatrix4(GetVar(name), false, ref mat);
         }
 

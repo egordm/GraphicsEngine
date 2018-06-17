@@ -54,7 +54,6 @@
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Helpers\Generics.cs" />
-    <Compile Include="Helpers\Graphics.cs" />
     <Compile Include="Helpers\MathFuncs.cs" />
     <Compile Include="Helpers\Perlin.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
@@ -62,12 +61,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structs\Material.cs" />
-    <Compile Include="Structs\Quad.cs" />
-    <Compile Include="Structs\Triangle.cs" />
     <Compile Include="Structs\Vertex.cs" />
     <Compile Include="Utils\Mem.cs" />
     <Compile Include="World.cs" />
-    <Compile Include="Structs\TransformMatrix.cs" />
+    <Compile Include="Structs\CoordSystem.cs" />
     <Compile Include="Window.cs" />
   </ItemGroup>
   <ItemGroup>

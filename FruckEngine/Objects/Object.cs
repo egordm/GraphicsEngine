@@ -8,7 +8,7 @@ namespace FruckEngine.Objects
         /// <summary>
         /// Used to render the object on canvas.
         /// </summary>
-        void Render(TransformMatrix matrix);
+        void Render(CoordSystem matrix);
     }
     
     /// <summary>

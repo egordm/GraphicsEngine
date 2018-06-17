@@ -11,6 +11,7 @@ using OpenTK.Platform.Windows;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace FruckEngine.Graphics {
+    
     public enum ShadeType {
         TEXTURE_TYPE_DIFFUSE = 0,
         TEXTURE_TYPE_ALBEDO = 0,
@@ -24,6 +25,8 @@ namespace FruckEngine.Graphics {
     }
 
     public class Texture {
+        public const int TextureTypeCount = 5;
+        
         public int Pointer = Constants.UNCONSTRUCTED;
         public ShadeType ShadeType = ShadeType.TEXTURE_TYPE_DIFFUSE;
         public TextureTarget Target = TextureTarget.Texture2D;
@@ -81,6 +84,11 @@ namespace FruckEngine.Graphics {
         
         public void UnBind() {
             GL.BindTexture(Target, 0);
+        }
+
+        public void Activate(uint pos) {
+            GL.ActiveTexture((TextureUnit) ((uint)TextureUnit.Texture0 + pos));
+            Bind();
         }
 
         public void SetWrapping(TextureWrapMode wrapS = TextureWrapMode.ClampToEdge,

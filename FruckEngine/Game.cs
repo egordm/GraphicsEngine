@@ -34,7 +34,7 @@ namespace FruckEngine
 
         public virtual void Render()
         {
-            var matrix = new TransformMatrix(Matrix4.Identity, World.MainCamera.GetMatrix(), Matrix4.Identity);
+            var matrix = new CoordSystem(Matrix4.Identity, World.MainCamera.GetMatrix(), Matrix4.Identity);
 
             foreach (var o in World.Objects) (o as IRenderable)?.Render(matrix);
         }
