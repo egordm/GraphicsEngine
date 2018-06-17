@@ -8,7 +8,7 @@ using OpenTK.Input;
 
 namespace FruckEngine {
     public abstract class Game {
-        public World World;
+        public World World = new World();
         public double Time;
 
         protected int Width { get; set; }

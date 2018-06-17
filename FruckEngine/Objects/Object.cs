@@ -10,7 +10,7 @@ namespace FruckEngine.Objects
         /// <summary>
         /// Used to render the object on canvas.
         /// </summary>
-        void Draw(CoordSystem coordSys, Shader shader, MaterialType materialType);
+        void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties);
     }
     
     /// <summary>
@@ -51,13 +51,13 @@ namespace FruckEngine.Objects
 
         protected virtual void PrepareShader(Shader shader) { }
 
-        public void Draw(CoordSystem coordSys, Shader shader, MaterialType materialType) {
+        public void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
             coordSys.Model = GetMatrix(coordSys.Model);
             shader.Use();
             coordSys.Apply(shader);
             PrepareShader(shader);
 
-            foreach (var mesh in Meshes) mesh.Draw(shader, materialType);
+            foreach (var mesh in Meshes) mesh.Draw(shader, properties);
         }
     }
 }

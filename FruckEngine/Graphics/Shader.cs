@@ -38,14 +38,14 @@ namespace FruckEngine.Graphics {
             GL.UseProgram(0);
         }
 
-        int AddAttribVar(string name) {
+        public int AddAttribVar(string name) {
             if (!AttribPointers.ContainsKey(name)) {
                 AttribPointers.Add(name, GL.GetAttribLocation(Pointer, name));
             }
             return AttribPointers[name];
         }
         
-        int AddUniformVar(string name) {
+        public int AddUniformVar(string name) {
             if (!AttribPointers.ContainsKey(name)) {
                 AttribPointers.Add(name, GL.GetUniformLocation(Pointer, name));
             }
@@ -125,8 +125,8 @@ namespace FruckEngine.Graphics {
             int status;
             GL.GetShader(pointer, ShaderParameter.CompileStatus, out status);
             if (status == Constants.GL_FAILURE) {
-                throw new GraphicsException(
-                    $"Error compiling shader ({type.ToString()}). Error: \n{GL.GetShaderInfoLog(pointer)}");
+                Console.WriteLine( $"Error compiling shader ({type.ToString()}). Error: \n{GL.GetShaderInfoLog(pointer)}");
+                throw new GraphicsException("Rip shader");
             }
 
             return pointer;

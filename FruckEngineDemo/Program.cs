@@ -1,17 +1,16 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using FruckEngine;
 using FruckEngine.Graphics;
 using FruckEngine.Helpers;
 using FruckEngine.Objects;
-using OpenTK;
-using OpenTK.Input;
+using FruckEngine.Structs;
 
 namespace FruckEngineDemo
 {
-    internal class Program : Game
-    {
+    internal class Program : CoolGame {
+        private Shader MainShader;
         
         public static void Main(string[] args)
         {
@@ -22,18 +21,17 @@ namespace FruckEngineDemo
         public override void Init()
         {
             base.Init();
-            World = new World(new Camera(new Vector3(0, 0, 0), Quaternion.Identity));
 
-            var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);
+            /*var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);*/
+            var model = new Object(new List<Mesh>(){DefaultModels.GetPlane(true)});
+            World.AddObject(model);
             
-            Console.WriteLine("dd");
+            MainShader = DefaultShaders.CreateDebugDraw(true);
         }
 
-        public override void Update(double dt)
-        {
-            base.Update(dt);
-            
-
+        public override void Render() {
+            base.Render();
+            World.Draw(MainShader, new DrawProperties());
         }
     }
 }

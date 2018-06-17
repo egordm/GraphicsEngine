@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -15,6 +16,7 @@ namespace FruckEngine {
         public Window(int width, int height, string title, Game game)
             : base(width, height, GraphicsMode.Default, title) {
             Game = game;
+            CursorVisible = false;
         }
 
         protected override void OnLoad(EventArgs e) {
@@ -57,14 +59,6 @@ namespace FruckEngine {
             LastMouseScroll = state.WheelPrecise;
 
             FirstMouse = false;
-            ResetCursorPosition();
-        }
-
-        protected void ResetCursorPosition() {
-            if (!Focused) return;
-            Mouse.SetPosition(
-                (ClientRectangle.Left - ClientRectangle.Right) / 2f,
-                (ClientRectangle.Top - ClientRectangle.Bottom) / 2f);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e) {

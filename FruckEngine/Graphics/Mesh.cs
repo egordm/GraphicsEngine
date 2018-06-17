@@ -63,9 +63,9 @@ namespace FruckEngine.Graphics {
             GL.BindVertexArray(0);
         }
 
-        public virtual void Draw(Shader shader, MaterialType materialType) {
-            if(Material.Type != materialType && Material.Type != MaterialType.Any) return;
-            if(shader != null) Material.Apply(shader);
+        public virtual void Draw(Shader shader, DrawProperties properties) {
+            if(Material.Type != properties.MaterialType && properties.MaterialType != MaterialType.Any) return;
+            if(shader != null && properties.Shade) Material.Apply(shader);
             
             GL.BindVertexArray(VAO);
             GL.DrawElements(BeginMode.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);

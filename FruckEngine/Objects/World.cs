@@ -5,7 +5,7 @@ using FruckEngine.Objects;
 using FruckEngine.Structs;
 using OpenTK;
 
-namespace FruckEngine
+namespace FruckEngine.Objects
 {
     public class World
     {
@@ -36,9 +36,9 @@ namespace FruckEngine
             _lights.Add(light);
         }
 
-        public void Draw(Shader shader, MaterialType materialType) {
+        public void Draw(Shader shader, DrawProperties properties) {
             var coordSystem = InitialCoordSystem();
-            foreach (var o in Objects) o.Draw(coordSystem, shader, materialType);
+            foreach (var o in Objects) o.Draw(coordSystem, shader, properties);
         }
         
         protected CoordSystem InitialCoordSystem() {

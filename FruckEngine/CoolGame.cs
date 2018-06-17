@@ -1,13 +1,12 @@
-﻿using OpenTK.Input;
+﻿using System;
+using OpenTK.Input;
 
 namespace FruckEngine {
     public class CoolGame : Game {
         protected float Velocity = 0.1f;
         protected float Sensitivity = 0.1f;
         
-        public override void Render() {
-            throw new System.NotImplementedException();
-        }
+        public override void Render() {}
 
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);
@@ -21,7 +20,7 @@ namespace FruckEngine {
 
         public override void OnMouseMove(double dx, double dy) {
             base.OnMouseMove(dx, dy);
-
+            
             dx *= Sensitivity;
             dy *= Sensitivity;
 
@@ -29,6 +28,7 @@ namespace FruckEngine {
             float pitch = (float) (World.MainCamera.Pitch + dy);
             
             World.MainCamera.SetRotation(pitch, yaw);
+            //Console.WriteLine($"Pos: {World.MainCamera.Position} Rot: {World.MainCamera.Pitch}, {World.MainCamera.Yaw}");
         }
     }
 }

@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace FruckEngine {
     public class Camera {
-        public Vector3 Direction { get; private set; }
+        public Vector3 Direction { get; private set; } = Vector3.UnitZ;
         public Vector3 Up { get; private set; }
         public Vector3 Right { get; private set; }
         public Vector3 WorldUp { get; private set; }
