@@ -10,7 +10,7 @@ namespace FruckEngine.Objects
         /// <summary>
         /// Used to render the object on canvas.
         /// </summary>
-        void Draw(CoordSystem matrix, Shader shader);
+        void Draw(CoordSystem coordSys, Shader shader);
     }
     
     /// <summary>

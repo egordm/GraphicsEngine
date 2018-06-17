@@ -53,7 +53,10 @@ namespace FruckEngine.Graphics {
         }
 
         public int GetVar(string name) {
-            if (!AttribPointers.ContainsKey(name)) return -1;
+            if (!AttribPointers.ContainsKey(name)) {
+                Console.WriteLine($"Warining: Accessing not existing property: {name}");
+                return -1;
+            }
             return AttribPointers[name];
         }
         

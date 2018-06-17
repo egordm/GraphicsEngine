@@ -56,6 +56,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Graphics\Mesh.cs" />
+    <Compile Include="Graphics\Projection.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Helpers\DefaultModels.cs" />
@@ -64,9 +65,11 @@
     <Compile Include="Helpers\AssimpLoadHelper.cs" />
     <Compile Include="Helpers\Perlin.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
+    <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Object.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structs\Environment.cs" />
     <Compile Include="Structs\Material.cs" />
     <Compile Include="Structs\Vertex.cs" />
     <Compile Include="Utils\Mem.cs" />

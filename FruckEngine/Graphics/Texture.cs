@@ -90,6 +90,10 @@ namespace FruckEngine.Graphics {
             Bind();
         }
 
+        public bool IsLoaded() {
+            return Pointer != Constants.UNCONSTRUCTED;
+        }
+
         public void SetWrapping(TextureWrapMode wrapS = TextureWrapMode.ClampToEdge,
             TextureWrapMode wrapT = TextureWrapMode.ClampToEdge, bool doBind = false) {
             if (doBind) Bind();
