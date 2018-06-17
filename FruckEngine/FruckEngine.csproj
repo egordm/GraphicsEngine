@@ -56,7 +56,7 @@
     <Compile Include="Helpers\Graphics.cs" />
     <Compile Include="Helpers\MathFuncs.cs" />
     <Compile Include="Helpers\Perlin.cs" />
-    <Compile Include="Helpers\TextureLoader.cs" />
+    <Compile Include="Helpers\TextureHelper.cs" />
     <Compile Include="Helpers\VectorMath.cs" />
     <Compile Include="Helpers\VectorUtils.cs" />
     <Compile Include="Objects\Object.cs" />

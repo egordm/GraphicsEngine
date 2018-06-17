@@ -24,7 +24,7 @@ namespace FruckEngineDemo
             base.Init();
             World = new World(new Camera(new Vector3(0, 0, 0), Quaternion.Identity));
 
-            var tex = TextureLoader.GetNormalNull();
+            var tex = TextureHelper.GetNormalNull();
             
             Console.WriteLine("dd");
         }

@@ -6,7 +6,7 @@ using ImageMagick;
 using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Helpers {
-    public static class TextureLoader {
+    public static class TextureHelper {
         public static Texture LoadFromImage(string path, TextureTarget face = 0) {
             var texture = new Texture();
             LoadFromImage(ref texture, path, face);
