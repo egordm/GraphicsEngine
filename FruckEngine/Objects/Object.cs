@@ -1,34 +1,32 @@
-﻿using FruckEngine.Structs;
+﻿using System.Collections.Generic;
+using FruckEngine.Graphics;
+using FruckEngine.Structs;
 using OpenTK;
 
 namespace FruckEngine.Objects
 {
-    public interface IRenderable
+    public interface IDrawable
     {
         /// <summary>
         /// Used to render the object on canvas.
         /// </summary>
-        void Render(CoordSystem matrix);
+        void Draw(CoordSystem matrix, Shader shader);
     }
     
     /// <summary>
     /// Basic scene object
     /// </summary>
-    public class Object
+    public class Object : IDrawable
     {
-        public virtual Vector3 Position { get; set; }
-        public virtual Quaternion Rotation { get; set; }
-        public virtual Vector3 Scale { get; set; }
+        public Vector3 Position { get; set; } = Vector3.Zero;
+        public Quaternion Rotation { get; set; } = Quaternion.Identity;
+        public Vector3 Scale { get; set; } = Vector3.One;
+        public List<Mesh> Meshes;
 
-        public Object() : this(Vector3.Zero, Quaternion.Identity, Vector3.One) { }
-
-        public Object(Vector3 position, Quaternion rotation, Vector3 scale)
-        {
-            Position = position;
-            Rotation = rotation;
-            Scale = scale;
+        public Object(List<Mesh> meshes) {
+            this.Meshes = meshes;
         }
-        
+
         /// <summary>
         /// Called when object is added to the scene
         /// </summary>
@@ -43,12 +41,25 @@ namespace FruckEngine.Objects
         /// Get object space matrix
         /// </summary>
         /// <returns></returns>
-        public Matrix4 GetMatrix()
+        public Matrix4 GetMatrix(Matrix4 parent)
         {
-            var matrix = Matrix4.CreateFromQuaternion(Rotation);
+            var matrix = Matrix4.CreateTranslation(Position);
             matrix *= Matrix4.CreateScale(Scale);
-            matrix *= Matrix4.CreateTranslation(Position);
-            return matrix;
+            matrix *= Matrix4.CreateFromQuaternion(Rotation);
+            return parent * matrix;
+        }
+
+        protected virtual void PrepareShader(Shader shader) { }
+
+        public void Draw(CoordSystem coordSys, Shader shader) {
+            coordSys.Model = GetMatrix(coordSys.Model);
+            shader.Use();
+            coordSys.Apply(shader);
+            PrepareShader(shader);
+
+            foreach (var mesh in Meshes) mesh.Draw(shader);
+            
+            
         }
     }
 }

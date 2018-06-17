@@ -51,10 +51,12 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\Texture.cs" />
-    <Compile Include="Helpers\Generics.cs" />
+    <Compile Include="Helpers\Mem.cs" />
     <Compile Include="Helpers\MathFuncs.cs" />
+    <Compile Include="Helpers\AssimpLoadHelper.cs" />
     <Compile Include="Helpers\Perlin.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
     <Compile Include="Objects\Object.cs" />

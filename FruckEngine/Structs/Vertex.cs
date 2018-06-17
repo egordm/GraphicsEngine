@@ -10,5 +10,13 @@ namespace FruckEngine.Structs
         public Vector3 Normal;
         public Vector3 Tangent;
         public Vector3 Bitangent;
+
+        public Vertex(Vector3 position, Vector2 uv, Vector3 normal, Vector3 tangent, Vector3 bitangent) {
+            Position = position;
+            UV = uv;
+            Normal = normal;
+            Tangent = tangent;
+            Bitangent = bitangent;
+        }
     }
 }
