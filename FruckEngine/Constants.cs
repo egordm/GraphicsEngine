@@ -1,5 +1,6 @@
 ﻿using FruckEngine;
 using FruckEngine.Graphics;
+using OpenTK;
 
 namespace FruckEngine {
     public static class Constants {
