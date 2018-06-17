@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace FruckEngine.Structs {
     public abstract class Material {
-        public List<Texture> Textures;
+        public List<Texture> Textures = new List<Texture>();
 
         public void Apply(Shader shader) {
             ApplyProperties(shader);

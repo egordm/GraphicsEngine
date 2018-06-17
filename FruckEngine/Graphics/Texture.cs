@@ -24,7 +24,7 @@ namespace FruckEngine.Graphics {
         TEXTURE_TYPE_ROUGHNESS = 4
     }
 
-    public class Texture {
+    public class Texture : ICloneable {
         public const int TextureTypeCount = 5;
         
         public int Pointer = Constants.UNCONSTRUCTED;
@@ -43,7 +43,6 @@ namespace FruckEngine.Graphics {
 
         public Texture() { }
        
-
         public void Load(int width, int height, IntPtr dataPointer) {
             Load(width, height, InternalFormat, Format, Target, PixelType, dataPointer);
         }
@@ -112,6 +111,11 @@ namespace FruckEngine.Graphics {
         public void GenMipMaps(bool doBind = false) {
             if (doBind) Bind();
             GL.GenerateMipmap((GenerateMipmapTarget) Target);
+        }
+
+
+        public object Clone() {
+            return this.MemberwiseClone();
         }
     }
 }

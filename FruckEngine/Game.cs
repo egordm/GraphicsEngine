@@ -36,7 +36,7 @@ namespace FruckEngine
         {
             var matrix = new CoordSystem(Matrix4.Identity, World.MainCamera.GetMatrix(), Matrix4.Identity);
 
-            foreach (var o in World.Objects) (o as IDrawable)?.Draw(matrix);
+            //foreach (var o in World.Objects) (o as IDrawable)?.Draw(matrix);
         }
 
         public virtual void Resize(int width, int height)

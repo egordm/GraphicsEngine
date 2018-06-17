@@ -24,7 +24,7 @@ namespace FruckEngineDemo
             base.Init();
             World = new World(new Camera(new Vector3(0, 0, 0), Quaternion.Identity));
 
-            var tex = TextureHelper.GetNormalNull();
+            var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);
             
             Console.WriteLine("dd");
         }

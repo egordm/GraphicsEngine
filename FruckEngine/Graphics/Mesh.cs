@@ -19,6 +19,7 @@ namespace FruckEngine.Graphics {
             Indices = indices;
             Material = material;
             isSimple = simple;
+            Init();
         }
 
         protected virtual void Init() {

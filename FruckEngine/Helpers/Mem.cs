@@ -4,7 +4,7 @@ using System.Reflection.Emit;
 
 namespace FruckEngine.Helpers
 {
-    public static class Generics
+    public static class Mem
     {
         private static Dictionary<Type, int> _sizes = new Dictionary<Type, int>();
 
