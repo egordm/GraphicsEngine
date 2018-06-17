@@ -102,21 +102,21 @@ namespace FruckEngine.Helpers {
         private static Texture ZeroNullTexture = new Texture();
 
         public static Texture GetNormalNull() {
-            if (NormalNullTexture.Pointer == Constants.TEXTURE_UNCONSTRUCTED)
+            if (NormalNullTexture.Pointer == Constants.UNCONSTRUCTED)
                 InitNullTex(NormalNullTexture, new byte[] {0x7F, 0x7F, 0xFF});
 
             return NormalNullTexture;
         }
 
         public static Texture GetOneNull() {
-            if (OneNullTexture.Pointer == Constants.TEXTURE_UNCONSTRUCTED)
+            if (OneNullTexture.Pointer == Constants.UNCONSTRUCTED)
                 InitNullTex(OneNullTexture, new byte[] {0xFF, 0xFF, 0xFF});
 
             return OneNullTexture;
         }
 
         public static Texture GetZeroNull() {
-            if (ZeroNullTexture.Pointer == Constants.TEXTURE_UNCONSTRUCTED)
+            if (ZeroNullTexture.Pointer == Constants.UNCONSTRUCTED)
                 InitNullTex(ZeroNullTexture, new byte[] {0, 0, 0});
 
             return ZeroNullTexture;

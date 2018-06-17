@@ -24,7 +24,7 @@ namespace FruckEngine.Graphics {
     }
 
     public class Texture {
-        public int Pointer = Constants.TEXTURE_UNCONSTRUCTED;
+        public int Pointer = Constants.UNCONSTRUCTED;
         public ShadeType ShadeType = ShadeType.TEXTURE_TYPE_DIFFUSE;
         public TextureTarget Target = TextureTarget.Texture2D;
         public PixelInternalFormat InternalFormat = PixelInternalFormat.Rgb;
