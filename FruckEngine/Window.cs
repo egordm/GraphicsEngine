@@ -25,6 +25,7 @@ namespace FruckEngine {
             Game.Clear();
             GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.TextureCubeMapSeamless);
         }
 
         protected override void OnUnload(EventArgs e) {

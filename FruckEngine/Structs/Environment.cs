@@ -36,6 +36,7 @@ namespace FruckEngine.Structs {
             shader.Use();
             coordSys.Apply(shader);
             shader.SetInt("uImage", 0);
+            Texture.Activate(0);
             
             Projection.ProjectCube();
             

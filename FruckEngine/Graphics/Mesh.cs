@@ -71,5 +71,13 @@ namespace FruckEngine.Graphics {
             GL.DrawElements(BeginMode.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
             GL.BindVertexArray(0);
         }
+
+        public PBRMaterial AsPBR() {
+            return (PBRMaterial) Material;
+        }
+        
+        public LegacyMaterial AsLegacy() {
+            return (LegacyMaterial) Material;
+        }
     }
 }

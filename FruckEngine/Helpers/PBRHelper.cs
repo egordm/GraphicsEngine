@@ -85,8 +85,8 @@ namespace FruckEngine.Helpers {
                 
                 BRDFBuffer = new FrameBuffer(Constants.BRDF_LUT_SIZE, Constants.BRDF_LUT_SIZE);
                 BRDFBuffer.Bind(false, false);
-                BRDFBuffer.AddCubeAttachment("brdf", PixelType.Float, PixelInternalFormat.Rg16f,
-                    PixelFormat.Rg, TextureMinFilter.Linear, TextureMagFilter.Linear);
+                BRDFBuffer.AddAttachment("brdf", PixelType.Float, PixelInternalFormat.Rg16f,
+                    PixelFormat.Rg, TextureMinFilter.Linear);
                 
                 
                 var viewport = new int[4];

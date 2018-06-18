@@ -24,7 +24,7 @@ namespace FruckEngine.Objects
         public List<Mesh> Meshes;
 
         public Object(List<Mesh> meshes) {
-            this.Meshes = meshes;
+            Meshes = meshes;
         }
 
         /// <summary>

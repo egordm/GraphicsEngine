@@ -35,6 +35,8 @@ namespace FruckEngineDemo
 
             //var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);
             var model = new Object(new List<Mesh>(){DefaultModels.GetSphere()});
+            //model.Meshes[0].AsPBR().Metallic = 0.7f;
+            //model.Meshes[0].AsPBR().Roughness = 0.4f;
             World.AddObject(model);
             
             
