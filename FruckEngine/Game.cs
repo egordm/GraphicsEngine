@@ -11,8 +11,8 @@ namespace FruckEngine {
         public World World = new World();
         public double Time;
 
-        protected int Width { get; set; }
-        protected int Height { get; set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
         public virtual void Init() { }
 

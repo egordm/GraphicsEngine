@@ -57,6 +57,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="CoolGame.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Graphics\FrameBuffer.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Projection.cs" />
     <Compile Include="Graphics\Shader.cs" />

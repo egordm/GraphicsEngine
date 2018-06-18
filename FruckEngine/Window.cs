@@ -68,6 +68,7 @@ namespace FruckEngine {
         }
 
         private void UpdateViewport() {
+            if(Game.Width == Width && Game.Height == Height) return;
             GL.Viewport(0, 0, Width, Height);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();

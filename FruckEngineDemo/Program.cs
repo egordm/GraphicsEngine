@@ -22,8 +22,8 @@ namespace FruckEngineDemo
         {
             base.Init();
 
-            /*var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);*/
-            var model = new Object(new List<Mesh>(){DefaultModels.GetSphere()});
+            var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);
+            //var model = new Object(new List<Mesh>(){DefaultModels.GetSphere()});
             World.AddObject(model);
             
             MainShader = DefaultShaders.CreateDebugDraw(false);

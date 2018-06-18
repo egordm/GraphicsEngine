@@ -45,7 +45,7 @@ namespace FruckEngine.Helpers {
         public static void LoadFromCubemap(ref Texture texture, List<string> faces) {
             if (faces.Count != 6) throw new Exception("Cube map must have 6 faces!");
 
-            texture.Target = TextureTarget.ProxyTextureCubeMap;
+            texture.Target = TextureTarget.TextureCubeMap;
             if (texture.Pointer == 0) texture.Pointer = GL.GenTexture();
             texture.Bind();
 

@@ -90,6 +90,14 @@ namespace FruckEngine.Graphics {
             Bind();
         }
 
+        public void Resize(int width, int height) {
+            if(Target != TextureTarget.Texture2D) return;
+            Width = width;
+            Height = height;
+            Bind();
+            GL.TexImage2D(Target, 0, InternalFormat, width, height, 0, Format, PixelType, (IntPtr) 0);
+        }
+
         public bool IsLoaded() {
             return Pointer != Constants.UNCONSTRUCTED;
         }

@@ -25,7 +25,7 @@ namespace FruckEngine {
             dy *= Sensitivity;
 
             float yaw = (float) (World.MainCamera.Yaw - dx);
-            float pitch = (float) (World.MainCamera.Pitch + dy);
+            float pitch = (float) (World.MainCamera.Pitch - dy);
             
             World.MainCamera.SetRotation(pitch, yaw);
             //Console.WriteLine($"Pos: {World.MainCamera.Position} Rot: {World.MainCamera.Pitch}, {World.MainCamera.Yaw}");
