@@ -13,7 +13,7 @@ namespace FruckEngine.Structs {
         public Texture PrefilteredMap { get; private set; } = null;
         
         public DirectionalLight DirectionalLight = new DirectionalLight(new Vector3(0.0f, -1, 0.5f), new Vector3(0.839f, 0.925f, 1), 0.2f);
-        public Vector3 AmbientLight = new Vector3(0.1f);
+        public Vector3 AmbientLight = Vector3.One;
         
         public void SetTexture(Texture texture, bool generateIBL) {
             Texture = texture;

@@ -60,12 +60,13 @@ void main() {
     vec3 Lo = vec3(0.0);
     for(int i = 0; i < MAX_N_LIGHTS; ++i) {
         Light lite = uPointLights[i];
-        
-        // calculate per-light radiance
-        vec3 L = normalize(lite.position - pos);
+        vec3 L = lite.position - pos;
+        float distance_sq = dot(L, L);
+        if(distance_sq > lite.intensity*lite.intensity * RADIAL_LIGHT_DECAY) continue;
+
+        L = L / sqrt(distance_sq);
         vec3 H = normalize(V + L);
-        float distance = length(lite.position - pos);
-        float attenuation = lite.intensity / (distance * distance);
+        float attenuation = lite.intensity / distance_sq;
         vec3 radiance = lite.color * attenuation;
         
         // Cook-Torrance BRDF
@@ -109,7 +110,7 @@ void main() {
     vec2 brdf  = texture(uBrdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
     
-    vec3 ambient = (kD * diffuse + specular) * ao;
+    vec3 ambient = (kD * diffuse + specular) * ao * uAmbientLight;
     
     vec3 color = ambient + Lo;
     

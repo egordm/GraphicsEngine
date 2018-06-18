@@ -7,41 +7,69 @@ using FruckEngine.Graphics;
 using FruckEngine.Helpers;
 using FruckEngine.Objects;
 using FruckEngine.Structs;
+using FruckEngineDemo.Scenes;
 using OpenTK;
+using OpenTK.Input;
 
 namespace FruckEngineDemo
 {
     internal class Program : DeferredShadingGame {
         
+        public List<Scene> Scenes = new List<Scene>() {
+            new Cerberus()
+        };
+        
+        public List<Key> SceneButtons = new List<Key>() {
+            Key.Keypad1,
+            Key.Keypad2,
+            Key.Keypad3,
+            Key.Keypad4,
+            Key.Keypad5,
+            Key.Keypad6,
+            Key.Keypad7,
+            Key.Keypad8,
+            Key.Keypad9,
+            Key.Keypad0,
+        };
+
+        public int CurrentScene = -1;
+        
         public static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo( "en-US" );
-            using (var win = new Window(1280, 720, "Fruckenstein" ,new Program())) { win.Run(30.0, 60.0); }
+            using (var win = new Window(1280, 720, "Fruck Engine Demo" ,new Program())) { win.Run(30.0, 60.0); }
         }
 
         public override void Init()
         {
             base.Init();
             
-            var env = TextureHelper.LoadFromCubemap(new List<string> {
-                "Assets/cubemaps/Home/_posx.hdr",
-                "Assets/cubemaps/Home/_negx.hdr",
-                "Assets/cubemaps/Home/_posy.hdr",
-                "Assets/cubemaps/Home/_negy.hdr",
-                "Assets/cubemaps/Home/_posz.hdr",
-                "Assets/cubemaps/Home/_negz.hdr"
-            });
-            World.Environment.SetTexture(env, true);
+            SetScene(0);
+        }
 
-            var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", true);
-            //var model = new Object(new List<Mesh>(){DefaultModels.GetSphere()});
-            //model.Meshes[0].AsPBR().Metallic = 0.7f;
-            //model.Meshes[0].AsPBR().Roughness = 0.4f;
-            World.AddObject(model);
+        public override void Update(double dt) {
+            base.Update(dt);
             
-            
-            World.MainCamera.Position = new Vector3(0,0, -3);
-            World.MainCamera.SetDirection(model.Position - World.MainCamera.Position);
+            Scenes[CurrentScene].Update(World, dt);
+        }
+
+        public void SetScene(int i) {
+            // TODO: WARNING!!!!!! Dont swicth between scenes that use different shading. unexpected results may occur
+            if(i == CurrentScene || i >= Scenes.Count) return;
+            CurrentScene = 0;
+            World = new World();
+            Scenes[CurrentScene].Init(World);
+        }
+
+        public override void OnKeyboardUpdate(KeyboardState state) {
+            base.OnKeyboardUpdate(state);
+
+            for (int i = 0; i < SceneButtons.Count; i++) {
+                if (state[SceneButtons[i]]) {
+                    SetScene(i);
+                    break;
+                }
+            }
         }
     }
 }

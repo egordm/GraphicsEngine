@@ -7,8 +7,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Helpers {
     public static class TextureHelper {
-        public static Texture LoadFromImage(string path, TextureTarget face = 0, float exposureCorrect = 66878) {
+        public static Texture LoadFromImage(string path, ShadeType type = ShadeType.TEXTURE_TYPE_ALBEDO,
+            TextureTarget face = 0, float exposureCorrect = 66878) {
             var texture = new Texture();
+            texture.ShadeType = type;
             LoadFromImage(ref texture, path, face, exposureCorrect);
             return texture;
         }
@@ -25,7 +27,7 @@ namespace FruckEngine.Helpers {
             if (isHDR) {
                 var data = pixels.ToArray();
                 for (int i = 0; i < data.Length; i++) data[i] /= exposureCorrect; // Correct the exposure a bit
-                
+
                 if (face == 0) LoadDataIntoTexture(texture, img.Width, img.Height, data);
                 else LoadFaceDataIntoTexture(texture, img.Width, img.Height, face, data);
             } else {
