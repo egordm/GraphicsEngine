@@ -7,13 +7,14 @@ using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Game {
     public class DeferredShadingGame : CoolGame {
-        protected Shader GeometryShader, DeferredShader, CompositeShader;
+        protected Shader GeometryShader, DeferredShader, CompositeShader, EnvironmentShader;
         protected FrameBuffer GeometryBuffer, DeferredBuffer;
         
         
         public override void Init() {
             base.Init();
-            // TODO: we only support pbr right now
+
+            PBRHelper.GetBRDFLUT();
             
             // -- Geometry Buffer
             GeometryShader = DefaultShaders.CreateGeometry(true);
@@ -48,6 +49,9 @@ namespace FruckEngine.Game {
             DeferredShader.SetInt("uPrefilterMap", 5);
             DeferredShader.SetInt("uBrdfLUT", 6);
             
+            // -- Environment Box
+            EnvironmentShader = DefaultShaders.CreateEnvironmentBox();
+            
             // -- Compositing
             CompositeShader = DefaultShaders.CreateComposite();
             CompositeShader.Use();
@@ -55,7 +59,6 @@ namespace FruckEngine.Game {
         }
 
         public override void Render() {
-            
             // Pass 1 Geometry
             GeometryBuffer.Bind(true, false);
             World.Draw(GeometryShader, new DrawProperties(MaterialType.PBR, true));
@@ -77,11 +80,16 @@ namespace FruckEngine.Game {
             GeometryBuffer.GetAttachment("color").Activate(2);
             TextureHelper.GetOneNull().Activate(3); // TODO: for now now SSAO
             // IBL
-            TextureHelper.GetOneNull().Activate(4);
-            TextureHelper.GetOneNull().Activate(5);
-            TextureHelper.GetOneNull().Activate(6);
+            World.Environment.IrradianceMap.Activate(4);
+            World.Environment.PrefilteredMap.Activate(5);
+            PBRHelper.GetBRDFLUT().Activate(6);
             
             Projection.ProjectPlane();
+            
+            DeferredBuffer.BlitBuffer(GeometryBuffer, ClearBufferMask.DepthBufferBit);
+            DeferredBuffer.Bind(false);
+            World.Environment.Draw(World.InitialCoordSystem(), EnvironmentShader, new DrawProperties());
+            
             DeferredBuffer.UnBind();
 
             // Pass 5 Final render compositing

@@ -19,7 +19,7 @@ namespace FruckEngine.Structs
         public void Apply(Shader shader) {
             shader.SetMat4("mProjection", Projection);
             shader.SetMat4("mView", View);
-            shader.SetMat4("mModel", Model);
+            if(shader.HasVar("mModel")) shader.SetMat4("mModel", Model);
         }
     }
 }

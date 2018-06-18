@@ -7,13 +7,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Helpers {
     public static class TextureHelper {
-        public static Texture LoadFromImage(string path, TextureTarget face = 0) {
+        public static Texture LoadFromImage(string path, TextureTarget face = 0, float exposureCorrect = 66878) {
             var texture = new Texture();
-            LoadFromImage(ref texture, path, face);
+            LoadFromImage(ref texture, path, face, exposureCorrect);
             return texture;
         }
 
-        public static void LoadFromImage(ref Texture texture, string path, TextureTarget face = 0) {
+        public static void LoadFromImage(ref Texture texture, string path, TextureTarget face = 0, float exposureCorrect = 66878) {
             var img = new MagickImage(path);
             var isHDR = img.Format == MagickFormat.Hdr;
             var pixels = img.GetPixels();
@@ -24,6 +24,8 @@ namespace FruckEngine.Helpers {
 
             if (isHDR) {
                 var data = pixels.ToArray();
+                for (int i = 0; i < data.Length; i++) data[i] /= exposureCorrect; // Correct the exposure a bit
+                
                 if (face == 0) LoadDataIntoTexture(texture, img.Width, img.Height, data);
                 else LoadFaceDataIntoTexture(texture, img.Width, img.Height, face, data);
             } else {
@@ -36,13 +38,13 @@ namespace FruckEngine.Helpers {
             }
         }
 
-        public static Texture LoadFromCubemap(List<string> faces) {
+        public static Texture LoadFromCubemap(List<string> faces, float exposureCorrect = 66878) {
             var texture = new Texture();
-            LoadFromCubemap(ref texture, faces);
+            LoadFromCubemap(ref texture, faces, exposureCorrect);
             return texture;
         }
 
-        public static void LoadFromCubemap(ref Texture texture, List<string> faces) {
+        public static void LoadFromCubemap(ref Texture texture, List<string> faces, float exposureCorrect = 66878) {
             if (faces.Count != 6) throw new Exception("Cube map must have 6 faces!");
 
             texture.Target = TextureTarget.TextureCubeMap;
@@ -51,7 +53,7 @@ namespace FruckEngine.Helpers {
 
             for (int i = 0; i < faces.Count; ++i) {
                 LoadFromImage(ref texture, faces[i],
-                    (TextureTarget) ((uint) TextureTarget.TextureCubeMapPositiveX + (uint) i));
+                    (TextureTarget) ((uint) TextureTarget.TextureCubeMapPositiveX + (uint) i), exposureCorrect);
             }
 
             if (texture.MipMap) texture.GenMipMaps(false);

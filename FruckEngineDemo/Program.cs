@@ -22,6 +22,16 @@ namespace FruckEngineDemo
         public override void Init()
         {
             base.Init();
+            
+            var env = TextureHelper.LoadFromCubemap(new List<string> {
+                "Assets/cubemaps/Home/_posx.hdr",
+                "Assets/cubemaps/Home/_negx.hdr",
+                "Assets/cubemaps/Home/_posy.hdr",
+                "Assets/cubemaps/Home/_negy.hdr",
+                "Assets/cubemaps/Home/_posz.hdr",
+                "Assets/cubemaps/Home/_negz.hdr"
+            });
+            World.Environment.SetTexture(env, true);
 
             //var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);
             var model = new Object(new List<Mesh>(){DefaultModels.GetSphere()});

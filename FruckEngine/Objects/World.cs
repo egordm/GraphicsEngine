@@ -41,7 +41,7 @@ namespace FruckEngine.Objects
             foreach (var o in Objects) o.Draw(coordSystem, shader, properties);
         }
         
-        protected CoordSystem InitialCoordSystem() {
+        public CoordSystem InitialCoordSystem() {
             return new CoordSystem(MainCamera.GetProjectionMatrix(), MainCamera.GetViewMatrix(), Matrix4.Identity);
         }
     }

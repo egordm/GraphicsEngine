@@ -21,6 +21,9 @@ namespace FruckEngine.Helpers {
                 IrradianceBuffer.AddCubeAttachment("irradiance", PixelType.Float, PixelInternalFormat.Rgb16f,
                     PixelFormat.Rgb, TextureMinFilter.Linear, TextureMagFilter.Linear);
             }
+
+            var viewport = new int[4];
+            GL.GetInteger(GetPName.Viewport, viewport);
             
             IrradianceBuffer.Bind(true, true);
             IrradianceShader.Use();
@@ -28,6 +31,8 @@ namespace FruckEngine.Helpers {
             environment.Activate(0);
             IrradianceBuffer.RenderToCube(IrradianceShader, Constants.CUBEMAP_CAPTURE_VIEWS, "irradiance");
             IrradianceBuffer.UnBind();
+            
+            GL.Viewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
             return IrradianceBuffer.GetAttachment("irradiance");
         }
@@ -48,6 +53,9 @@ namespace FruckEngine.Helpers {
                 PrefilterBuffer.GetAttachment("prefilter").GenMipMaps(true);
             }
             
+            var viewport = new int[4];
+            GL.GetInteger(GetPName.Viewport, viewport);
+            
             PrefilterBuffer.Bind(true, true);
             PrefilterShader.Use();
             PrefilterShader.SetInt("uImage", 0);
@@ -66,6 +74,8 @@ namespace FruckEngine.Helpers {
             }
             PrefilterBuffer.UnBind();
             
+            GL.Viewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+            
             return PrefilterBuffer.GetAttachment("prefilter");
         }
 
@@ -78,10 +88,16 @@ namespace FruckEngine.Helpers {
                 BRDFBuffer.AddCubeAttachment("brdf", PixelType.Float, PixelInternalFormat.Rg16f,
                     PixelFormat.Rg, TextureMinFilter.Linear, TextureMagFilter.Linear);
                 
+                
+                var viewport = new int[4];
+                GL.GetInteger(GetPName.Viewport, viewport);
+                
                 BRDFBuffer.Bind(true, true);
                 BRDFShader.Use();
                 BRDFBuffer.RenderToPlane();
                 BRDFBuffer.UnBind();
+                
+                GL.Viewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
                 BRDF_LUT = BRDFBuffer.GetAttachment("brdf");
             }
