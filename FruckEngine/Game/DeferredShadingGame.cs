@@ -1,5 +1,6 @@
 ﻿using System;
 using FruckEngine.Graphics;
+using FruckEngine.Graphics.Pipeline;
 using FruckEngine.Helpers;
 using FruckEngine.Objects;
 using FruckEngine.Structs;
@@ -8,30 +9,18 @@ using OpenTK.Input;
 
 namespace FruckEngine.Game {
     public class DeferredShadingGame : CoolGame {
-        protected Shader GeometryShader, DeferredShader, CompositeShader, EnvironmentShader;
-        protected FrameBuffer GeometryBuffer, DeferredBuffer;
-        protected SSAOHelper SSAOHelper;
-        protected BlurHelper BlurHelper;
+        protected Shader CompositeShader, EnvironmentShader;
+        protected FrameBuffer DeferredBuffer;
+        protected SSAONode SSAONode;
+        protected BlurNode BlurNode;
+        protected DeferredPBRNode DeferredPBRNode;
         
         public override void Init() {
             base.Init();
 
             PBRHelper.GetBRDFLUT();
-            SSAOHelper = new SSAOHelper(Width, Height);
-            BlurHelper = new BlurHelper(Width, Height);
-            
-            // -- Geometry Buffer
-            GeometryShader = DefaultShaders.CreateGeometry(true);
-            
-            GeometryBuffer = new FrameBuffer(Width, Height);
-            GeometryBuffer.Bind(false);
-            GeometryBuffer.AddAttachment("position", PixelType.Float, PixelInternalFormat.Rgba16f, PixelFormat.Rgba);
-            GeometryBuffer.AddAttachment("normal", PixelType.Float, PixelInternalFormat.Rgba16f, PixelFormat.Rgba);
-            GeometryBuffer.AddAttachment("color", PixelType.Float, PixelInternalFormat.Rgba16f, PixelFormat.Rgba);
-            GeometryBuffer.DrawBuffers(); // Use with mutliple draw targets. Dont forget to add "layout (location = x)"
-            GeometryBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
-            GeometryBuffer.AssertStatus();
-            GeometryBuffer.UnBind();
+            SSAONode = new SSAONode(Width, Height);
+            BlurNode = new BlurNode(Width, Height);
 
             // -- Deferred Shading Buffer
             DeferredBuffer = new FrameBuffer(Width, Height);
@@ -42,16 +31,8 @@ namespace FruckEngine.Game {
             DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
             DeferredBuffer.AssertStatus();
             DeferredBuffer.UnBind();
-
-            DeferredShader = DefaultShaders.CreateDeferred(true);
-            DeferredShader.Use();
-            DeferredShader.SetInt("uPositionMetallic", 0);
-            DeferredShader.SetInt("uNormalRoughness", 1);
-            DeferredShader.SetInt("uAlbedoAO", 2);
-            DeferredShader.SetInt("uSSAO", 3);
-            DeferredShader.SetInt("uIrradianceMap", 4);
-            DeferredShader.SetInt("uPrefilterMap", 5);
-            DeferredShader.SetInt("uBrdfLUT", 6);
+            
+            DeferredPBRNode = new DeferredPBRNode(Width, Height, DeferredBuffer);
             
             // -- Environment Box
             EnvironmentShader = DefaultShaders.CreateEnvironmentBox();
@@ -67,44 +48,19 @@ namespace FruckEngine.Game {
             var coordSystem = World.InitialCoordSystem();
             
             // Pass 1 Geometry
-            GeometryBuffer.Bind(true, false);
-            World.Draw(GeometryShader, new DrawProperties(MaterialType.PBR, true));
-            GeometryBuffer.UnBind();
+            var PBRGeometry = DeferredPBRNode.DrawGeometry(World);
             
             // Pass 2 SSAO
-            var SSAOTex = SSAOHelper.CalculateAO(coordSystem, GeometryBuffer.GetAttachment("position"),
-                GeometryBuffer.GetAttachment("normal"));
+            var SSAOTex = SSAONode.CalculateAO(coordSystem, PBRGeometry.GetAttachment("position"),
+                PBRGeometry.GetAttachment("normal"));
             
             // Pass 3 Shading
             DeferredBuffer.Bind(true, false);
-            
-            DeferredShader.Use();
-            DeferredShader.SetVec3("uViewPos", World.MainCamera.Position);
-            DeferredShader.SetVec3("uAmbientLight", World.Environment.AmbientLight);
-            // TODO: directional light
-            int pointLightCounter = 0;
-            foreach (var light in World.Lights) {
-                if(light.Type == LightType.PointLight) light.Apply(DeferredShader, pointLightCounter++);
-            }
-            GeometryBuffer.GetAttachment("position").Activate(0);
-            GeometryBuffer.GetAttachment("normal").Activate(1);
-            GeometryBuffer.GetAttachment("color").Activate(2);
-            SSAOTex.Activate(3);
-            // IBL
-            World.Environment.IrradianceMap.Activate(4);
-            World.Environment.PrefilteredMap.Activate(5);
-            PBRHelper.GetBRDFLUT().Activate(6);
-            
-            Projection.ProjectPlane();
-            
-            DeferredBuffer.BlitBuffer(GeometryBuffer, ClearBufferMask.DepthBufferBit);
-            DeferredBuffer.Bind(false);
-            World.Environment.Draw(coordSystem, EnvironmentShader, new DrawProperties());
-            
+            DeferredPBRNode.DrawShading(coordSystem, World, SSAOTex, EnvironmentShader);
             DeferredBuffer.UnBind();
             
             // Pass 4 Blur Bloom
-            var bloomTex = BlurHelper.Apply(DeferredBuffer.GetAttachment("brightness"));
+            var bloomTex = BlurNode.Apply(DeferredBuffer.GetAttachment("brightness"));
 
             // Pass 5 Final render compositing
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -123,7 +79,7 @@ namespace FruckEngine.Game {
             if (state[Key.O]) {
                 if (!PrevOState) {
                     PrevOState = true;
-                    SSAOHelper.Enable = !SSAOHelper.Enable;
+                    SSAONode.Enable = !SSAONode.Enable;
                 }
             } else {
                 PrevOState = false;

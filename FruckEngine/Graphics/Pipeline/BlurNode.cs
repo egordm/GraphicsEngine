@@ -1,13 +1,12 @@
 ﻿using FruckEngine.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace FruckEngine.Helpers {
-    public class BlurHelper {
-        private int Width, Height;
+namespace FruckEngine.Graphics.Pipeline {
+    public class BlurNode : GraphicsPipelineNode {
         private FrameBuffer[] PingPongBuffer = new FrameBuffer[2];
         private Shader Shader;
 
-        public BlurHelper(int width, int height) {
+        public BlurNode(int width, int height) : base(width, height) {
             Width = width;
             Height = height;
             
@@ -51,9 +50,8 @@ namespace FruckEngine.Helpers {
             return PingPongBuffer[!horizontal ? 1 : 0].GetAttachment("result");
         }
         
-        public void Resize(int width, int height) {
-            Width = width;
-            Height = height;
+        public override void Resize(int width, int height) {
+            base.Resize(width, height);
             foreach (var frameBuffer in PingPongBuffer) {
                 frameBuffer.Resize(width, height);
             }

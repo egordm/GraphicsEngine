@@ -1,37 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using FruckEngine.Graphics;
+using FruckEngine.Helpers;
 using FruckEngine.Structs;
 using FruckEngine.Utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Buffer = System.Buffer;
 
-namespace FruckEngine.Helpers {
+namespace FruckEngine.Graphics.Pipeline {
     class UniformDistribution : Random {
         public float GetSample() {
             return (float) Sample();
         }
     }
 
-    public class SSAOHelper {
+    public class SSAONode : GraphicsPipelineNode {
         private UniformDistribution Distrib = new UniformDistribution();
 
         public List<Vector3> Kernel = new List<Vector3>();
         public Texture NoiseTexture { get; private set; } = new Texture();
         private Shader Shader;
         private FrameBuffer FrameBuffer;
-        private int Width, Height;
 
         public float KernelRadius = 0.5f;
         public int KernelSize = 64;
         public float Strength = 5;
         public bool Enable = true;
         
-        public SSAOHelper(int width, int height) {
-            Width = width;
-            Height = height;
-            
+        public SSAONode(int width, int height) : base(width, height) {
             GenerateKernel();
             GenerateNoise();
             LoadShader();
@@ -66,9 +63,8 @@ namespace FruckEngine.Helpers {
             return FrameBuffer.GetAttachment("ao");
         }
 
-        public void Resize(int width, int height) {
-            Width = width;
-            Height = height;
+        public override void Resize(int width, int height) {
+            base.Resize(width, height);
             FrameBuffer.Resize(width, height);
         }
 
