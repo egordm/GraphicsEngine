@@ -8,6 +8,8 @@ namespace FruckEngine {
         public const int NONEXISTING_ATTRIBUTE = -1;
         
         public const int GL_FAILURE = 0;
+
+        public const int MAX_LIGHT_COUNT = 32;
         
         public static readonly string[] TEXTURE_TYPE_NAMES = new string[Texture.TextureTypeCount] {
             "diffuseTex",
