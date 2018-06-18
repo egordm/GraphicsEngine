@@ -68,6 +68,7 @@
     <Compile Include="Helpers\Mem.cs" />
     <Compile Include="Helpers\MathFuncs.cs" />
     <Compile Include="Helpers\AssimpLoadHelper.cs" />
+    <Compile Include="Helpers\PBRHelper.cs" />
     <Compile Include="Helpers\Perlin.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
     <Compile Include="Objects\Light.cs" />
@@ -90,6 +91,9 @@
     <Content Include="Assets\shaders\composite_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\shaders\cube_project_vs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\shaders\debug_draw\flat_draw_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -99,6 +103,9 @@
     <Content Include="Assets\shaders\debug_draw\flat_draw_vs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\shaders\pbr\brdf_fs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\shaders\pbr\deferred_shading_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -106,6 +113,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\shaders\pbr\geometry_vs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\pbr\irradiance_convolution_fs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\pbr\prefilter_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\shaders\plane_project_vs.glsl">

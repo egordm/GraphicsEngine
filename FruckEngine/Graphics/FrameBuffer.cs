@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Graphics {
@@ -38,7 +39,7 @@ namespace FruckEngine.Graphics {
 
         public void AddCubeAttachment(string name, PixelType pixelType = PixelType.Float,
             PixelInternalFormat internalFormat = PixelInternalFormat.Rgba16f, PixelFormat format = PixelFormat.Rgba,
-            TextureMinFilter filter = TextureMinFilter.Nearest) {
+            TextureMinFilter filterMin = TextureMinFilter.Nearest, TextureMagFilter filterMag = TextureMagFilter.Nearest) {
             var texture = new Texture {
                 Pointer = GL.GenTexture(),
                 Target = TextureTarget.TextureCubeMap,
@@ -58,7 +59,7 @@ namespace FruckEngine.Graphics {
                 (int) TextureWrapMode.ClampToEdge);
             GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapR,
                 (int) TextureWrapMode.ClampToEdge);
-            texture.SetFilters(filter, (TextureMagFilter) filter);
+            texture.SetFilters(filterMin, filterMag);
 
             texture.UnBind();
             Attachments.Add(name, texture);
@@ -103,6 +104,24 @@ namespace FruckEngine.Graphics {
         public void AssertStatus() {
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete) {
                 throw new Exception("Framebuffer not complete!");
+            }
+        }
+
+        public void RenderToPlane() {
+            Projection.ProjectPlane();
+        }
+      
+
+        public void RenderToCube(Shader shader, Matrix4[] views, string attachment, int mipmapLevel = 0) {
+            shader.SetMat4("mProjection", Constants.CUBEMAP_CAPTURE_PROJECTION);
+
+            for (int i = 0; i < views.Length; ++i) {
+                shader.SetMat4("mView", views[i]);
+                
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0,
+                    TextureTarget.TextureCubeMapPositiveX + i, Attachments[attachment].Pointer, mipmapLevel);
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+                Projection.ProjectCube();
             }
         }
     }
