@@ -73,7 +73,7 @@ namespace FruckEngine.Helpers {
         }
 
         private void LoadShader() {
-            Shader = Shader.Create("Assets/shaders/plane_project_vs.glsl", "Assets/shaders/ssao_fs.glsl");
+            Shader = Shader.Create("Assets/shaders/plane_project_vs.glsl", "Assets/shaders/effects/ssao_fs.glsl");
             Shader.AddUniformVar("mView");
             Shader.AddUniformVar("mProjection");
             Shader.AddUniformVar("uPositions");

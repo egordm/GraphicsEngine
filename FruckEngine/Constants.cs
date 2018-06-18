@@ -29,6 +29,8 @@ namespace FruckEngine {
 
         public const int SSAO_KERNEL_SIZE = 64;
         public const int SSAO_NOISE_SIZE = 4;
+        
+        public const int BLUR_OFFSET_STEPS = 5;
 
         public const int IRRADIANCE_TEXTURE_SIZE = 32;
         public const int PREFILTER_TEXTURE_SIZE = 128;

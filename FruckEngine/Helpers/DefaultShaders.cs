@@ -43,6 +43,10 @@ namespace FruckEngine.Helpers {
             var shader = Shader.Create("Assets/shaders/plane_project_vs.glsl", "Assets/shaders/composite_fs.glsl");
 
             shader.AddUniformVar("uShaded");
+            shader.AddUniformVar("uBloom");
+
+            shader.AddUniformVar("uApplyBloom");
+            shader.AddUniformVar("uExposure");
 
             return shader;
         }

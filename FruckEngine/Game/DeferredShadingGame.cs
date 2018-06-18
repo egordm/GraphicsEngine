@@ -11,12 +11,14 @@ namespace FruckEngine.Game {
         protected Shader GeometryShader, DeferredShader, CompositeShader, EnvironmentShader;
         protected FrameBuffer GeometryBuffer, DeferredBuffer;
         protected SSAOHelper SSAOHelper;
+        protected BlurHelper BlurHelper;
         
         public override void Init() {
             base.Init();
 
             PBRHelper.GetBRDFLUT();
             SSAOHelper = new SSAOHelper(Width, Height);
+            BlurHelper = new BlurHelper(Width, Height);
             
             // -- Geometry Buffer
             GeometryShader = DefaultShaders.CreateGeometry(true);
@@ -35,8 +37,8 @@ namespace FruckEngine.Game {
             DeferredBuffer = new FrameBuffer(Width, Height);
             DeferredBuffer.Bind(false);
             DeferredBuffer.AddAttachment("color", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
-            //DeferredBuffer.AddAttachment("brightness", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
-            //DeferredBuffer.DrawBuffers();
+            DeferredBuffer.AddAttachment("brightness", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
+            DeferredBuffer.DrawBuffers();
             DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
             DeferredBuffer.AssertStatus();
             DeferredBuffer.UnBind();
@@ -58,6 +60,7 @@ namespace FruckEngine.Game {
             CompositeShader = DefaultShaders.CreateComposite();
             CompositeShader.Use();
             CompositeShader.SetInt("uShaded", 0);
+            CompositeShader.SetInt("uBloom", 1);
         }
 
         public override void Render() {
@@ -99,11 +102,17 @@ namespace FruckEngine.Game {
             World.Environment.Draw(coordSystem, EnvironmentShader, new DrawProperties());
             
             DeferredBuffer.UnBind();
+            
+            // Pass 4 Blur Bloom
+            var bloomTex = BlurHelper.Apply(DeferredBuffer.GetAttachment("brightness"));
 
             // Pass 5 Final render compositing
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             CompositeShader.Use();
+            CompositeShader.SetBool("uApplyBloom", true);
+            CompositeShader.SetFloat("uExposure", 1.0f);
             DeferredBuffer.GetAttachment("color").Activate(0);
+            bloomTex.Activate(1);
             Projection.ProjectPlane();
         }
 
