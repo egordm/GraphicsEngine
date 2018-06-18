@@ -22,7 +22,7 @@ namespace FruckEngine.Objects
         public World()
         {
             MainCamera = new Camera(Vector3.Zero, 0, 0, Vector3.UnitY);
-            MainCamera.SetFOV(100);
+            MainCamera.SetFOV(130);
         }
 
         public void AddObject(Object obj)

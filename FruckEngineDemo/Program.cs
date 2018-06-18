@@ -2,15 +2,16 @@
 using System.Globalization;
 using System.Threading;
 using FruckEngine;
+using FruckEngine.Game;
 using FruckEngine.Graphics;
 using FruckEngine.Helpers;
 using FruckEngine.Objects;
 using FruckEngine.Structs;
+using OpenTK;
 
 namespace FruckEngineDemo
 {
-    internal class Program : CoolGame {
-        private Shader MainShader;
+    internal class Program : DeferredShadingGame {
         
         public static void Main(string[] args)
         {
@@ -22,16 +23,13 @@ namespace FruckEngineDemo
         {
             base.Init();
 
-            var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);
-            //var model = new Object(new List<Mesh>(){DefaultModels.GetSphere()});
+            //var model = AssimpLoadHelper.LoadModel("Assets/models/cyborg/cyborg.obj", false);
+            var model = new Object(new List<Mesh>(){DefaultModels.GetSphere()});
             World.AddObject(model);
             
-            MainShader = DefaultShaders.CreateDebugDraw(false);
-        }
-
-        public override void Render() {
-            base.Render();
-            World.Draw(MainShader, new DrawProperties());
+            
+            World.MainCamera.Position = new Vector3(0,0, -3);
+            World.MainCamera.SetDirection(model.Position - World.MainCamera.Position);
         }
     }
 }

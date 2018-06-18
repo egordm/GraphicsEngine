@@ -1,7 +1,6 @@
-﻿using System;
-using OpenTK.Input;
+﻿using OpenTK.Input;
 
-namespace FruckEngine {
+namespace FruckEngine.Game {
     public class CoolGame : Game {
         protected float Velocity = 0.1f;
         protected float Sensitivity = 0.1f;

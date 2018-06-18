@@ -6,7 +6,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace FruckEngine {
+namespace FruckEngine.Game {
     public abstract class Game {
         public World World = new World();
         public double Time;

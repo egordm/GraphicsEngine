@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{AAE1117B-C746-4034-AF11-D243D6894098}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FruckEngine</RootNamespace>
     <AssemblyName>FruckEngine</AssemblyName>
@@ -55,8 +55,9 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="CoolGame.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="Game\CoolGame.cs" />
+    <Compile Include="Game\DeferredShadingGame.cs" />
+    <Compile Include="Game\Game.cs" />
     <Compile Include="Graphics\FrameBuffer.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Projection.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Object.cs" />
     <Compile Include="Objects\World.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structs\DrawProperties.cs" />
     <Compile Include="Structs\Environment.cs" />
@@ -87,6 +87,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\shaders\composite_fs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\shaders\debug_draw\flat_draw_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -96,6 +99,18 @@
     <Content Include="Assets\shaders\debug_draw\flat_draw_vs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\shaders\pbr\geometry_fs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\pbr\geometry_vs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\plane_project_vs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\shaders\legacy" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AssimpNet.3.3.2\build\AssimpNet.targets" Condition="Exists('..\packages\AssimpNet.3.3.2\build\AssimpNet.targets')" />

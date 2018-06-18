@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FruckEngine.Graphics;
+using FruckEngine.Helpers;
 using OpenTK;
 
 namespace FruckEngine.Structs {
@@ -25,6 +26,36 @@ namespace FruckEngine.Structs {
             foreach (var texture in Textures) {
                 if (ApplyTexture(shader, texture, textureCounter[(int) texture.ShadeType]++, textureUnit,
                     texture.ShadeType)) {
+                    textureUnit++;
+                }
+            }
+
+            if (textureCounter[(int) ShadeType.TEXTURE_TYPE_ALBEDO] == 0) {
+                if (ApplyTexture(shader, TextureHelper.GetOneNull(), 0, textureUnit, ShadeType.TEXTURE_TYPE_ALBEDO)) {
+                    textureUnit++;
+                }
+            }
+            
+            if (textureCounter[(int) ShadeType.TEXTURE_TYPE_METALLIC] == 0) {
+                if (ApplyTexture(shader, TextureHelper.GetOneNull(), 0, textureUnit, ShadeType.TEXTURE_TYPE_METALLIC)) {
+                    textureUnit++;
+                }
+            }
+            
+            if (textureCounter[(int) ShadeType.TEXTURE_TYPE_NORMAL] == 0) {
+                if (ApplyTexture(shader, TextureHelper.GetNormalNull(), 0, textureUnit, ShadeType.TEXTURE_TYPE_NORMAL)) {
+                    textureUnit++;
+                }
+            }
+            
+            if (textureCounter[(int) ShadeType.TEXTURE_TYPE_AO] == 0) {
+                if (ApplyTexture(shader, TextureHelper.GetOneNull(), 0, textureUnit, ShadeType.TEXTURE_TYPE_AO)) {
+                    textureUnit++;
+                }
+            }
+            
+            if (textureCounter[(int) ShadeType.TEXTURE_TYPE_ROUGHNESS] == 0) {
+                if (ApplyTexture(shader, TextureHelper.GetOneNull(), 0, textureUnit, ShadeType.TEXTURE_TYPE_ROUGHNESS)) {
                     textureUnit++;
                 }
             }

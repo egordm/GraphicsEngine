@@ -5,11 +5,11 @@ using OpenTK.Graphics.OpenGL;
 namespace FruckEngine.Graphics {
     public class FrameBuffer {
         private int Width, Height;
-        public int Pointer;
+        public int Pointer, RBOPointer;
         public Dictionary<string, Texture> Attachments = new Dictionary<string, Texture>();
         private List<string> AttachmentOrder = new List<string>();
 
-        public void Load(int width, int height) {
+        public FrameBuffer(int width, int height) {
             Width = width;
             Height = height;
 
@@ -30,7 +30,7 @@ namespace FruckEngine.Graphics {
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer,
                 FramebufferAttachment.ColorAttachment0 + AttachmentOrder.Count, TextureTarget.Texture2D,
                 texture.Pointer, 0);
-            
+
             texture.UnBind();
             Attachments.Add(name, texture);
             AttachmentOrder.Add(name);
@@ -39,7 +39,6 @@ namespace FruckEngine.Graphics {
         public void AddCubeAttachment(string name, PixelType pixelType = PixelType.Float,
             PixelInternalFormat internalFormat = PixelInternalFormat.Rgba16f, PixelFormat format = PixelFormat.Rgba,
             TextureMinFilter filter = TextureMinFilter.Nearest) {
-
             var texture = new Texture {
                 Pointer = GL.GenTexture(),
                 Target = TextureTarget.TextureCubeMap,
@@ -52,15 +51,31 @@ namespace FruckEngine.Graphics {
             for (int i = 0; i < 6; i++) {
                 texture.LoadFace(Width, Height, TextureTarget.TextureCubeMapPositiveX + i, IntPtr.Zero);
             }
-            
-            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
-            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
-            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapR, (int)TextureWrapMode.ClampToEdge);
+
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapS,
+                (int) TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapT,
+                (int) TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapR,
+                (int) TextureWrapMode.ClampToEdge);
             texture.SetFilters(filter, (TextureMagFilter) filter);
-            
+
             texture.UnBind();
             Attachments.Add(name, texture);
             AttachmentOrder.Add(name);
+        }
+
+        public void AddRenderBuffer(RenderbufferStorage storage = RenderbufferStorage.DepthComponent,
+            FramebufferAttachment attachment = FramebufferAttachment.DepthAttachment) {
+            RBOPointer = GL.GenRenderbuffer();
+            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, RBOPointer);
+            GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, storage, Width, Height);
+            GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, attachment, RenderbufferTarget.Renderbuffer,
+                RBOPointer);
+        }
+
+        public Texture GetAttachment(string name) {
+            return Attachments[name];
         }
 
         public void DrawBuffers() {

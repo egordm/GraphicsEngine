@@ -8,12 +8,12 @@ using OpenTK.Input;
 
 namespace FruckEngine {
     public class Window : GameWindow {
-        protected Game Game;
+        protected Game.Game Game;
         protected double LastMouseX, LastMouseY, LastMouseScroll;
         protected bool FirstMouse = true;
         protected bool LockMouse = true;
 
-        public Window(int width, int height, string title, Game game)
+        public Window(int width, int height, string title, Game.Game game)
             : base(width, height, GraphicsMode.Default, title) {
             Game = game;
             CursorVisible = false;
