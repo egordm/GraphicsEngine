@@ -1,4 +1,4 @@
-﻿namespace FruckEngine.Helpers
+﻿namespace FruckEngine.Utils
 {
     public static class MathFuncs
     {

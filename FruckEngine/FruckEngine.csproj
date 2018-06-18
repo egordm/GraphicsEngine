@@ -65,11 +65,9 @@
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Helpers\DefaultModels.cs" />
     <Compile Include="Helpers\DefaultShaders.cs" />
-    <Compile Include="Helpers\Mem.cs" />
-    <Compile Include="Helpers\MathFuncs.cs" />
     <Compile Include="Helpers\AssimpLoadHelper.cs" />
     <Compile Include="Helpers\PBRHelper.cs" />
-    <Compile Include="Helpers\Perlin.cs" />
+    <Compile Include="Helpers\SSAOHelper.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Object.cs" />
@@ -79,8 +77,10 @@
     <Compile Include="Structs\Environment.cs" />
     <Compile Include="Structs\Material.cs" />
     <Compile Include="Structs\Vertex.cs" />
+    <Compile Include="Utils\MathFuncs.cs" />
     <Compile Include="Utils\Mem.cs" />
     <Compile Include="Structs\CoordSystem.cs" />
+    <Compile Include="Utils\Perlin.cs" />
     <Compile Include="Window.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +128,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\shaders\plane_project_vs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\ssao_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -78,7 +78,7 @@ namespace FruckEngine.Helpers {
             }
         }
 
-        private static void LoadDataIntoTexture<T>(Texture texture, int width, int height, T[] data) {
+        public static void LoadDataIntoTexture<T>(Texture texture, int width, int height, T[] data) {
             var gch = GCHandle.Alloc(data, GCHandleType.Pinned);
             try {
                 var addr = gch.AddrOfPinnedObject();
