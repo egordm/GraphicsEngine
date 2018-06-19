@@ -63,7 +63,7 @@ namespace FruckEngineDemo.Scenes
             {
                 const string directory = "Assets/models/frog";
                 frog2 = AssimpLoadHelper.LoadModel(directory + "/frog.obj", true);
-                var material = frog1.Meshes[0].AsPBR();
+                var material = frog2.Meshes[0].AsPBR();
                 material.Textures.Clear();
                 material.Textures.Add(TextureHelper.LoadFromImage(directory + "/diffuse.png", ShadeType.TEXTURE_TYPE_ALBEDO));
                 material.Albedo = Vector3.One;
