@@ -25,7 +25,7 @@ namespace FruckEngine.Helpers {
             this.PBR = PBR;
             var importer = new AssimpContext();
             var scene = importer.ImportFile(path,
-                PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace);
+                PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace /*| PostProcessSteps.GenerateNormals*/ | PostProcessSteps.GenerateSmoothNormals);
 
             if ((int) (scene.SceneFlags & SceneFlags.Incomplete) == 1) throw new Exception("ERROR::ASSIMP");
 
@@ -97,8 +97,13 @@ namespace FruckEngine.Helpers {
                 ((LegacyMaterial) ret).Shinyness = material.Shininess;
             }
 
+            ret.Name = material.Name;
+
             // TODO: support multiple textures. But usesless until shaders do too
-            if (material.HasTextureDiffuse) ret.Textures.Add(LoadTexture(material.TextureDiffuse, TextureType.Diffuse));
+            if (material.HasTextureDiffuse) {
+                ret.Tags.Add(Path.GetFileNameWithoutExtension(material.TextureDiffuse.FilePath));
+                ret.Textures.Add(LoadTexture(material.TextureDiffuse, TextureType.Diffuse));
+            }
             if (material.HasTextureSpecular)
                 ret.Textures.Add(LoadTexture(material.TextureSpecular, TextureType.Specular));
             if (material.HasTextureHeight) ret.Textures.Add(LoadTexture(material.TextureHeight, TextureType.Height));

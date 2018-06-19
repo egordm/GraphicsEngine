@@ -54,6 +54,8 @@ namespace FruckEngine.Game {
             var SSAOTex = SSAONode.CalculateAO(coordSystem, PBRGeometry.GetAttachment("position"),
                 PBRGeometry.GetAttachment("normal"));
             
+            SSAOTex = BlurNode.Apply(SSAOTex, 2);
+            
             // Pass 3 Shading
             DeferredBuffer.Bind(true, false);
             DeferredPBRNode.DrawShading(coordSystem, World, SSAOTex, EnvironmentShader);
@@ -68,7 +70,8 @@ namespace FruckEngine.Game {
             CompositeShader.SetBool("uApplyBloom", true);
             CompositeShader.SetFloat("uExposure", 1.0f);
             DeferredBuffer.GetAttachment("color").Activate(0);
-            bloomTex.Activate(1);
+            TextureHelper.GetZeroNull().Activate(1);
+            //bloomTex.Activate(1);
             Projection.ProjectPlane();
         }
 

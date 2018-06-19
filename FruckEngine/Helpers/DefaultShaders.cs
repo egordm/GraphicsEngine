@@ -71,6 +71,10 @@ namespace FruckEngine.Helpers {
             shader.AddUniformVar("uViewPos");
 
             shader.AddUniformVar("uAmbientLight");
+            
+            shader.AddUniformVar("uDirectionalLight.direction");
+            shader.AddUniformVar("uDirectionalLight.color");
+            shader.AddUniformVar("uDirectionalLight.intensity");
 
             shader.AddUniformVar("uPointLightCount");
             for (int i = 0; i < Constants.MAX_LIGHT_COUNT; ++i) {

@@ -15,7 +15,8 @@ namespace FruckEngine.Helpers {
             return texture;
         }
 
-        public static void LoadFromImage(ref Texture texture, string path, TextureTarget face = 0, float exposureCorrect = 66878) {
+        public static void LoadFromImage(ref Texture texture, string path, TextureTarget face = 0,
+            float exposureCorrect = 66878) {
             var img = new MagickImage(path);
             var isHDR = img.Format == MagickFormat.Hdr;
             var pixels = img.GetPixels();
@@ -38,6 +39,17 @@ namespace FruckEngine.Helpers {
                 if (face == 0) LoadDataIntoTexture(texture, img.Width, img.Height, data);
                 else LoadFaceDataIntoTexture(texture, img.Width, img.Height, face, data);
             }
+        }
+
+        public static Texture LoadCubemapFromDir(string dir, float exposureCorrect = 66878) {
+            return LoadFromCubemap(new List<string> {
+                dir + "/_posx.hdr",
+                dir + "/_negx.hdr",
+                dir + "/_posy.hdr",
+                dir + "/_negy.hdr",
+                dir + "/_posz.hdr",
+                dir + "/_negz.hdr"
+            }, exposureCorrect);
         }
 
         public static Texture LoadFromCubemap(List<string> faces, float exposureCorrect = 66878) {

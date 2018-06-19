@@ -11,6 +11,8 @@ namespace FruckEngine.Structs {
     }
     
     public abstract class Material {
+        public string Name = "";
+        public List<string> Tags = new List<string>();
         public List<Texture> Textures = new List<Texture>();
         public MaterialType Type;
 

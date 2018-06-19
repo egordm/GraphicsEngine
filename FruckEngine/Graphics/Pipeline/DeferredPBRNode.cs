@@ -29,6 +29,8 @@ namespace FruckEngine.Graphics.Pipeline {
             DeferredShader.SetVec3("uViewPos", world.MainCamera.Position);
             DeferredShader.SetVec3("uAmbientLight", world.Environment.AmbientLight);
             
+            world.Environment.DirectionalLight.Apply(DeferredShader, 0);
+            
             // TODO: directional light
             int pointLightCounter = 0;
             foreach (var light in world.Lights) {
