@@ -24,11 +24,9 @@ namespace FruckEngine.Objects
             Root = new Object();
         }
 
-        public void AddObject(Object obj, Object parent = null)
+        public void AddObject(Object obj)
         {
-            if (parent != null)
-                parent.AddChild(obj);
-            else Root.AddChild(obj);
+            Root.Children.Add(obj);
             obj.Init();
         }
         

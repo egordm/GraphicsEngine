@@ -49,7 +49,7 @@ namespace FruckEngineDemo
         {
             base.Init();
             
-            SetScene(5);
+            SetScene(0);
         }
 
         public override void Update(double dt) {
