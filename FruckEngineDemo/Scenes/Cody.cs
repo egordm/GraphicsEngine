@@ -79,7 +79,7 @@ namespace FruckEngineDemo.Scenes
                 material.Roughness = 0.01f;
                 child.Scale = Vector3.One;
                 //child.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45f);
-                child.Position = Vector3.UnitY * 100;
+                child.Position = Vector3.UnitY * 20;
                 world.AddObject(child, sphere);
             }
 

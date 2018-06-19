@@ -52,14 +52,13 @@ namespace FruckEngine.Objects
         public Matrix4 GetMatrix()
         {
             var matrix = Matrix4.Identity;
-            if (Parent != null)
-                matrix = Parent.GetMatrix();
 
-            matrix *= Matrix4.CreateScale(new Vector3(1f / Scale.X, 1f / Scale.Y, 1f / Scale.Z));
-            matrix *= Matrix4.CreateTranslation(-Position);
-            Matrix4 m = Matrix4.CreateFromQuaternion(Rotation);
-            m.Transpose();
-            matrix *= m;
+            matrix *= Matrix4.CreateScale(Scale);
+            matrix *= Matrix4.CreateFromQuaternion(Rotation);
+            matrix *= Matrix4.CreateTranslation(Position);
+
+            if (Parent != null)
+                matrix *= Parent.GetMatrix();
 
             return matrix;
         }
@@ -67,7 +66,7 @@ namespace FruckEngine.Objects
         protected virtual void PrepareShader(Shader shader) { }
 
         public void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
-            var modelM = GetMatrix().Inverted();
+            var modelM = GetMatrix();
             coordSys.Model = modelM;
             shader.Use();
             coordSys.Apply(shader);
