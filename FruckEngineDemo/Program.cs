@@ -21,16 +21,16 @@ namespace FruckEngineDemo
         };
         
         public List<Key> SceneButtons = new List<Key>() {
-            Key.Keypad1,
-            Key.Keypad2,
-            Key.Keypad3,
-            Key.Keypad4,
-            Key.Keypad5,
-            Key.Keypad6,
-            Key.Keypad7,
-            Key.Keypad8,
-            Key.Keypad9,
-            Key.Keypad0,
+            Key.Number1,
+            Key.Number2,
+            Key.Number3,
+            Key.Number4,
+            Key.Number5,
+            Key.Number6,
+            Key.Number7,
+            Key.Number8,
+            Key.Number9,
+            Key.Number0,
         };
 
         public int CurrentScene = -1;
@@ -57,7 +57,7 @@ namespace FruckEngineDemo
         public void SetScene(int i) {
             // TODO: WARNING!!!!!! Dont swicth between scenes that use different shading. unexpected results may occur
             if(i == CurrentScene || i >= Scenes.Count) return;
-            CurrentScene = 0;
+            CurrentScene = i;
             World = new World();
             Scenes[CurrentScene].Init(World);
         }

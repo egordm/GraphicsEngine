@@ -20,6 +20,7 @@ namespace FruckEngine.Helpers {
         private static AssimpLoadHelper Instance = new AssimpLoadHelper();
 
         private Object Load(string path, bool PBR = true, bool flipU = false) {
+            Meshes.Clear();
             FlipU = flipU;
             this.PBR = PBR;
             var importer = new AssimpContext();
