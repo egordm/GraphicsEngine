@@ -10,11 +10,9 @@ namespace FruckEngine.Objects
     public class World
     {
         public Camera MainCamera { get; set; }
-
-        private List<Object> _objects = new List<Object>();
         private List<Light> _lights = new List<Light>();
-        
-        public ReadOnlyCollection<Object> Objects => _objects.AsReadOnly();
+        public Object Root;
+
         public ReadOnlyCollection<Light> Lights => _lights.AsReadOnly();
 
         public Environment Environment = new Environment();
@@ -23,13 +21,14 @@ namespace FruckEngine.Objects
         {
             MainCamera = new Camera(Vector3.Zero, 0, 0, Vector3.UnitY);
             MainCamera.SetFOV(130);
+            Root = new Object();
         }
 
         public void AddObject(Object obj, Object parent = null)
         {
             if (parent != null)
-                obj.Parent = parent;
-            _objects.Add(obj);
+                parent.AddChild(obj);
+            else Root.AddChild(obj);
             obj.Init();
         }
         
@@ -40,7 +39,7 @@ namespace FruckEngine.Objects
 
         public void Draw(Shader shader, DrawProperties properties) {
             var coordSystem = InitialCoordSystem();
-            foreach (var o in Objects) o.Draw(coordSystem, shader, properties);
+            Root.Draw(coordSystem, shader, properties);
         }
         
         public CoordSystem InitialCoordSystem() {

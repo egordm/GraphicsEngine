@@ -22,17 +22,17 @@ namespace FruckEngine.Objects
         public Quaternion Rotation { get; set; } = Quaternion.Identity;
         public Vector3 Scale { get; set; } = Vector3.One;
         public List<Mesh> Meshes;
-        private List<int> childs;
-        public Object Parent = null;
+        private List<Object> childs;
 
         public Object(List<Mesh> meshes) {
             Meshes = meshes;
-            childs = new List<int>();
+            childs = new List<Object>();
         }
 
         public Object()
         {
             Meshes = new List<Mesh>();
+            childs = new List<Object>();
         }
 
         /// <summary>
@@ -49,25 +49,25 @@ namespace FruckEngine.Objects
         /// Get object space matrix
         /// </summary>
         /// <returns></returns>
-        public Matrix4 GetMatrix()
+        public Matrix4 GetMatrix(Matrix4 parent)
         {
             var matrix = Matrix4.Identity;
 
             matrix *= Matrix4.CreateScale(Scale);
             matrix *= Matrix4.CreateFromQuaternion(Rotation);
             matrix *= Matrix4.CreateTranslation(Position);
-
-            if (Parent != null)
-                matrix *= Parent.GetMatrix();
-
-            return matrix;
+            return matrix * parent;
         }
 
         protected virtual void PrepareShader(Shader shader) { }
 
         public void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
-            var modelM = GetMatrix();
+            var modelM = GetMatrix(coordSys.Model);
             coordSys.Model = modelM;
+
+            foreach (Object o in childs)
+                o.Draw(coordSys, shader, properties);
+
             shader.Use();
             coordSys.Apply(shader);
             PrepareShader(shader);
@@ -75,7 +75,7 @@ namespace FruckEngine.Objects
             foreach (var mesh in Meshes) mesh.Draw(shader, properties);
         }
 
-        public void AddChild(int c)
+        public void AddChild(Object c)
         {
             childs.Add(c);
         }
