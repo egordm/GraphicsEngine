@@ -10,19 +10,11 @@ using FruckEngine.Structs;
 using FruckEngineDemo.Scenes;
 using OpenTK;
 using OpenTK.Input;
+using System;
 
 namespace FruckEngineDemo
 {
     internal class Program : DeferredShadingGame {
-        
-        public List<Scene> Scenes = new List<Scene>() {
-            new Cody(),
-            new Cerberus(),
-            new Yoda(),
-            new StormTrooper(),
-            new MarioCart(),
-            new Test()
-        };
         
         public List<Key> SceneButtons = new List<Key>() {
             Key.Number1,
@@ -48,22 +40,17 @@ namespace FruckEngineDemo
         public override void Init()
         {
             base.Init();
-            
-            SetScene(0);
+            Scenes.Scenes.Add("0", new Cody());
+            Scenes.Scenes.Add("1", new StormTrooper());
+            Scenes.Scenes.Add("2", new Cerberus());
+            Scenes.Scenes.Add("3", new Yoda());
+            Scenes.Scenes.Add("4", new MarioCart());
+            Scenes.Scenes.Add("5", new Test());
+            Scenes.Load("0", LoadAction.SWITCH);
         }
 
         public override void Update(double dt) {
             base.Update(dt);
-            
-            Scenes[CurrentScene].Update(World, dt);
-        }
-
-        public void SetScene(int i) {
-            // TODO: WARNING!!!!!! Dont swicth between scenes that use different shading. unexpected results may occur
-            if(i == CurrentScene || i >= Scenes.Count) return;
-            CurrentScene = i;
-            World = new World();
-            Scenes[CurrentScene].Init(World);
         }
 
         public override void OnKeyboardUpdate(KeyboardState state) {
@@ -71,7 +58,8 @@ namespace FruckEngineDemo
 
             for (int i = 0; i < SceneButtons.Count; i++) {
                 if (state[SceneButtons[i]]) {
-                    SetScene(i);
+                    Console.WriteLine(i);
+                    Scenes.Load("" + i, LoadAction.SWITCH);
                     break;
                 }
             }

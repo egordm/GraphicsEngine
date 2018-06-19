@@ -4,6 +4,7 @@ using FruckEngine.Objects;
 using OpenTK;
 using FruckEngine.Helpers;
 using FruckEngine.Graphics;
+using FruckEngine.Game;
 
 namespace FruckEngineDemo.Scenes
 {

@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scene.cs" />
     <Compile Include="Scenes\Cerberus.cs" />
     <Compile Include="Scenes\Cody.cs" />
     <Compile Include="Scenes\MarioCart.cs" />
@@ -198,12 +197,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\models\frog\qw.tga">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\models\kiz\GeneratedAtlasBake8819616187.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\models\kiz\kiz.fbx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\models\mario_circuit\bake_gu_mariocircuit_g01_b00_f00.png">

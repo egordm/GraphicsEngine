@@ -58,6 +58,7 @@
     <Compile Include="Game\CoolGame.cs" />
     <Compile Include="Game\DeferredShadingGame.cs" />
     <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\SceneManager.cs" />
     <Compile Include="Graphics\FrameBuffer.cs" />
     <Compile Include="Graphics\Mesh.cs" />
     <Compile Include="Graphics\Pipeline\BlurNode.cs" />
@@ -141,7 +142,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\shaders\legacy" />
+    <Folder Include="Assets\shaders\legacy\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AssimpNet.3.3.2\build\AssimpNet.targets" Condition="Exists('..\packages\AssimpNet.3.3.2\build\AssimpNet.targets')" />

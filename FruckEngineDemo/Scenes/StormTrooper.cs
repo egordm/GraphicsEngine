@@ -1,6 +1,7 @@
 ﻿using FruckEngine.Helpers;
 using FruckEngine.Objects;
 using OpenTK;
+using FruckEngine.Game;
 
 namespace FruckEngineDemo.Scenes {
     public class StormTrooper : Scene {

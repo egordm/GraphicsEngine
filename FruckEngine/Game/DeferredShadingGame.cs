@@ -45,10 +45,11 @@ namespace FruckEngine.Game {
         }
 
         public override void Render() {
-            var coordSystem = World.InitialCoordSystem();
+            if (Scenes.currentWorld == null) return;
+            var coordSystem = Scenes.currentWorld.InitialCoordSystem();
             
             // Pass 1 Geometry
-            var PBRGeometry = DeferredPBRNode.DrawGeometry(World);
+            var PBRGeometry = DeferredPBRNode.DrawGeometry(Scenes.currentWorld);
             
             // Pass 2 SSAO
             var SSAOTex = SSAONode.CalculateAO(coordSystem, PBRGeometry.GetAttachment("position"),
@@ -58,7 +59,7 @@ namespace FruckEngine.Game {
             
             // Pass 3 Shading
             DeferredBuffer.Bind(true, false);
-            DeferredPBRNode.DrawShading(coordSystem, World, SSAOTex, EnvironmentShader);
+            DeferredPBRNode.DrawShading(coordSystem, Scenes.currentWorld, SSAOTex, EnvironmentShader);
             DeferredBuffer.UnBind();
             
             // Pass 4 Blur Bloom

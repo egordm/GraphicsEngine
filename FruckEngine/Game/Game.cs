@@ -8,7 +8,7 @@ using OpenTK.Input;
 
 namespace FruckEngine.Game {
     public abstract class Game {
-        public World World = new World();
+        public SceneManager Scenes = new SceneManager();
         public double Time;
 
         public int Width { get; private set; }
@@ -18,7 +18,7 @@ namespace FruckEngine.Game {
 
         public virtual void Update(double dt) {
             Time += dt;
-            World.Update(dt);
+            Scenes.Update(dt);
         }
 
         public abstract void Render();
@@ -26,7 +26,8 @@ namespace FruckEngine.Game {
         public virtual void Resize(int width, int height) {
             Width = width;
             Height = height;
-            World.MainCamera.Aspect = width / (float)height;
+            if(Scenes.currentWorld != null)
+                Scenes.currentWorld.MainCamera.Aspect = width / (float)height;
         }
 
         public virtual void Destroy() { }

@@ -9,12 +9,12 @@ namespace FruckEngine.Game {
 
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);
-            if (state[Key.W]) World.MainCamera.Position += World.MainCamera.Direction * Velocity;
-            if (state[Key.S]) World.MainCamera.Position -= World.MainCamera.Direction * Velocity;
-            if (state[Key.A]) World.MainCamera.Position -= World.MainCamera.Right * Velocity;
-            if (state[Key.D]) World.MainCamera.Position += World.MainCamera.Right * Velocity;
-            if (state[Key.Q]) World.MainCamera.Position -= World.MainCamera.Up * Velocity;
-            if (state[Key.E]) World.MainCamera.Position += World.MainCamera.Up * Velocity;
+            if (state[Key.W]) Scenes.currentWorld.MainCamera.Position += Scenes.currentWorld.MainCamera.Direction * Velocity;
+            if (state[Key.S]) Scenes.currentWorld.MainCamera.Position -= Scenes.currentWorld.MainCamera.Direction * Velocity;
+            if (state[Key.A]) Scenes.currentWorld.MainCamera.Position -= Scenes.currentWorld.MainCamera.Right * Velocity;
+            if (state[Key.D]) Scenes.currentWorld.MainCamera.Position += Scenes.currentWorld.MainCamera.Right * Velocity;
+            if (state[Key.Q]) Scenes.currentWorld.MainCamera.Position -= Scenes.currentWorld.MainCamera.Up * Velocity;
+            if (state[Key.E]) Scenes.currentWorld.MainCamera.Position += Scenes.currentWorld.MainCamera.Up * Velocity;
         }
 
         public override void OnMouseMove(double dx, double dy) {
@@ -23,10 +23,10 @@ namespace FruckEngine.Game {
             dx *= Sensitivity;
             dy *= Sensitivity;
 
-            float yaw = (float) (World.MainCamera.Yaw - dx);
-            float pitch = (float) (World.MainCamera.Pitch - dy);
-            
-            World.MainCamera.SetRotation(pitch, yaw);
+            float yaw = (float) (Scenes.currentWorld.MainCamera.Yaw - dx);
+            float pitch = (float) (Scenes.currentWorld.MainCamera.Pitch - dy);
+
+            Scenes.currentWorld.MainCamera.SetRotation(pitch, yaw);
             //Console.WriteLine($"Pos: {World.MainCamera.Position} Rot: {World.MainCamera.Pitch}, {World.MainCamera.Yaw}");
         }
     }
