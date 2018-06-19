@@ -22,22 +22,21 @@ namespace FruckEngine.Game
         private Dictionary<Scene, bool> loaded;
         private Dictionary<Scene, World> world;
         private Scene currentScene = null;
-        public World currentWorld { get; private set; }
-        private World kikker;
+        public World CurrentWorld { get; private set; }
 
         public SceneManager()
         {
             Scenes = new Dictionary<string, Scene>();
             loaded = new Dictionary<Scene, bool>();
             world = new Dictionary<Scene, World>();
-            currentWorld = null;
+            CurrentWorld = null;
         }
 
         public void Update(double dt)
         {
-            if (currentScene == null || currentWorld == null) return;
-            currentScene.Update(currentWorld, dt);
-            currentWorld.Update(dt);
+            if (currentScene == null || CurrentWorld == null) return;
+            currentScene.Update(CurrentWorld, dt);
+            CurrentWorld.Update(dt);
         }
 
         public void Load(string name, LoadAction action)
@@ -45,24 +44,29 @@ namespace FruckEngine.Game
             if (!Scenes.ContainsKey(name)) return;
             Scene s = Scenes[name];
             if (currentScene == s) return;
-            if(action == LoadAction.SWITCH_UNLOAD && loaded.ContainsKey(s))
-            {
-                world[s] = null;
-                currentWorld = null;
-                loaded[s] = false;
-                GC.Collect();
-            }
+            if (action == LoadAction.SWITCH_UNLOAD)
+                Destroy(s);
             currentScene = s;
             if(world.ContainsKey(s))
                 if(world[s] != null)
                 {
-                    currentWorld = world[s];
+                    CurrentWorld = world[s];
                     return;
                 }
             world[s] = new World();
             s.Init(world[s]);
-            currentWorld = world[s];
+            CurrentWorld = world[s];
             loaded[s] = true;
+        }
+
+        public void Destroy(Scene s)
+        {
+            if (!loaded.ContainsKey(s)) return;
+            if (loaded[s] == false) return;
+            world[s] = null;
+            CurrentWorld = null;
+            loaded[s] = false;
+            GC.Collect();
         }
     }
 }
