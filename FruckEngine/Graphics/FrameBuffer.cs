@@ -19,7 +19,8 @@ namespace FruckEngine.Graphics {
 
         public void AddAttachment(string name, PixelType pixelType = PixelType.Float,
             PixelInternalFormat internalFormat = PixelInternalFormat.Rgba16f,
-            PixelFormat format = PixelFormat.Rgba, TextureMinFilter filter = TextureMinFilter.Nearest) {
+            PixelFormat format = PixelFormat.Rgba, TextureMinFilter filter = TextureMinFilter.Nearest,
+            bool depth = false) {
             var texture = new Texture() {
                 FilterMin = filter,
                 FilterMag = (TextureMagFilter) filter,
@@ -28,13 +29,20 @@ namespace FruckEngine.Graphics {
                 MipMap = false
             };
             texture.Load(Width, Height, internalFormat, format, TextureTarget.Texture2D, pixelType, (IntPtr) 0);
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer,
-                FramebufferAttachment.ColorAttachment0 + AttachmentOrder.Count, TextureTarget.Texture2D,
+            var attachment = depth
+                ? FramebufferAttachment.DepthAttachment
+                : FramebufferAttachment.ColorAttachment0 + AttachmentOrder.Count;
+            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, attachment, TextureTarget.Texture2D,
                 texture.Pointer, 0);
 
             texture.UnBind();
             Attachments.Add(name, texture);
             AttachmentOrder.Add(name);
+        }
+
+        public void AddDepthAttachment() {
+            AddAttachment("depth", PixelType.Float, PixelInternalFormat.DepthComponent, PixelFormat.DepthComponent,
+                TextureMinFilter.Linear, true);
         }
 
         public void AddCubeAttachment(string name, PixelType pixelType = PixelType.Float,
@@ -82,7 +90,15 @@ namespace FruckEngine.Graphics {
 
         public void DrawBuffers() {
             var colorAttachments = new DrawBuffersEnum[AttachmentOrder.Count];
-            for (int i = 0; i < AttachmentOrder.Count; i++) colorAttachments[i] = DrawBuffersEnum.ColorAttachment0 + i;
+            int colorCounter = 0;
+            for (int i = 0; i < AttachmentOrder.Count; i++) {
+                if (AttachmentOrder[i] == "depth") {
+                    //colorAttachments[i] = 
+                } else {
+                    colorAttachments[i] = DrawBuffersEnum.ColorAttachment0 + colorCounter++;
+                }
+                
+            }
             GL.DrawBuffers(AttachmentOrder.Count, colorAttachments);
         }
 
@@ -114,6 +130,22 @@ namespace FruckEngine.Graphics {
             AttachmentOrder.Remove(name);
             return ret;
         }
+
+        /*public Texture ExtractDepth() {
+            var ret = new Texture() {
+                FilterMin = TextureMinFilter.Linear,
+                FilterMag = TextureMagFilter.Linear,
+                WrapS = TextureWrapMode.ClampToEdge,
+                WrapT = TextureWrapMode.ClampToEdge,
+                MipMap = false
+            };
+
+            ret.Load(Width, Height, PixelInternalFormat.DepthComponent, PixelFormat.DepthComponent,
+                TextureTarget.Texture2D, PixelType.Float, IntPtr.Zero);
+            Bind(false, false);
+            ret.Bind();
+            GL.CopyTexImage2D(TextureTarget.Texture2D, 0, InternalFormat.DepthComponent, 0, 0, Width, Height, 0);
+        }*/
 
         public void BlitBuffer(FrameBuffer frameBuffer, ClearBufferMask bufferMask,
             BlitFramebufferFilter filter = BlitFramebufferFilter.Nearest) {

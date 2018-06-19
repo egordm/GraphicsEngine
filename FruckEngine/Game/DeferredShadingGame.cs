@@ -13,6 +13,7 @@ namespace FruckEngine.Game {
         protected FrameBuffer DeferredBuffer;
         protected SSAONode SSAONode;
         protected BlurNode BlurNode;
+        protected DOFNode DofNode;
         protected DeferredPBRNode DeferredPBRNode;
         
         public override void Init() {
@@ -21,14 +22,16 @@ namespace FruckEngine.Game {
             PBRHelper.GetBRDFLUT();
             SSAONode = new SSAONode(Width, Height);
             BlurNode = new BlurNode(Width, Height);
+            DofNode = new DOFNode(Width, Height);
 
             // -- Deferred Shading Buffer
             DeferredBuffer = new FrameBuffer(Width, Height);
             DeferredBuffer.Bind(false);
             DeferredBuffer.AddAttachment("color", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
             DeferredBuffer.AddAttachment("brightness", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
+            DeferredBuffer.AddDepthAttachment(); // Substitutes the frame buffer
+            //DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
             DeferredBuffer.DrawBuffers();
-            DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
             DeferredBuffer.AssertStatus();
             DeferredBuffer.UnBind();
             
@@ -65,14 +68,19 @@ namespace FruckEngine.Game {
             // Pass 4 Blur Bloom
             var bloomTex = BlurNode.Apply(DeferredBuffer.GetAttachment("brightness"));
 
+            // Pass 4.5 DOF
+            var dof = DofNode.Apply(DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));
+            
             // Pass 5 Final render compositing
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             CompositeShader.Use();
             CompositeShader.SetBool("uApplyBloom", true);
             CompositeShader.SetFloat("uExposure", 1.0f);
-            DeferredBuffer.GetAttachment("color").Activate(0);
+            //DeferredBuffer.GetAttachment("depth").Activate(0);
+            //DeferredBuffer.GetAttachment("color").Activate(0);
+            dof.Activate(0);
             TextureHelper.GetZeroNull().Activate(1);
-            //bloomTex.Activate(1);
+            bloomTex.Activate(1);
             Projection.ProjectPlane();
         }
 
