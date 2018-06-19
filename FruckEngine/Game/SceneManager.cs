@@ -23,6 +23,7 @@ namespace FruckEngine.Game
         private Dictionary<Scene, World> world;
         private Scene currentScene = null;
         public World currentWorld { get; private set; }
+        private World kikker;
 
         public SceneManager()
         {
@@ -44,7 +45,7 @@ namespace FruckEngine.Game
             if (!Scenes.ContainsKey(name)) return;
             Scene s = Scenes[name];
             if (currentScene == s) return;
-            if(action == LoadAction.SWITCH_UNLOAD)
+            if(action == LoadAction.SWITCH_UNLOAD && loaded.ContainsKey(s))
             {
                 world[s] = null;
                 currentWorld = null;
