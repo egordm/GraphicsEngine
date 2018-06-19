@@ -23,6 +23,7 @@ namespace FruckEngine.Objects
         public Vector3 Scale { get; set; } = Vector3.One;
         public List<Mesh> Meshes;
         private List<int> childs;
+        public Object Parent = null;
 
         public Object(List<Mesh> meshes) {
             Meshes = meshes;
@@ -48,18 +49,22 @@ namespace FruckEngine.Objects
         /// Get object space matrix
         /// </summary>
         /// <returns></returns>
-        public Matrix4 GetMatrix(Matrix4 parent)
+        public Matrix4 GetMatrix()
         {
             var matrix = Matrix4.CreateTranslation(Position);
             matrix *= Matrix4.CreateScale(Scale);
             matrix *= Matrix4.CreateFromQuaternion(Rotation);
-            return parent * matrix;
+
+            if (Parent != null)
+                return Parent.GetMatrix() * matrix;
+            else return matrix;
         }
 
         protected virtual void PrepareShader(Shader shader) { }
 
         public void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
-            coordSys.Model = GetMatrix(coordSys.Model);
+            var modelM = GetMatrix();
+            coordSys.Model = modelM;
             shader.Use();
             coordSys.Apply(shader);
             PrepareShader(shader);

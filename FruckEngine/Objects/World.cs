@@ -25,14 +25,11 @@ namespace FruckEngine.Objects
             MainCamera.SetFOV(130);
         }
 
-        public void AddObject(Object obj, int parent = -1)
+        public void AddObject(Object obj, Object parent = null)
         {
+            if (parent != null)
+                obj.Parent = parent;
             _objects.Add(obj);
-            if (parent != -1)
-            {
-                int index = _objects.Count - 1;
-                _objects[parent].AddChild(index);
-            }
             obj.Init();
         }
         
