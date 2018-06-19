@@ -6,7 +6,7 @@ namespace FruckEngineDemo.Scenes {
     public class MarioCart : Scene {
         public override void Init(World world) {
             world.Environment.AmbientLight = Vector3.One;
-            world.Environment.DirectionalLight.Intensity = 0;
+            world.Environment.DirectionalLight.Intensity = 1;
             
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Mountains", 10000);
             world.Environment.SetTexture(env, true);
