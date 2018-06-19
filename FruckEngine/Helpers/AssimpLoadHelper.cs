@@ -25,7 +25,7 @@ namespace FruckEngine.Helpers {
             this.PBR = PBR;
             var importer = new AssimpContext();
             var scene = importer.ImportFile(path,
-                PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace /*| PostProcessSteps.GenerateNormals*/ | PostProcessSteps.GenerateSmoothNormals);
+                PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace | PostProcessSteps.GenerateSmoothNormals);
 
             if ((int) (scene.SceneFlags & SceneFlags.Incomplete) == 1) throw new Exception("ERROR::ASSIMP");
 

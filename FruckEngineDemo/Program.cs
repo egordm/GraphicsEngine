@@ -20,7 +20,8 @@ namespace FruckEngineDemo
             new Cerberus(),
             new Yoda(),
             new StormTrooper(),
-            new MarioCart()
+            new MarioCart(),
+            new Test()
         };
         
         public List<Key> SceneButtons = new List<Key>() {
@@ -48,7 +49,7 @@ namespace FruckEngineDemo
         {
             base.Init();
             
-            SetScene(4);
+            SetScene(5);
         }
 
         public override void Update(double dt) {
