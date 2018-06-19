@@ -18,7 +18,7 @@ namespace FruckEngine.Game {
 
         public virtual void Update(double dt) {
             Time += dt;
-            World.Root.Update(dt);
+            World.Update(dt);
         }
 
         public abstract void Render();

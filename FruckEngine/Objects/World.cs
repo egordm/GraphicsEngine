@@ -11,7 +11,7 @@ namespace FruckEngine.Objects
     {
         public Camera MainCamera { get; set; }
         private List<Light> _lights = new List<Light>();
-        public Object Root;
+        private Object Root;
 
         public ReadOnlyCollection<Light> Lights => _lights.AsReadOnly();
 
@@ -35,6 +35,11 @@ namespace FruckEngine.Objects
         public void AddLight(Light light)
         {
             _lights.Add(light);
+        }
+
+        public void Update(double dt)
+        {
+            Root.Update(dt);
         }
 
         public void Draw(Shader shader, DrawProperties properties) {
