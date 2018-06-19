@@ -108,6 +108,13 @@ namespace FruckEngine.Graphics {
             }
         }
 
+        public Texture Detach(string name) {
+            var ret = Attachments[name];
+            Attachments.Remove(name);
+            AttachmentOrder.Remove(name);
+            return ret;
+        }
+
         public void BlitBuffer(FrameBuffer frameBuffer, ClearBufferMask bufferMask,
             BlitFramebufferFilter filter = BlitFramebufferFilter.Nearest) {
             GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, frameBuffer.Pointer);
@@ -119,7 +126,6 @@ namespace FruckEngine.Graphics {
         public void RenderToPlane() {
             Projection.ProjectPlane();
         }
-
 
         public void RenderToCube(Shader shader, Matrix4[] views, string attachment, int mipmapLevel = 0) {
             shader.SetMat4("mProjection", Constants.CUBEMAP_CAPTURE_PROJECTION);

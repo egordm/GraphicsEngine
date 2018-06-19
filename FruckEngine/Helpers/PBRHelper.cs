@@ -18,14 +18,15 @@ namespace FruckEngine.Helpers {
 
                 IrradianceBuffer = new FrameBuffer(Constants.IRRADIANCE_TEXTURE_SIZE, Constants.IRRADIANCE_TEXTURE_SIZE);
                 IrradianceBuffer.Bind(false, false);
-                IrradianceBuffer.AddCubeAttachment("irradiance", PixelType.Float, PixelInternalFormat.Rgb16f,
-                    PixelFormat.Rgb, TextureMinFilter.Linear, TextureMagFilter.Linear);
             }
 
             var viewport = new int[4];
             GL.GetInteger(GetPName.Viewport, viewport);
             
             IrradianceBuffer.Bind(true, true);
+            IrradianceBuffer.AddCubeAttachment("irradiance", PixelType.Float, PixelInternalFormat.Rgb16f,
+                PixelFormat.Rgb, TextureMinFilter.Linear, TextureMagFilter.Linear);
+            
             IrradianceShader.Use();
             IrradianceShader.SetInt("uImage", 0);
             environment.Activate(0);
@@ -34,7 +35,7 @@ namespace FruckEngine.Helpers {
             
             GL.Viewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
-            return IrradianceBuffer.GetAttachment("irradiance");
+            return IrradianceBuffer.Detach("irradiance");
         }
 
         public static Texture CalculatePrefilter(Texture environment) {
@@ -48,15 +49,16 @@ namespace FruckEngine.Helpers {
                 
                 PrefilterBuffer = new FrameBuffer(Constants.PREFILTER_TEXTURE_SIZE, Constants.PREFILTER_TEXTURE_SIZE);
                 PrefilterBuffer.Bind(false, false);
-                PrefilterBuffer.AddCubeAttachment("prefilter", PixelType.Float, PixelInternalFormat.Rgb16f,
-                    PixelFormat.Rgb, TextureMinFilter.LinearMipmapLinear, TextureMagFilter.Linear);
-                PrefilterBuffer.GetAttachment("prefilter").GenMipMaps(true);
             }
             
             var viewport = new int[4];
             GL.GetInteger(GetPName.Viewport, viewport);
             
             PrefilterBuffer.Bind(true, true);
+            PrefilterBuffer.AddCubeAttachment("prefilter", PixelType.Float, PixelInternalFormat.Rgb16f,
+                PixelFormat.Rgb, TextureMinFilter.LinearMipmapLinear, TextureMagFilter.Linear);
+            PrefilterBuffer.GetAttachment("prefilter").GenMipMaps(true);
+            
             PrefilterShader.Use();
             PrefilterShader.SetInt("uImage", 0);
             environment.Activate(0);
@@ -76,7 +78,7 @@ namespace FruckEngine.Helpers {
             
             GL.Viewport(viewport[0], viewport[1], viewport[2], viewport[3]);
             
-            return PrefilterBuffer.GetAttachment("prefilter");
+            return PrefilterBuffer.Detach("prefilter");
         }
 
         public static Texture GetBRDFLUT() {
