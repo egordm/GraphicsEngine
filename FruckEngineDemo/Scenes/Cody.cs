@@ -27,10 +27,10 @@ namespace FruckEngineDemo.Scenes
             });
             world.Environment.SetTexture(env, true);
 
-            world.MainCamera.Position = new Vector3(0, 0, 35);
+            world.MainCamera.Position = new Vector3(0, 0, 5);
             world.MainCamera.SetRotation(0, -180);
 
-            const string directory = "Assets/models/frog";
+            /*const string directory = "Assets/models/frog";
             var model = AssimpLoadHelper.LoadModel(directory + "/frog.obj", true);
             var material = model.Meshes[0].AsPBR();
             material.Textures.Clear();
@@ -39,7 +39,18 @@ namespace FruckEngineDemo.Scenes
             material.Metallic = 0.99f;
             material.Roughness = 0.01f;
             model.Scale = Vector3.One * 0.1f;
-            world.AddObject(model);
+            world.AddObject(model);*/
+
+            var sm = DefaultModels.GetSphere();
+            var sphere = new FruckEngine.Objects.Object();
+            sphere.Meshes.Add(sm);
+            var mat = sm.AsPBR();
+            mat.Metallic = 0.9f;
+            mat.Roughness = 0.5f;
+            sphere.Position = Vector3.Zero;
+            sphere.Rotation = Quaternion.Identity;
+            sphere.Scale = Vector3.One;
+            world.AddObject(sphere);
 
             var lights = new List<Vector3>(){
                 new Vector3(-20.0f, 20.0f, 45.0f),

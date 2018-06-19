@@ -27,6 +27,11 @@ namespace FruckEngine.Objects
             Meshes = meshes;
         }
 
+        public Object()
+        {
+            Meshes = new List<Mesh>();
+        }
+
         /// <summary>
         /// Called when object is added to the scene
         /// </summary>
