@@ -50,6 +50,7 @@
     <Compile Include="Scene.cs" />
     <Compile Include="Scenes\Cerberus.cs" />
     <Compile Include="Scenes\Cody.cs" />
+    <Compile Include="Scenes\MarioCart.cs" />
     <Compile Include="Scenes\StormTrooper.cs" />
     <Compile Include="Scenes\Yoda.cs" />
   </ItemGroup>
@@ -114,22 +115,22 @@
     <Content Include="Assets\cubemaps\Kiara\_posz.hdr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\cubemaps\Mountains\Mountains_negx.hdr">
+    <Content Include="Assets\cubemaps\Mountains\_negx.hdr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\cubemaps\Mountains\Mountains_negy.hdr">
+    <Content Include="Assets\cubemaps\Mountains\_negy.hdr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\cubemaps\Mountains\Mountains_negz.hdr">
+    <Content Include="Assets\cubemaps\Mountains\_negz.hdr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\cubemaps\Mountains\Mountains_posx.hdr">
+    <Content Include="Assets\cubemaps\Mountains\_posx.hdr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\cubemaps\Mountains\Mountains_posy.hdr">
+    <Content Include="Assets\cubemaps\Mountains\_posy.hdr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\cubemaps\Mountains\Mountains_posz.hdr">
+    <Content Include="Assets\cubemaps\Mountains\_posz.hdr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\cubemaps\Swamp\_negx.hdr">
