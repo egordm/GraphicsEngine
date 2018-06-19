@@ -44,26 +44,30 @@ namespace FruckEngine.Objects
         /// Called every tick if object is in the scene
         /// </summary>
         public virtual void Update(double dt) { }
-        
+
         /// <summary>
         /// Get object space matrix
         /// </summary>
         /// <returns></returns>
         public Matrix4 GetMatrix()
         {
-            var matrix = Matrix4.CreateTranslation(Position);
-            matrix *= Matrix4.CreateScale(Scale);
-            matrix *= Matrix4.CreateFromQuaternion(Rotation);
-
+            var matrix = Matrix4.Identity;
             if (Parent != null)
-                return Parent.GetMatrix() * matrix;
-            else return matrix;
+                matrix = Parent.GetMatrix();
+
+            matrix *= Matrix4.CreateScale(new Vector3(1f / Scale.X, 1f / Scale.Y, 1f / Scale.Z));
+            matrix *= Matrix4.CreateTranslation(-Position);
+            Matrix4 m = Matrix4.CreateFromQuaternion(Rotation);
+            m.Transpose();
+            matrix *= m;
+
+            return matrix;
         }
 
         protected virtual void PrepareShader(Shader shader) { }
 
         public void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
-            var modelM = GetMatrix();
+            var modelM = GetMatrix().Inverted();
             coordSys.Model = modelM;
             shader.Use();
             coordSys.Apply(shader);

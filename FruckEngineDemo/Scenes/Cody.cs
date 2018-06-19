@@ -40,6 +40,19 @@ namespace FruckEngineDemo.Scenes
             material.Roughness = 0.01f;
             model.Scale = Vector3.One * 0.1f;
             world.AddObject(model);*/
+            {
+                var sm = DefaultModels.GetSphere();
+                var orig = new FruckEngine.Objects.Object();
+                orig.Meshes.Add(sm);
+                var mat = sm.AsPBR();
+                mat.Metallic = 0f;
+                mat.Roughness = 1f;
+                mat.Albedo = new Vector3(1, 0, 0);
+                orig.Position = Vector3.Zero;
+                orig.Rotation = Quaternion.Identity;
+                orig.Scale = Vector3.One * 0.1f;
+                world.AddObject(orig);
+            }
             FruckEngine.Objects.Object sphere, child, grandchild;
             {
                 const string directory = "Assets/models/frog";
@@ -52,31 +65,22 @@ namespace FruckEngineDemo.Scenes
                 material.Roughness = 0.01f;
                 sphere.Scale = Vector3.One * 0.1f;
                 sphere.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45f);
+                sphere.Position = Vector3.UnitY * 0;
                 world.AddObject(sphere);
             }
             {
-                var sm = DefaultModels.GetSphere();
-                child = new FruckEngine.Objects.Object();
-                child.Meshes.Add(sm);
-                var mat = sm.AsPBR();
-                mat.Metallic = 0.9f;
-                mat.Roughness = 0.5f;
-                child.Position = new Vector3(0, 1, 0);
-                child.Rotation = Quaternion.Identity;
+                const string directory = "Assets/models/frog";
+                child = AssimpLoadHelper.LoadModel(directory + "/frog.obj", true);
+                var material = sphere.Meshes[0].AsPBR();
+                material.Textures.Clear();
+                material.Textures.Add(TextureHelper.LoadFromImage(directory + "/diffuse.png", ShadeType.TEXTURE_TYPE_ALBEDO));
+                material.Albedo = Vector3.One;
+                material.Metallic = 0.99f;
+                material.Roughness = 0.01f;
                 child.Scale = Vector3.One;
+                //child.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45f);
+                child.Position = Vector3.UnitY * 100;
                 world.AddObject(child, sphere);
-            }
-            {
-                var sm = DefaultModels.GetSphere();
-                grandchild = new FruckEngine.Objects.Object();
-                grandchild.Meshes.Add(sm);
-                var mat = sm.AsPBR();
-                mat.Metallic = 0.9f;
-                mat.Roughness = 0.5f;
-                grandchild.Position = new Vector3(0, 1, 0);
-                grandchild.Rotation = Quaternion.Identity;
-                grandchild.Scale = Vector3.One;
-                world.AddObject(grandchild, child);
             }
 
             var lights = new List<Vector3>(){
