@@ -12,7 +12,7 @@ using Object = FruckEngine.Objects.Object;
 namespace FruckEngine.Helpers {
     public class AssimpLoadHelper {
         private string Directory;
-        private Dictionary<string, Texture> TextureCache= new Dictionary<string, Texture>();
+        private Dictionary<string, Texture> TextureCache = new Dictionary<string, Texture>();
         private List<Mesh> Meshes = new List<Mesh>();
         private bool FlipU = false;
         private bool PBR = true;
@@ -20,7 +20,7 @@ namespace FruckEngine.Helpers {
         private static AssimpLoadHelper Instance = new AssimpLoadHelper();
 
         private Object Load(string path, bool PBR = true, bool flipU = false) {
-            Meshes.Clear();
+            Meshes = new List<Mesh>();
             FlipU = flipU;
             this.PBR = PBR;
             var importer = new AssimpContext();
