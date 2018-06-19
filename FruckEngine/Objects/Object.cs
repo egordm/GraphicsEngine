@@ -22,9 +22,11 @@ namespace FruckEngine.Objects
         public Quaternion Rotation { get; set; } = Quaternion.Identity;
         public Vector3 Scale { get; set; } = Vector3.One;
         public List<Mesh> Meshes;
+        private List<int> childs;
 
         public Object(List<Mesh> meshes) {
             Meshes = meshes;
+            childs = new List<int>();
         }
 
         /// <summary>
@@ -58,6 +60,11 @@ namespace FruckEngine.Objects
             PrepareShader(shader);
 
             foreach (var mesh in Meshes) mesh.Draw(shader, properties);
+        }
+
+        public void AddChild(int c)
+        {
+            childs.Add(c);
         }
     }
 }
