@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Scenes\Cerberus.cs" />
+    <Compile Include="Scenes\Cody.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FruckEngine\FruckEngine.csproj">

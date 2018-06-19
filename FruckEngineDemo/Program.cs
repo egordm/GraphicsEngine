@@ -16,6 +16,7 @@ namespace FruckEngineDemo
     internal class Program : DeferredShadingGame {
         
         public List<Scene> Scenes = new List<Scene>() {
+            new Cody(),
             new Cerberus()
         };
         
