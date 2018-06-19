@@ -17,7 +17,9 @@ namespace FruckEngineDemo
         
         public List<Scene> Scenes = new List<Scene>() {
             new Cody(),
-            new Cerberus()
+            new Cerberus(),
+            new Yoda(),
+            new StormTrooper(),
         };
         
         public List<Key> SceneButtons = new List<Key>() {
@@ -45,7 +47,7 @@ namespace FruckEngineDemo
         {
             base.Init();
             
-            SetScene(0);
+            SetScene(3);
         }
 
         public override void Update(double dt) {

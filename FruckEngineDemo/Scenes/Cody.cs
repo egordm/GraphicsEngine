@@ -17,14 +17,7 @@ namespace FruckEngineDemo.Scenes
             world.Environment.AmbientLight = Vector3.One;
             world.Environment.DirectionalLight.Intensity = 0;
 
-            var env = TextureHelper.LoadFromCubemap(new List<string> {
-                "Assets/cubemaps/Home/_posx.hdr",
-                "Assets/cubemaps/Home/_negx.hdr",
-                "Assets/cubemaps/Home/_posy.hdr",
-                "Assets/cubemaps/Home/_negy.hdr",
-                "Assets/cubemaps/Home/_posz.hdr",
-                "Assets/cubemaps/Home/_negz.hdr"
-            });
+            var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Home");
             world.Environment.SetTexture(env, true);
 
             world.MainCamera.Position = new Vector3(0, 0, 35);
