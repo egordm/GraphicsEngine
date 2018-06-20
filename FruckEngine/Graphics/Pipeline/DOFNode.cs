@@ -4,7 +4,12 @@ namespace FruckEngine.Graphics.Pipeline {
     public class DOFNode : GraphicsPipelineNode {
         private FrameBuffer FrameBuffer;
         private Shader Shader;
-        
+
+        public bool Enable = true;
+        public bool Debug = false;
+        public float FocalLength = 28f;
+        public float FStop = 28/2f;
+
         public DOFNode(int width, int height) : base(width, height) {
             FrameBuffer = new FrameBuffer(Width, Height);
             FrameBuffer.Bind(false, false);
@@ -19,14 +24,11 @@ namespace FruckEngine.Graphics.Pipeline {
             Shader.AddUniformVar("uTexel");
             Shader.AddUniformVar("uFocalLength");
             Shader.AddUniformVar("uFstop");
-            Shader.AddUniformVar("uShowFocus");
+            Shader.AddUniformVar("uDebug");
             
             Shader.Use();
             Shader.SetVec2("uResolution", Width, Height);
             Shader.SetVec2("uTexel", 1f/Width, 1f/Height);
-            Shader.SetFloat("uFocalLength", 28); // TODO: get from fov?
-            Shader.SetFloat("uFstop", 28/2f); // TODO: get from fov?
-            Shader.SetBool("uShowFocus", false);
             Shader.SetInt("uColor", 0);
             Shader.SetInt("uDepth", 1);
             Shader.UnUse();
@@ -34,9 +36,13 @@ namespace FruckEngine.Graphics.Pipeline {
         }
 
         public Texture Apply(Texture color, Texture depth) {
+            if (!Enable) return color;
+            
             FrameBuffer.Bind(true, false);
             Shader.Use();
-            
+            Shader.SetFloat("uFocalLength", FocalLength); // TODO: get from fov?
+            Shader.SetFloat("uFstop", FStop); // TODO: get from fov?
+            Shader.SetBool("uDebug", Debug);
             color.Activate(0);
             depth.Activate(1);
             
@@ -44,6 +50,13 @@ namespace FruckEngine.Graphics.Pipeline {
             FrameBuffer.UnBind();
 
             return FrameBuffer.GetAttachment("color");
+        }
+
+        public override void Resize(int width, int height) {
+            base.Resize(width, height);
+            FrameBuffer.Resize(width, height);
+            Shader.SetVec2("uResolution", Width, Height);
+            Shader.SetVec2("uTexel", 1f/Width, 1f/Height);
         }
     }
 }

@@ -15,9 +15,16 @@ namespace FruckEngine.Game {
         protected BlurNode BlurNode;
         protected DOFNode DofNode;
         protected DeferredPBRNode DeferredPBRNode;
+
+        protected bool EnableBloom = true;
         
         public override void Init() {
             base.Init();
+            
+            InputHelper.CreateClickListener(Key.O);
+            InputHelper.CreateClickListener(Key.I);
+            InputHelper.CreateClickListener(Key.J);
+            InputHelper.CreateClickListener(Key.K);
 
             PBRHelper.GetBRDFLUT();
             SSAONode = new SSAONode(Width, Height);
@@ -66,7 +73,7 @@ namespace FruckEngine.Game {
             DeferredBuffer.UnBind();
             
             // Pass 4 Blur Bloom
-            var bloomTex = BlurNode.Apply(DeferredBuffer.GetAttachment("brightness"));
+            var bloomTex = EnableBloom ? BlurNode.Apply(DeferredBuffer.GetAttachment("brightness")) : TextureHelper.GetZeroNull();
 
             // Pass 4.5 DOF
             var dof = DofNode.Apply(DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));
@@ -84,17 +91,24 @@ namespace FruckEngine.Game {
             Projection.ProjectPlane();
         }
 
-        private bool PrevOState = false;
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);
+            InputHelper.Update(state);
 
-            if (state[Key.O]) {
-                if (!PrevOState) {
-                    PrevOState = true;
-                    SSAONode.Enable = !SSAONode.Enable;
-                }
-            } else {
-                PrevOState = false;
+            if (InputHelper.IsClicked(Key.O)) {
+                SSAONode.Enable = !SSAONode.Enable;
+            }
+
+            if (InputHelper.IsClicked(Key.J)) {
+                DofNode.Enable = !DofNode.Enable;
+            }
+            
+            if (InputHelper.IsClicked(Key.K)) {
+                DofNode.Debug = !DofNode.Debug;
+            }
+            
+            if (InputHelper.IsClicked(Key.I)) {
+                EnableBloom = !EnableBloom;
             }
         }
     }

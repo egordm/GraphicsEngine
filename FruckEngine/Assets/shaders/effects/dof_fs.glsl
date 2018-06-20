@@ -12,11 +12,11 @@ uniform vec2 uTexel;
 
 uniform float uFocalLength; //focal length in mm
 uniform float uFstop; //f-stop value https://en.wikipedia.org/wiki/F-number
-uniform bool uShowFocus;
+uniform bool uDebug;
 
 // TODO: might chnage but shouldnt
-const float znear = 0.1; //camera clipping start
-const float zfar = 100.0; //camera clipping end
+const float Z_NEAR = 0.1; //camera clipping start
+const float Z_FAR = 100.0; //camera clipping end
 
 const int samples = 3; //samples on the first ring
 const int rings = 3; //ring count
@@ -24,14 +24,14 @@ const int rings = 3; //ring count
 const float PI = 3.14159265359;
 const vec2 FOCUS = vec2(0.5,0.5); 
 const float CoC = 0.03;//circle of confusion size in mm (35mm film = 0.03mm)
-const float MAX_BLUR = 5.0;
+const float MAX_BLUR = 1;
 const float N_AMOUNT = 0.0001; //dither amount
 
-const float threshold = 0.5; //highlight threshold;
-const float gain = 2.0; //highlight gain;
+const float THRESHOLD = 0.5; //highlight threshold;
+const float GAIN = 2.0; //highlight gain;
 
-const float bias = 0.5; //bokeh edge bias
-const float fringe = 0.7; //bokeh chromatic aberration/fringing
+const float BIAS = 0.5; //bokeh edge bias
+const float FRINGE = 0.7; //bokeh chromatic aberration/fringing
 
 float linearize(float depth);
 vec2 rand(vec2 coord); //generating noise/pattern texture for dithering
@@ -71,14 +71,14 @@ void main() {
                 float pw = (cos(float(j)*step)*float(j));
                 float ph = (sin(float(j)*step)*float(j));
                 float p = 1.0;
-                color += preprocess(i.UV + vec2(pw*w,ph*h),blur)*mix(1.0,(float(j))/(float(rings)),bias)*p;  
-                s += 1.0*mix(1.0,(float(j))/(float(rings)),bias)*p;
+                color += preprocess(i.UV + vec2(pw*w,ph*h),blur)*mix(1.0,(float(j))/(float(rings)),BIAS)*p;  
+                s += 1.0*mix(1.0,(float(j))/(float(rings)),BIAS)*p;
             }
         }
         color /= s; //divide by sample count
     }
     
-    if (uShowFocus)  {
+    if (uDebug)  {
         color = debugFocus(color, blur, depth);
     }
     
@@ -89,13 +89,13 @@ void main() {
 vec3 preprocess(vec2 coords,float blur) {
 	vec3 color = vec3(0.0);
 	
-	color.r = texture2D(uColor, coords + vec2(0.0,1.0)*uTexel*fringe*blur).r;
-	color.g = texture2D(uColor, coords + vec2(-0.866,-0.5)*uTexel*fringe*blur).g;
-	color.b = texture2D(uColor, coords + vec2(0.866,-0.5)*uTexel*fringe*blur).b;
+	color.r = texture2D(uColor, coords + vec2(0.0,1.0)*uTexel*FRINGE*blur).r;
+	color.g = texture2D(uColor, coords + vec2(-0.866,-0.5)*uTexel*FRINGE*blur).g;
+	color.b = texture2D(uColor, coords + vec2(0.866,-0.5)*uTexel*FRINGE*blur).b;
 	
 	vec3 lumcoeff = vec3(0.299,0.587,0.114);
 	float lum = dot(color.rgb, lumcoeff);
-	float thresh = max((lum-threshold)*gain, 0.0);
+	float thresh = max((lum-THRESHOLD)*GAIN, 0.0);
 	return color+mix(vec3(0.0),color,thresh*blur);
 }
 
@@ -110,7 +110,7 @@ vec2 rand(vec2 coord) {
 }
 
 float linearize(float depth) {
-	return -zfar * znear / (depth * (zfar - znear) - zfar);
+	return -Z_FAR * Z_NEAR / (depth * (Z_FAR - Z_NEAR) - Z_FAR);
 }
 
 vec3 debugFocus(vec3 col, float blur, float depth) {

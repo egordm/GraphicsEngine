@@ -72,6 +72,7 @@
     <Compile Include="Helpers\DefaultModels.cs" />
     <Compile Include="Helpers\DefaultShaders.cs" />
     <Compile Include="Helpers\AssimpLoadHelper.cs" />
+    <Compile Include="Helpers\InputHelper.cs" />
     <Compile Include="Helpers\PBRHelper.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
     <Compile Include="Objects\Light.cs" />

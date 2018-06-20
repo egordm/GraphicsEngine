@@ -9,7 +9,7 @@ namespace FruckEngineDemo.Scenes {
             world.Environment.AmbientLight = Vector3.One;
             world.Environment.DirectionalLight.Intensity = 1;
             
-            var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Mountains", 10000);
+            var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Mountains", 15000);
             world.Environment.SetTexture(env, true);
             
             world.MainCamera.Position = new Vector3(-1.533677f, 7.852062f, 2.867414f);
