@@ -79,8 +79,6 @@ namespace FruckEngine.Objects
                 }
             }
             shader.SetFloat("uOffset", 0);
-            Console.WriteLine("j");
-
         }
     }
 }
