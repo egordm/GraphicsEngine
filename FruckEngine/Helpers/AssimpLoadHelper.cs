@@ -24,9 +24,22 @@ namespace FruckEngine.Helpers {
             FlipU = flipU;
             this.PBR = PBR;
             var importer = new AssimpContext();
-            var scene = importer.ImportFile(path,
-                PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace | PostProcessSteps.GenerateSmoothNormals);
-
+            Scene scene;
+            try
+            {
+                scene = importer.ImportFile(path,
+              PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace | PostProcessSteps.GenerateSmoothNormals);
+            }
+            catch (Exception e) when (e is AssimpException || e is ObjectDisposedException)
+            {
+                Console.WriteLine("Assimp could not load file: " + path);
+                return new Object(true);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("File not found: " + path);
+                return new Object(true);
+            }
             if ((int) (scene.SceneFlags & SceneFlags.Incomplete) == 1) throw new Exception("ERROR::ASSIMP");
 
             Directory = Path.GetDirectoryName(path) + "/";

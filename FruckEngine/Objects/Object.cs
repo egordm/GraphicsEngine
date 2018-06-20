@@ -23,13 +23,15 @@ namespace FruckEngine.Objects
         public Vector3 Scale { get; set; } = Vector3.One;
         public List<Mesh> Meshes;
         public List<Object> Children = new List<Object>();
+        public bool Broken { get; private set; }
 
         public Object(List<Mesh> meshes) {
             Meshes = meshes;
         }
 
-        public Object() {
+        public Object(bool broken = false) {
             Meshes = new List<Mesh>();
+            Broken = broken;
         }
 
         /// <summary>

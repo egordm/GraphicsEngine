@@ -20,7 +20,6 @@ namespace FruckEngineDemo.Scenes {
 
             foreach (var mesh in model.Meshes) {
                 var material = mesh.AsPBR();
-                material.Albedo = material.Albedo;
                 material.Metallic = 0.4f;
                 material.Roughness = 0.7f;
             }

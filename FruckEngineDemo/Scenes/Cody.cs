@@ -46,7 +46,6 @@ namespace FruckEngineDemo.Scenes
             orig.Scale = Vector3.One * 0.1f;
             world.AddObject(orig);
             
-            FruckEngine.Objects.Object child, grandchild;
             {
                 const string directory = "Assets/models/frog";
                 frog1 = AssimpLoadHelper.LoadModel(directory + "/frog.obj", true);
