@@ -44,6 +44,10 @@ namespace FruckEngine.Objects
         public void Draw(Shader shader, DrawProperties properties) {
             var coordSystem = InitialCoordSystem();
             Root.Draw(coordSystem, shader, properties);
+
+            foreach (var light in Lights) {
+                if(light.Type == LightType.PointLight) ((PointLight)light).Draw(coordSystem, shader, properties);
+            }
         }
         
         public CoordSystem InitialCoordSystem() {

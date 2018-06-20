@@ -1,4 +1,7 @@
-﻿using FruckEngine.Graphics;
+﻿using System;
+using FruckEngine.Graphics;
+using FruckEngine.Helpers;
+using FruckEngine.Structs;
 using OpenTK;
 
 namespace FruckEngine.Objects {
@@ -20,9 +23,10 @@ namespace FruckEngine.Objects {
 
         public abstract void Apply(Shader shader, int index);
     }
-
-    public class PointLight : Light {
+    
+    public class PointLight : Light, IDrawable {
         public Vector3 Position;
+        public float DrawRadius = 3f;
 
         public PointLight(Vector3 position, Vector3 color, float intensity) 
             : base(LightType.PointLight, color, intensity) {
@@ -35,6 +39,18 @@ namespace FruckEngine.Objects {
             shader.SetVec3(name + "color", Color);
             shader.SetFloat(name + "intensity", Intensity);
         }
+
+        public void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
+            var matrix = Matrix4.CreateScale(DrawRadius);
+            matrix *= Matrix4.CreateTranslation(Position);
+            coordSys.Model = matrix * coordSys.Model;
+            coordSys.Apply(shader);
+            
+            ((PBRMaterial)DisplaySphere.Material).Albedo = Color * 10;
+            DisplaySphere.Draw(shader, properties);
+        }
+        
+        protected static Mesh DisplaySphere = DefaultModels.GetSphere();
     }
 
     public class DirectionalLight : Light {

@@ -58,7 +58,7 @@ namespace FruckEngine.Objects
             var matrix = Matrix4.CreateScale(Scale);
             matrix *= Matrix4.CreateFromQuaternion(Rotation);
             matrix *= Matrix4.CreateTranslation(Position);
-            return  matrix * parent;
+            return matrix * parent;
         }
 
         protected virtual void PrepareShader(Shader shader) { }
