@@ -39,11 +39,15 @@ const float VIGN_OUT = 0.5; //vignetting outer border
 const float VIGN_IN = 0.1; //vignetting inner border
 const float VIGN_FADE = 44.0; //f-stops till vignete fades
 
+//Chromatic aberration
+const float CHR_AB_INTENSITY = 0.01; //The smaller the less intense
+
 float linearize(float depth);
 vec2 rand(vec2 coord); //generating noise/pattern texture for dithering
 vec3 preprocess(vec2 coords,float blur);
 vec3 debugFocus(vec3 col, float blur, float depth);
 float vignette();
+vec3 chromaticAberration();
 
 void main() {
     float depth = linearize(texture2D(uDepth, i.UV).x);
@@ -64,8 +68,8 @@ void main() {
     // Blur x and y step factor
     float w = (1.0 / uResolution.x) * blur * MAX_BLUR + noise.x;
     float h = (1.0 / uResolution.y) * blur * MAX_BLUR + noise.y;
-    
-    vec3 color = texture2D(uColor, i.UV).rgb;
+
+	vec3 color = chromaticAberration();
     if(blur > 0.05) {
         float s = 1.0;
         int ringsamples;
@@ -102,6 +106,13 @@ float vignette() {
 	return clamp(dist,0.0,1.0);
 }
 
+vec3 chromaticAberration(){
+	vec2 dist = (i.UV - vec2(0.5,0.5)) * CHR_AB_INTENSITY;
+	float red = texture2D(uColor, i.UV + dist).r;
+	float green = texture2D(uColor, i.UV).g;
+	float blue = texture2D(uColor, i.UV - dist).b;
+    return vec3(red, green, blue);
+}
 
 vec3 preprocess(vec2 coords,float blur) {
 	vec3 color = vec3(0.0);
