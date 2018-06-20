@@ -7,6 +7,7 @@ namespace FruckEngine.Graphics.Pipeline {
 
         public bool Enable = true;
         public bool Debug = false;
+        public bool Vignetting = true;
         public float FocalLength = 28f;
         public float FStop = 28/2f;
 
@@ -25,6 +26,7 @@ namespace FruckEngine.Graphics.Pipeline {
             Shader.AddUniformVar("uFocalLength");
             Shader.AddUniformVar("uFstop");
             Shader.AddUniformVar("uDebug");
+            Shader.AddUniformVar("uEnableVignetting");
             
             Shader.Use();
             Shader.SetVec2("uResolution", Width, Height);
@@ -38,11 +40,13 @@ namespace FruckEngine.Graphics.Pipeline {
         public Texture Apply(Texture color, Texture depth) {
             if (!Enable) return color;
             
+            // TODO: mayby move vignetting to the composer
             FrameBuffer.Bind(true, false);
             Shader.Use();
             Shader.SetFloat("uFocalLength", FocalLength); // TODO: get from fov?
             Shader.SetFloat("uFstop", FStop); // TODO: get from fov?
             Shader.SetBool("uDebug", Debug);
+            Shader.SetBool("uEnableVignetting", Vignetting);
             color.Activate(0);
             depth.Activate(1);
             

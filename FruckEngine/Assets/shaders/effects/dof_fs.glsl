@@ -13,6 +13,7 @@ uniform vec2 uTexel;
 uniform float uFocalLength; //focal length in mm
 uniform float uFstop; //f-stop value https://en.wikipedia.org/wiki/F-number
 uniform bool uDebug;
+uniform bool uEnableVignetting;
 
 // TODO: might chnage but shouldnt
 const float Z_NEAR = 0.1; //camera clipping start
@@ -33,10 +34,16 @@ const float GAIN = 2.0; //highlight gain;
 const float BIAS = 0.5; //bokeh edge bias
 const float FRINGE = 0.7; //bokeh chromatic aberration/fringing
 
+// Vignetting
+const float VIGN_OUT = 0.5; //vignetting outer border
+const float VIGN_IN = 0.1; //vignetting inner border
+const float VIGN_FADE = 44.0; //f-stops till vignete fades
+
 float linearize(float depth);
 vec2 rand(vec2 coord); //generating noise/pattern texture for dithering
 vec3 preprocess(vec2 coords,float blur);
 vec3 debugFocus(vec3 col, float blur, float depth);
+float vignette();
 
 void main() {
     float depth = linearize(texture2D(uDepth, i.UV).x);
@@ -82,7 +89,17 @@ void main() {
         color = debugFocus(color, blur, depth);
     }
     
+    if (uEnableVignetting) {
+        color *= vignette();
+    }
+    
     outColor = vec4(color, 1);
+}
+
+float vignette() {
+	float dist = distance(i.UV, vec2(0.5,0.5));
+	dist = smoothstep(VIGN_OUT + (uFstop/VIGN_FADE), VIGN_IN + (uFstop/VIGN_FADE), dist);
+	return clamp(dist,0.0,1.0);
 }
 
 
