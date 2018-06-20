@@ -38,7 +38,7 @@ namespace FruckEngine.Game {
             DeferredBuffer.AddAttachment("color", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
             DeferredBuffer.AddAttachment("brightness", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
             DeferredBuffer.AddDepthAttachment(); // Substitutes the frame buffer
-            DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
+            //DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
             DeferredBuffer.DrawBuffers();
             DeferredBuffer.AssertStatus();
             DeferredBuffer.UnBind();
