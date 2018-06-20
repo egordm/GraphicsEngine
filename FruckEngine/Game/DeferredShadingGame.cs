@@ -25,6 +25,7 @@ namespace FruckEngine.Game {
             InputHelper.CreateClickListener(Key.I);
             InputHelper.CreateClickListener(Key.J);
             InputHelper.CreateClickListener(Key.K);
+            InputHelper.CreateClickListener(Key.L);
 
             PBRHelper.GetBRDFLUT();
             SSAONode = new SSAONode(Width, Height);
@@ -105,6 +106,10 @@ namespace FruckEngine.Game {
             
             if (InputHelper.IsClicked(Key.K)) {
                 DofNode.Debug = !DofNode.Debug;
+            }
+            
+            if (InputHelper.IsClicked(Key.L)) {
+                DofNode.Vignetting = !DofNode.Vignetting;
             }
             
             if (InputHelper.IsClicked(Key.I)) {
