@@ -13,7 +13,7 @@ namespace FruckEngineDemo.Scenes
         private FruckEngine.Objects.Object frog1;
         private FruckEngine.Objects.HairyObject frog2;
         
-        public override void Init(World world)
+        protected override void Init(World world)
         {
             world.Environment.AmbientLight = Vector3.One;
             world.Environment.DirectionalLight.Intensity = 0;

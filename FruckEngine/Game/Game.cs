@@ -26,8 +26,9 @@ namespace FruckEngine.Game {
         public virtual void Resize(int width, int height) {
             Width = width;
             Height = height;
-            if(Scenes.CurrentWorld != null)
+            if (Scenes.CurrentScene != null && Scenes.CurrentScene.IsLoaded) {
                 Scenes.CurrentWorld.MainCamera.Aspect = width / (float)height;
+            }
         }
 
         public virtual void Destroy() { }
