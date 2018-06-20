@@ -16,9 +16,10 @@ out VertexData {
 uniform mat4 mModel;
 uniform mat4 mView;
 uniform mat4 mProjection;
+uniform float uOffset;
 
 void main() {
-    vec4 worldPos = mModel * vec4(inPos, 1.0);
+    vec4 worldPos = mModel * vec4(inPos + inNormal * uOffset, 1.0);
     o.fragPos = worldPos.xyz;
     o.UV = inUV;
 

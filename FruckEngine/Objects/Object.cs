@@ -25,6 +25,16 @@ namespace FruckEngine.Objects
         public List<Object> Children = new List<Object>();
         public bool Broken { get; private set; }
 
+        public Object(Object obj)
+        {
+            Position = obj.Position;
+            Rotation = obj.Rotation;
+            Scale = obj.Scale;
+            Meshes = obj.Meshes;
+            Children = obj.Children;
+            Broken = obj.Broken;
+        }
+
         public Object(List<Mesh> meshes) {
             Meshes = meshes;
         }
@@ -58,7 +68,7 @@ namespace FruckEngine.Objects
 
         protected virtual void PrepareShader(Shader shader) { }
 
-        public void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
+        public virtual void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
             var modelM = GetMatrix(coordSys.Model);
             coordSys.Model = modelM;
 

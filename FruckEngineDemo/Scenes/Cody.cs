@@ -10,7 +10,8 @@ namespace FruckEngineDemo.Scenes
 {
     public class Cody : Scene {
         public double Time = 0;
-        private FruckEngine.Objects.Object frog1, frog2;
+        private FruckEngine.Objects.Object frog1;
+        private FruckEngine.Objects.HairyObject frog2;
         
         public override void Init(World world)
         {
@@ -56,21 +57,24 @@ namespace FruckEngineDemo.Scenes
                 material.Metallic = 0.99f;
                 material.Roughness = 0.01f;
                 frog1.Scale = Vector3.One * 0.1f;
-                frog1.Position = Vector3.UnitY * 0;
+                frog1.Position = new Vector3(0, -10, -5);
                 world.AddObject(frog1);
             }
             {
                 const string directory = "Assets/models/frog";
-                frog2 = AssimpLoadHelper.LoadModel(directory + "/frog.obj", true);
+                frog2 = new HairyObject(AssimpLoadHelper.LoadModel(directory + "/frog.obj", true));
                 var material = frog2.Meshes[0].AsPBR();
                 material.Textures.Clear();
                 material.Textures.Add(TextureHelper.LoadFromImage(directory + "/diffuse.png", ShadeType.TEXTURE_TYPE_ALBEDO));
                 material.Albedo = Vector3.One;
-                material.Metallic = 0.99f;
-                material.Roughness = 0.01f;
+                material.Metallic = 0.0f;
+                material.Roughness = 0.0f;
+
+                frog2.HairOffset = .1f;
+                frog2.HairSegmentCount = 10;
                 frog2.Scale = Vector3.One;
                 //child.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45f);
-                frog2.Position = Vector3.UnitY * 60;
+                frog2.Position = Vector3.UnitY * 200;
                 frog1.Children.Add(frog2);
             }
 
@@ -92,8 +96,8 @@ namespace FruckEngineDemo.Scenes
 
             Time += dt;
             
-            frog1.Position = new Vector3((float)Math.Sin(Time) * 5, 0, (float)Math.Cos(Time) * 5);
-            frog2.Rotation = Quaternion.FromAxisAngle(Vector3.UnitY, (float) Time);
+            //frog1.Position = new Vector3((float)Math.Sin(Time) * 5, 0, (float)Math.Cos(Time) * 5);
+            //frog2.Rotation = Quaternion.FromAxisAngle(Vector3.UnitY, (float) Time);
         }
     }
 }

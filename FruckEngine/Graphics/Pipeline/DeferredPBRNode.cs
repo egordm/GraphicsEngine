@@ -62,6 +62,8 @@ namespace FruckEngine.Graphics.Pipeline {
 
         private void CreateShaders() {
             GeometryShader = DefaultShaders.CreateGeometry(true);
+            GeometryShader.AddUniformVar("uOffset");
+
             DeferredShader = DefaultShaders.CreateDeferred(true);
             DeferredShader.Use();
             DeferredShader.SetInt("uPositionMetallic", 0);
