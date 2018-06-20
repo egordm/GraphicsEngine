@@ -58,7 +58,6 @@ namespace FruckEngineDemo
 
             for (int i = 0; i < SceneButtons.Count; i++) {
                 if (state[SceneButtons[i]]) {
-                    Console.WriteLine(i);
                     Scenes.Load("" + i, LoadAction.SWITCH);
                     break;
                 }
