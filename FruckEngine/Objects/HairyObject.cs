@@ -17,7 +17,7 @@ namespace FruckEngine.Objects
         public float HairSegmentOffset;
         public int HairInvDensity = 3;
         public int HairThickness = 1;
-        private bool inited = false;
+        private bool Inited = false;
 
         public HairyObject(Object o) : base(o)
         {
@@ -26,21 +26,24 @@ namespace FruckEngine.Objects
 
         public void InitHair()
         {
-            inited = true;
+            Inited = true;
             HairMaterial = new PBRMaterial();
             if (Meshes.Count == 0) return;
+            
             //copy material of the body
             PBRMaterial normalMaterial = Meshes[0].AsPBR();
             HairMaterial.Albedo = normalMaterial.Albedo;
             HairMaterial.Roughness = normalMaterial.Roughness;
             HairMaterial.Metallic = normalMaterial.Metallic;
+            
             //copy texture of body and store image in bitmap
             if (normalMaterial.Textures.Count == 0) return;
-            Texture hairTex = (Texture)normalMaterial.Textures[0].Clone();
+            var hairTex = (Texture)normalMaterial.Textures[0].Clone();
             hairTex.Pointer = Constants.UNCONSTRUCTED;
-            Bitmap bitmap = TextureHelper.GetData(hairTex.Path);
+            var bitmap = TextureHelper.GetData(hairTex.Path);
+            
             //Make holes of transparency in the texture based on hair settings
-            Color gum = Color.FromArgb(0, Color.Black);
+            var gum = Color.FromArgb(0, Color.Black);
             int step = Math.Max(0, HairInvDensity);
             int thickness = Math.Max(Math.Min(step, HairThickness), 0);
             for (int x = 0; x < bitmap.Width; x ++)
@@ -48,8 +51,9 @@ namespace FruckEngine.Objects
                 {
                     if (x % step < thickness && y % step < thickness) continue;
                     bitmap.SetPixel(x, y, gum);
-                } 
+                }
             bitmap.MakeTransparent(gum);
+            
             //Load texture and put it into hair material
             TextureHelper.LoadFromBitmap(ref hairTex, bitmap);
             HairMaterial.Textures.Add(hairTex);
@@ -64,11 +68,10 @@ namespace FruckEngine.Objects
             var modelM = GetMatrix(coordSys.Model);
             coordSys.Model = modelM;
 
-            if (!inited) InitHair();
+            if (!Inited) InitHair();
             for (int i = 1; i < HairSegmentCount; i++)
             {
                 shader.Use();
-
                 HairMaterial.Apply(shader);
                 shader.SetFloat("uOffset", i * HairSegmentOffset);
 
