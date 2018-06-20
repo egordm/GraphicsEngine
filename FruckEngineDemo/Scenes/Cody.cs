@@ -12,7 +12,7 @@ namespace FruckEngineDemo.Scenes
         public double Time = 0;
         private FruckEngine.Objects.Object frog1, frog2;
         
-        public override void Init(World world)
+        protected override void Init(World world)
         {
             world.Environment.AmbientLight = Vector3.One;
             world.Environment.DirectionalLight.Intensity = 0;

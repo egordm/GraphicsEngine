@@ -21,17 +21,13 @@ namespace FruckEngine.Objects
         public Vector3 Position { get; set; } = Vector3.Zero;
         public Quaternion Rotation { get; set; } = Quaternion.Identity;
         public Vector3 Scale { get; set; } = Vector3.One;
-        public List<Mesh> Meshes;
+        public List<Mesh> Meshes = new List<Mesh>();
         public List<Object> Children = new List<Object>();
-        public bool Broken { get; private set; }
+
+        public Object() { }
 
         public Object(List<Mesh> meshes) {
             Meshes = meshes;
-        }
-
-        public Object(bool broken = false) {
-            Meshes = new List<Mesh>();
-            Broken = broken;
         }
 
         /// <summary>

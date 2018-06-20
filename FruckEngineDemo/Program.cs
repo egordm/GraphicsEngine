@@ -34,7 +34,7 @@ namespace FruckEngineDemo
         public static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo( "en-US" );
-            using (var win = new Window(1280, 720, "Fruck Engine Demo" ,new Program())) { win.Run(30.0, 60.0); }
+            using (var win = new Window(1280, 720, "Fruck Engine Demo", new Program())) { win.Run(30.0, 60.0); }
         }
 
         public override void Init()

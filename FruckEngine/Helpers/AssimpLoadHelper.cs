@@ -24,22 +24,10 @@ namespace FruckEngine.Helpers {
             FlipU = flipU;
             this.PBR = PBR;
             var importer = new AssimpContext();
-            Scene scene;
-            try
-            {
-                scene = importer.ImportFile(path,
-              PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace | PostProcessSteps.GenerateSmoothNormals);
-            }
-            catch (Exception e) when (e is AssimpException || e is ObjectDisposedException)
-            {
-                Console.WriteLine("Assimp could not load file: " + path);
-                return new Object(true);
-            }
-            catch (FileNotFoundException)
-            {
-                Console.WriteLine("File not found: " + path);
-                return new Object(true);
-            }
+            var scene = importer.ImportFile(path,
+                PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.CalculateTangentSpace |
+                PostProcessSteps.GenerateSmoothNormals);
+
             if ((int) (scene.SceneFlags & SceneFlags.Incomplete) == 1) throw new Exception("ERROR::ASSIMP");
 
             Directory = Path.GetDirectoryName(path) + "/";
@@ -117,6 +105,7 @@ namespace FruckEngine.Helpers {
                 ret.Tags.Add(Path.GetFileNameWithoutExtension(material.TextureDiffuse.FilePath));
                 ret.Textures.Add(LoadTexture(material.TextureDiffuse, TextureType.Diffuse));
             }
+
             if (material.HasTextureSpecular)
                 ret.Textures.Add(LoadTexture(material.TextureSpecular, TextureType.Specular));
             if (material.HasTextureHeight) ret.Textures.Add(LoadTexture(material.TextureHeight, TextureType.Height));

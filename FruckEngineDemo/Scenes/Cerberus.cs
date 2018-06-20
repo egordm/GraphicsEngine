@@ -7,7 +7,7 @@ using FruckEngine.Game;
 
 namespace FruckEngineDemo.Scenes {
     public class Cerberus : Scene {
-        public override void Init(World world) {
+        protected override void Init(World world) {
             world.Environment.AmbientLight = Vector3.One;
             world.Environment.DirectionalLight.Intensity = 0;
             

@@ -17,9 +17,11 @@ namespace FruckEngine.Graphics.Pipeline {
 
         public FrameBuffer DrawGeometry(World world) {
             // TODO: copy the depth buffer of legacy node beforehand if needed
+            GL.Enable(EnableCap.DepthTest);
             GeometryBuffer.Bind(true, false);
             world.Draw(GeometryShader, new DrawProperties(MaterialType.PBR, true));
             GeometryBuffer.UnBind();
+            GL.Disable(EnableCap.DepthTest);
 
             return GeometryBuffer;
         }
@@ -48,11 +50,13 @@ namespace FruckEngine.Graphics.Pipeline {
             
             Projection.ProjectPlane();
 
+            GL.Enable(EnableCap.DepthTest);
+            DeferredBuffer.BlitBuffer(GeometryBuffer, ClearBufferMask.DepthBufferBit);
+            DeferredBuffer.Bind(false);
             if (environmentShader != null) {
-                DeferredBuffer.BlitBuffer(GeometryBuffer, ClearBufferMask.DepthBufferBit);
-                DeferredBuffer.Bind(false);
                 world.Environment.Draw(coordSystem, environmentShader, new DrawProperties());
             }
+            GL.Disable(EnableCap.DepthTest);
         }
 
         public override void Resize(int width, int height) {
