@@ -38,6 +38,7 @@ namespace FruckEngine.Graphics {
         public TextureWrapMode WrapS = TextureWrapMode.ClampToEdge;
         public TextureWrapMode WrapT = TextureWrapMode.ClampToEdge;
         public bool MipMap = true;
+        public string Path;
 
         public int Width = 0, Height = 0;
 

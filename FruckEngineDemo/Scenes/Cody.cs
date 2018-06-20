@@ -10,7 +10,7 @@ namespace FruckEngineDemo.Scenes
 {
     public class Cody : Scene {
         public double Time = 0;
-        private FruckEngine.Objects.Object frog1;
+        private FruckEngine.Objects.HairyObject frog1;
         private FruckEngine.Objects.HairyObject frog2;
         
         protected override void Init(World world)
@@ -49,13 +49,19 @@ namespace FruckEngineDemo.Scenes
             
             {
                 const string directory = "Assets/models/frog";
-                frog1 = AssimpLoadHelper.LoadModel(directory + "/frog.obj", true);
+                frog1 = new HairyObject(AssimpLoadHelper.LoadModel(directory + "/frog.obj", true));
                 var material = frog1.Meshes[0].AsPBR();
                 material.Textures.Clear();
                 material.Textures.Add(TextureHelper.LoadFromImage(directory + "/diffuse.png", ShadeType.TEXTURE_TYPE_ALBEDO));
                 material.Albedo = Vector3.One;
-                material.Metallic = 0.99f;
-                material.Roughness = 0.01f;
+                material.Metallic = 0.9f;
+                material.Roughness = 0.1f;
+
+                frog1.HairSegmentOffset = .2f;
+                frog1.HairSegmentCount = 20;
+                frog1.HairInvDensity = 50;
+                frog1.HairThickness = 20;
+
                 frog1.Scale = Vector3.One * 0.1f;
                 frog1.Position = new Vector3(0, -10, -5);
                 world.AddObject(frog1);
@@ -67,14 +73,17 @@ namespace FruckEngineDemo.Scenes
                 material.Textures.Clear();
                 material.Textures.Add(TextureHelper.LoadFromImage(directory + "/diffuse.png", ShadeType.TEXTURE_TYPE_ALBEDO));
                 material.Albedo = Vector3.One;
-                material.Metallic = 0.0f;
-                material.Roughness = 0.0f;
+                material.Metallic = 0.3f;
+                material.Roughness = 0.7f;
 
-                frog2.HairOffset = .1f;
-                frog2.HairSegmentCount = 10;
+                frog2.HairSegmentOffset = .1f;
+                frog2.HairSegmentCount = 20;
+                frog2.HairInvDensity = 3;
+                frog2.HairThickness = 1;
+
                 frog2.Scale = Vector3.One;
                 //child.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45f);
-                frog2.Position = Vector3.UnitY * 200;
+                frog2.Position = Vector3.UnitY * 70;
                 frog1.Children.Add(frog2);
             }
 

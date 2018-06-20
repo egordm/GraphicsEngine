@@ -33,7 +33,6 @@ namespace FruckEngine.Objects
             Scale = obj.Scale;
             Meshes = obj.Meshes;
             Children = obj.Children;
-            Broken = obj.Broken;
         }
 
         public Object(List<Mesh> meshes) {

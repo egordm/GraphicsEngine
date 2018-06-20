@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using FruckEngine.Graphics;
 using ImageMagick;
 using OpenTK.Graphics.OpenGL;
+using System.Drawing;
 
 namespace FruckEngine.Helpers {
     public static class TextureHelper {
@@ -20,6 +21,7 @@ namespace FruckEngine.Helpers {
             var img = new MagickImage(path);
             var isHDR = img.Format == MagickFormat.Hdr;
             var pixels = img.GetPixels();
+            texture.Path = path;
 
             FormatFromChannelCount(img.ChannelCount, isHDR, ref texture.InternalFormat, ref texture.Format);
             texture.PixelType = isHDR ? PixelType.Float : PixelType.UnsignedByte;
@@ -39,6 +41,32 @@ namespace FruckEngine.Helpers {
                 if (face == 0) LoadDataIntoTexture(texture, img.Width, img.Height, data);
                 else LoadFaceDataIntoTexture(texture, img.Width, img.Height, face, data);
             }
+        }
+
+        public static Bitmap GetData(string path)
+        {
+            var img = new MagickImage(path);
+            if(img.Format == MagickFormat.Hdr) return null;
+            var pixels = img.GetPixels();
+            return img.ToBitmap();
+        }
+
+        public static void LoadFromBitmap(ref Texture texture, Bitmap bitmap)
+        {
+            var img = new MagickImage(bitmap);
+            var isHDR = img.Format == MagickFormat.Hdr;
+            var pixels = img.GetPixels();
+            texture.Path = "";
+
+            FormatFromChannelCount(img.ChannelCount, isHDR, ref texture.InternalFormat, ref texture.Format);
+            texture.PixelType = isHDR ? PixelType.Float : PixelType.UnsignedByte;
+            texture.Target = TextureTarget.Texture2D;
+
+            var data = pixels.ToByteArray(texture.Format == PixelFormat.Rgb
+                    ? "RGB"
+                    : (texture.Format == PixelFormat.Rgba ? "RGBA" : "R"));
+
+            LoadDataIntoTexture(texture, img.Width, img.Height, data);
         }
 
         public static Texture LoadCubemapFromDir(string dir, float exposureCorrect = 66878) {
