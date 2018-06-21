@@ -60,8 +60,8 @@ namespace FruckEngineDemo.Scenes
 
                 frog1.HairSegmentOffset = .2f;
                 frog1.HairSegmentCount = 20;
-                frog1.HairInvDensity = 50;
-                frog1.HairThickness = 20;
+                frog1.HairInvDensity = 15;
+                frog1.HairThickness = 5;
 
                 frog1.Scale = Vector3.One * 0.1f;
                 frog1.Position = new Vector3(0, -10, -5);
@@ -78,7 +78,7 @@ namespace FruckEngineDemo.Scenes
                 material.Roughness = 0.7f;
 
                 frog2.HairSegmentOffset = .1f;
-                frog2.HairSegmentCount = 20;
+                frog2.HairSegmentCount = 10;
                 frog2.HairInvDensity = 3;
                 frog2.HairThickness = 1;
 
@@ -105,9 +105,11 @@ namespace FruckEngineDemo.Scenes
             base.Update(world, dt);
 
             Time += dt;
-            
-            //frog1.Position = new Vector3((float)Math.Sin(Time) * 5, 0, (float)Math.Cos(Time) * 5);
-            //frog2.Rotation = Quaternion.FromAxisAngle(Vector3.UnitY, (float) Time);
+
+            frog1.Rotation = Quaternion.FromAxisAngle(Vector3.UnitY, (float) Math.Sin(Time));
+            float move = ((float)Math.Sin(Time) + 1) * 0.5f;
+            move *= move * move;
+            frog2.Position = (Vector3.UnitY * 70) + (Vector3.UnitY * move * 30);
         }
     }
 }
