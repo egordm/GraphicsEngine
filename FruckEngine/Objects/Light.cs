@@ -70,4 +70,12 @@ namespace FruckEngine.Objects {
             shader.SetFloat(name + "intensity", Intensity);
         }
     }
+
+    public class Sun : DirectionalLight {
+        public float Radius = 0.3f;
+        
+        public Sun(Vector3 direction, Vector3 color, float intensity) : base(direction, color, intensity) { }
+        
+        
+    }
 }

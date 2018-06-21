@@ -9,7 +9,7 @@ namespace FruckEngineDemo.Scenes {
     public class Cerberus : Scene {
         protected override void Init(World world) {
             world.Environment.AmbientLight = Vector3.One;
-            world.Environment.DirectionalLight.Intensity = 0;
+            world.Environment.Sun.Intensity = 0;
             
             var env = TextureHelper.LoadFromCubemap(new List<string> {
                 "Assets/cubemaps/Home/_posx.hdr",

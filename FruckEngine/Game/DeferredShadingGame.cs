@@ -16,6 +16,7 @@ namespace FruckEngine.Game {
         protected DOFNode DofNode;
         protected DeferredPBRNode DeferredPBRNode;
         protected GodrayNode GodrayNode;
+        protected GodrayCalcNode GodrayCalcNode;
 
         protected bool EnableBloom = true;
         
@@ -33,6 +34,7 @@ namespace FruckEngine.Game {
             BlurNode = new BlurNode(Width, Height);
             DofNode = new DOFNode(Width, Height);
             GodrayNode = new GodrayNode(Width, Height);
+            GodrayCalcNode = new GodrayCalcNode(Width, Height);
 
             // -- Deferred Shading Buffer
             DeferredBuffer = new FrameBuffer(Width, Height);
@@ -78,7 +80,11 @@ namespace FruckEngine.Game {
             // Pass 4 Blur Bloom
             var bloomTex = EnableBloom ? BlurNode.Apply(DeferredBuffer.GetAttachment("brightness")) : TextureHelper.GetZeroNull();
             
-            var godrays = GodrayNode.Apply(World, DeferredBuffer.GetAttachment("brightness"));
+            // Pass 4.1 God rays
+            //var godrays = GodrayNode.Apply(World, DeferredBuffer.GetAttachment("brightness"));
+            GodrayCalcNode.Clear(PBRGeometry);
+            GodrayCalcNode.AddLight(World, (PointLight) World.Lights[0]);
+            var godrays = GodrayCalcNode.GetResult();
 
             // Pass 4.5 DOF
             var dof = DofNode.Apply(DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));

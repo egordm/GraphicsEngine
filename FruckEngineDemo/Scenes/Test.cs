@@ -7,7 +7,7 @@ namespace FruckEngineDemo.Scenes {
     public class Test : Scene {
         protected override void Init(World world) {
             world.Environment.AmbientLight = Vector3.One;
-            world.Environment.DirectionalLight.Intensity = 1;
+            world.Environment.Sun.Intensity = 1;
             
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Mountains", 30000);
             world.Environment.SetTexture(env, true);

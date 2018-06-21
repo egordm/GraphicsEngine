@@ -7,7 +7,7 @@ namespace FruckEngineDemo.Scenes {
     public class StormTrooper : Scene {
         protected override void Init(World world) {
             world.Environment.AmbientLight = Vector3.One;
-            world.Environment.DirectionalLight.Intensity = 10000;
+            world.Environment.Sun.Intensity = 10000;
 
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Kiara", 30000);
             world.Environment.SetTexture(env, true);

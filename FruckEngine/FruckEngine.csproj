@@ -64,6 +64,7 @@
     <Compile Include="Graphics\Pipeline\BlurNode.cs" />
     <Compile Include="Graphics\Pipeline\DeferredPBRNode.cs" />
     <Compile Include="Graphics\Pipeline\DOFNode.cs" />
+    <Compile Include="Graphics\Pipeline\GodrayCalcNode.cs" />
     <Compile Include="Graphics\Pipeline\GodrayNode.cs" />
     <Compile Include="Graphics\Pipeline\GraphicsPipelineNode.cs" />
     <Compile Include="Graphics\Pipeline\SSAONode.cs" />
@@ -99,6 +100,9 @@
     <Content Include="Assets\shaders\composite_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\shaders\default_vs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\shaders\effects\blur_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -129,6 +133,9 @@
     <Content Include="Assets\shaders\debug_draw\flat_draw_vs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\shaders\default_fs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\shaders\pbr\brdf_fs.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -148,6 +155,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\shaders\plane_project_vs.glsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\shaders\utils\extract_brightness_cubemap.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
