@@ -16,9 +16,9 @@ namespace FruckEngine.Game {
         protected DOFNode DofNode;
         protected DeferredPBRNode DeferredPBRNode;
         protected GodrayNode GodrayNode;
-        protected GodrayCalcNode GodrayCalcNode;
 
         protected bool EnableBloom = true;
+        protected bool EnableGodrays = true;
         
         public override void Init() {
             base.Init();
@@ -28,13 +28,13 @@ namespace FruckEngine.Game {
             InputHelper.CreateClickListener(Key.J);
             InputHelper.CreateClickListener(Key.K);
             InputHelper.CreateClickListener(Key.L);
+            InputHelper.CreateClickListener(Key.G);
 
             PBRHelper.GetBRDFLUT();
             SSAONode = new SSAONode(Width, Height);
             BlurNode = new BlurNode(Width, Height);
             DofNode = new DOFNode(Width, Height);
             GodrayNode = new GodrayNode(Width, Height);
-            GodrayCalcNode = new GodrayCalcNode(Width, Height);
 
             // -- Deferred Shading Buffer
             DeferredBuffer = new FrameBuffer(Width, Height);
@@ -81,10 +81,18 @@ namespace FruckEngine.Game {
             var bloomTex = EnableBloom ? BlurNode.Apply(DeferredBuffer.GetAttachment("brightness")) : TextureHelper.GetZeroNull();
             
             // Pass 4.1 God rays
-            //var godrays = GodrayNode.Apply(World, DeferredBuffer.GetAttachment("brightness"));
-            GodrayCalcNode.Clear(PBRGeometry);
-            GodrayCalcNode.AddLight(World, (PointLight) World.Lights[0]);
-            var godrays = GodrayCalcNode.GetResult();
+            Texture godrays;
+            if (EnableGodrays) {
+                GodrayNode.Clear(PBRGeometry);
+                GodrayNode.AddEnvironment(World);
+                foreach (var light in World.Lights) {
+                    if (light is PointLight) GodrayNode.AddLight(World, (PointLight) light);
+                }
+
+                godrays = GodrayNode.GetResult();
+            } else {
+                godrays = TextureHelper.GetZeroNull();
+            }
 
             // Pass 4.5 DOF
             var dof = DofNode.Apply(DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));
@@ -106,6 +114,8 @@ namespace FruckEngine.Game {
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);
             InputHelper.Update(state);
+            
+            //Console.WriteLine(World.MainCamera.Direction);
 
             if (InputHelper.IsClicked(Key.O)) {
                 SSAONode.Enable = !SSAONode.Enable;
@@ -125,6 +135,10 @@ namespace FruckEngine.Game {
             
             if (InputHelper.IsClicked(Key.I)) {
                 EnableBloom = !EnableBloom;
+            }
+            
+            if (InputHelper.IsClicked(Key.G)) {
+                EnableGodrays = !EnableGodrays;
             }
         }
     }

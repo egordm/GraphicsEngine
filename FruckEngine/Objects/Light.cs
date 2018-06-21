@@ -14,24 +14,30 @@ namespace FruckEngine.Objects {
         public LightType Type;
         public Vector3 Color;
         public float Intensity;
+        public Vector3 Position;
+
+        public bool HasGodRays = false;
+        public float Density = 0.1f;
+        public float BlurWidth = 0.6f;
+
         public bool Drawable = false;
 
-        protected Light(LightType type, Vector3 color, float intensity) {
+        protected Light(LightType type, Vector3 color, Vector3 position, float intensity) {
             Type = type;
             Color = color;
             Intensity = intensity;
+            Position = position;
         }
 
         public abstract void Apply(Shader shader, int index);
     }
     
     public class PointLight : Light, IDrawable {
-        public Vector3 Position;
+       
         public float DrawRadius = 3f;
 
         public PointLight(Vector3 position, Vector3 color, float intensity) 
-            : base(LightType.PointLight, color, intensity) {
-            Position = position;
+            : base(LightType.PointLight, color, position, intensity) {
             Drawable = true;
         }
 
@@ -56,16 +62,14 @@ namespace FruckEngine.Objects {
     }
 
     public class DirectionalLight : Light {
-        public Vector3 Direction;
 
-        public DirectionalLight(Vector3 direction, Vector3 color, float intensity) 
-            : base(LightType.DirectionalLight, color, intensity) {
-            Direction = direction;
+        public DirectionalLight(Vector3 position, Vector3 color, float intensity) 
+            : base(LightType.DirectionalLight, color, position, intensity) {
         }
 
         public override void Apply(Shader shader, int index) {
             const string name = "uDirectionalLight.";
-            shader.SetVec3(name + "direction", Direction);
+            shader.SetVec3(name + "direction", -Position.Normalized());
             shader.SetVec3(name + "color", Color);
             shader.SetFloat(name + "intensity", Intensity);
         }
@@ -73,8 +77,12 @@ namespace FruckEngine.Objects {
 
     public class Sun : DirectionalLight {
         public float Radius = 0.3f;
-        
-        public Sun(Vector3 direction, Vector3 color, float intensity) : base(direction, color, intensity) { }
+
+        public Sun(Vector3 direction, Vector3 color, float intensity) : base(direction, color, intensity) {
+            HasGodRays = true;
+            Density = 0.3f;
+            BlurWidth = 0.9f;
+        }
         
         
     }

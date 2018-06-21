@@ -64,7 +64,6 @@
     <Compile Include="Graphics\Pipeline\BlurNode.cs" />
     <Compile Include="Graphics\Pipeline\DeferredPBRNode.cs" />
     <Compile Include="Graphics\Pipeline\DOFNode.cs" />
-    <Compile Include="Graphics\Pipeline\GodrayCalcNode.cs" />
     <Compile Include="Graphics\Pipeline\GodrayNode.cs" />
     <Compile Include="Graphics\Pipeline\GraphicsPipelineNode.cs" />
     <Compile Include="Graphics\Pipeline\SSAONode.cs" />

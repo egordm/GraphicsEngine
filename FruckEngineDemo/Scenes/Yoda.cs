@@ -9,7 +9,10 @@ namespace FruckEngineDemo.Scenes {
     public class Yoda : Scene {
         protected override void Init(World world) {
             world.Environment.AmbientLight = Vector3.One;
+            //world.Environment.Sun.Position = new Vector3(-0.2962257f, 0.5735765f, -0.7637148f);
+            world.Environment.Sun.Position = new Vector3(-0.6794168f, 0.7181264f, 0.1506226f);
             world.Environment.Sun.Intensity = 0;
+            
             
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Swamp", 10000);
             world.Environment.SetTexture(env, true);

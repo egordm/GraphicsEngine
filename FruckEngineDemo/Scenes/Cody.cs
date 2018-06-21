@@ -16,6 +16,7 @@ namespace FruckEngineDemo.Scenes
         protected override void Init(World world)
         {
             world.Environment.AmbientLight = Vector3.One;
+            world.Environment.Sun.Position = new Vector3(0, 1, 2f);
             world.Environment.Sun.Intensity = 0;
 
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Home");
