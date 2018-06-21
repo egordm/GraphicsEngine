@@ -89,9 +89,9 @@ namespace FruckEngineDemo.Scenes
 
             var lights = new List<Vector3>(){
                 new Vector3(-20.0f, 20.0f, 45.0f),
-                new Vector3(20.0f, 20.0f, 45.0f),
-                new Vector3(-20.0f, -20.0f, 45.0f),
-                new Vector3(20.0f, -20.0f, 45.0f),
+               // new Vector3(20.0f, 20.0f, 45.0f),
+               // new Vector3(-20.0f, -20.0f, 45.0f),
+                //new Vector3(20.0f, -20.0f, 45.0f),
             };
 
             foreach (var lightPos in lights)

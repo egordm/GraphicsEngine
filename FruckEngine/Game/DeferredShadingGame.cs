@@ -15,6 +15,7 @@ namespace FruckEngine.Game {
         protected BlurNode BlurNode;
         protected DOFNode DofNode;
         protected DeferredPBRNode DeferredPBRNode;
+        protected GodrayNode GodrayNode;
 
         protected bool EnableBloom = true;
         
@@ -31,6 +32,7 @@ namespace FruckEngine.Game {
             SSAONode = new SSAONode(Width, Height);
             BlurNode = new BlurNode(Width, Height);
             DofNode = new DOFNode(Width, Height);
+            GodrayNode = new GodrayNode(Width, Height);
 
             // -- Deferred Shading Buffer
             DeferredBuffer = new FrameBuffer(Width, Height);
@@ -53,6 +55,7 @@ namespace FruckEngine.Game {
             CompositeShader.Use();
             CompositeShader.SetInt("uShaded", 0);
             CompositeShader.SetInt("uBloom", 1);
+            CompositeShader.SetInt("uGodrays", 2);
         }
 
         public override void Render() {
@@ -65,7 +68,6 @@ namespace FruckEngine.Game {
             // Pass 2 SSAO
             var SSAOTex = SSAONode.CalculateAO(coordSystem, PBRGeometry.GetAttachment("position"),
                 PBRGeometry.GetAttachment("normal"));
-            
             SSAOTex = BlurNode.Apply(SSAOTex, 2);
             
             // Pass 3 Shading
@@ -75,6 +77,8 @@ namespace FruckEngine.Game {
             
             // Pass 4 Blur Bloom
             var bloomTex = EnableBloom ? BlurNode.Apply(DeferredBuffer.GetAttachment("brightness")) : TextureHelper.GetZeroNull();
+            
+            var godrays = GodrayNode.Apply(World, DeferredBuffer.GetAttachment("brightness"));
 
             // Pass 4.5 DOF
             var dof = DofNode.Apply(DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));
@@ -87,8 +91,9 @@ namespace FruckEngine.Game {
             //DeferredBuffer.GetAttachment("depth").Activate(0);
             //DeferredBuffer.GetAttachment("color").Activate(0);
             dof.Activate(0);
-            TextureHelper.GetZeroNull().Activate(1);
             bloomTex.Activate(1);
+            godrays.Activate(2);
+            
             Projection.ProjectPlane();
         }
 

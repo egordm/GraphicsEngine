@@ -44,6 +44,7 @@ namespace FruckEngine.Helpers {
 
             shader.AddUniformVar("uShaded");
             shader.AddUniformVar("uBloom");
+            shader.AddUniformVar("uGodrays");
 
             shader.AddUniformVar("uApplyBloom");
             shader.AddUniformVar("uExposure");

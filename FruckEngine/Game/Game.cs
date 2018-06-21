@@ -9,6 +9,7 @@ using OpenTK.Input;
 namespace FruckEngine.Game {
     public abstract class Game {
         public SceneManager Scenes = new SceneManager();
+        public World World => Scenes.CurrentWorld;
         public double Time;
 
         public int Width { get; private set; }

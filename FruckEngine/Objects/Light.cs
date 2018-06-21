@@ -14,6 +14,7 @@ namespace FruckEngine.Objects {
         public LightType Type;
         public Vector3 Color;
         public float Intensity;
+        public bool Drawable = false;
 
         protected Light(LightType type, Vector3 color, float intensity) {
             Type = type;
@@ -31,6 +32,7 @@ namespace FruckEngine.Objects {
         public PointLight(Vector3 position, Vector3 color, float intensity) 
             : base(LightType.PointLight, color, intensity) {
             Position = position;
+            Drawable = true;
         }
 
         public override void Apply(Shader shader, int index) {

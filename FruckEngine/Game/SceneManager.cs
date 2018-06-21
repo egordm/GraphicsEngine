@@ -32,7 +32,7 @@ namespace FruckEngine.Game {
     public class SceneManager {
         public Dictionary<string, Scene> Scenes;
         public Scene CurrentScene { get; private set; } = null;
-        public World CurrentWorld => CurrentScene.World;
+        public World CurrentWorld => CurrentScene != null ? CurrentScene.World : null;
 
         public SceneManager() {
             Scenes = new Dictionary<string, Scene>();

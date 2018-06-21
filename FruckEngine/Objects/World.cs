@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FruckEngine.Graphics;
 using FruckEngine.Objects;
 using FruckEngine.Structs;
 using OpenTK;
 using FruckEngine.Game;
+using Environment = FruckEngine.Structs.Environment;
 
-namespace FruckEngine.Objects
-{
-    public class World
-    {
+namespace FruckEngine.Objects {
+    public class World {
         public Camera MainCamera { get; set; }
         private List<Light> _lights = new List<Light>();
         private Object Root;
@@ -18,26 +18,22 @@ namespace FruckEngine.Objects
 
         public Environment Environment = new Environment();
 
-        public World()
-        {
+        public World() {
             MainCamera = new Camera(Vector3.Zero, 0, 0, Vector3.UnitY);
             MainCamera.SetFOV(130);
             Root = new Object();
         }
 
-        public void AddObject(Object obj)
-        {
+        public void AddObject(Object obj) {
             Root.Children.Add(obj);
             obj.Init();
         }
-        
-        public void AddLight(Light light)
-        {
+
+        public void AddLight(Light light) {
             _lights.Add(light);
         }
 
-        public void Update(double dt)
-        {
+        public void Update(double dt) {
             Root.Update(dt);
         }
 
@@ -46,10 +42,12 @@ namespace FruckEngine.Objects
             Root.Draw(coordSystem, shader, properties);
 
             foreach (var light in Lights) {
-                if(light.Type == LightType.PointLight) ((PointLight)light).Draw(coordSystem, shader, properties);
+                if (light.Type == LightType.PointLight && light.Drawable) {
+                    ((PointLight) light).Draw(coordSystem, shader, properties);
+                }
             }
         }
-        
+
         public CoordSystem InitialCoordSystem() {
             return new CoordSystem(MainCamera.GetProjectionMatrix(), MainCamera.GetViewMatrix(), Matrix4.Identity);
         }
