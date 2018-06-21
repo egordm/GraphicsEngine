@@ -37,7 +37,7 @@ const float FRINGE = 0.7; //bokeh chromatic aberration/fringing
 // Vignetting
 const float VIGN_OUT = 0.5; //vignetting outer border
 const float VIGN_IN = 0.1; //vignetting inner border
-const float VIGN_FADE = 44.0; //f-stops till vignete fades
+const float VIGN_FADE = 30.0; //f-stops till vignete fades
 
 //Chromatic aberration
 const float CHR_AB_INTENSITY = 0.01; //The smaller the less intense

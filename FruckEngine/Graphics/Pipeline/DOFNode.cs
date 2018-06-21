@@ -9,7 +9,7 @@ namespace FruckEngine.Graphics.Pipeline {
         public bool Debug = false;
         public bool Vignetting = true;
         public float FocalLength = 28f;
-        public float FStop = 28/2f;
+        public float FStop = 28/4f;
 
         public DOFNode(int width, int height) : base(width, height) {
             FrameBuffer = new FrameBuffer(Width, Height);
