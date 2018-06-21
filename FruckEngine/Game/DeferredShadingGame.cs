@@ -95,7 +95,7 @@ namespace FruckEngine.Game {
             }
 
             // Pass 4.5 DOF
-            var dof = DofNode.Apply(DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));
+            var dof = DofNode.Apply(World, DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));
             
             // Pass 5 Final render compositing
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

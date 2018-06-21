@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using FruckEngine.Objects;
+using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Graphics.Pipeline {
     public class DOFNode : GraphicsPipelineNode {
@@ -8,8 +9,6 @@ namespace FruckEngine.Graphics.Pipeline {
         public bool Enable = true;
         public bool Debug = false;
         public bool Vignetting = true;
-        public float FocalLength = 28f;
-        public float FStop = 28/4f;
 
         public DOFNode(int width, int height) : base(width, height) {
             FrameBuffer = new FrameBuffer(Width, Height);
@@ -37,14 +36,14 @@ namespace FruckEngine.Graphics.Pipeline {
             
         }
 
-        public Texture Apply(Texture color, Texture depth) {
+        public Texture Apply(World world, Texture color, Texture depth) {
             if (!Enable) return color;
             
             // TODO: mayby move vignetting to the composer
             FrameBuffer.Bind(true, false);
             Shader.Use();
-            Shader.SetFloat("uFocalLength", FocalLength); // TODO: get from fov?
-            Shader.SetFloat("uFstop", FStop); // TODO: get from fov?
+            Shader.SetFloat("uFocalLength", world.MainCamera.FocalLength); // TODO: get from fov?
+            Shader.SetFloat("uFstop", world.MainCamera.FStop); // TODO: get from fov?
             Shader.SetBool("uDebug", Debug);
             Shader.SetBool("uEnableVignetting", Vignetting);
             color.Activate(0);
