@@ -151,6 +151,9 @@
     <Content Include="Assets\cubemaps\Swamp\_posz.hdr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\lut\mario_lut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\models\Cerberus_by_Andrew_Maximov\Cerberus.tbscene">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -2,6 +2,8 @@
 using FruckEngine.Objects;
 using OpenTK;
 using FruckEngine.Game;
+using FruckEngine.Graphics;
+using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngineDemo.Scenes {
     public class MarioCart : Scene {
@@ -9,7 +11,11 @@ namespace FruckEngineDemo.Scenes {
             world.Environment.AmbientLight = Vector3.One;
             world.Environment.Sun.Position = new Vector3(0.842257f, 0.5299188f, 0.0989397f);
             world.Environment.Sun.Density = 0.3f;
-            world.Environment.Sun.Intensity = 1;
+            world.Environment.Sun.Intensity = 1; 
+            
+            world.Environment.ColorLUT = new Texture();
+            world.Environment.ColorLUT.SetFilters(TextureMinFilter.Linear, TextureMagFilter.Linear);
+            TextureHelper.LoadFromImage(ref world.Environment.ColorLUT, "Assets/lut/mario_lut.png");
             
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Mountains", 15000);
             world.Environment.SetTexture(env, true);

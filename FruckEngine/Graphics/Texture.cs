@@ -108,8 +108,10 @@ namespace FruckEngine.Graphics {
             if (doBind) Bind();
             WrapS = wrapS;
             WrapT = wrapT;
-            GL.TexParameter(Target, TextureParameterName.TextureWrapS, (int) wrapS);
-            GL.TexParameter(Target, TextureParameterName.TextureWrapT, (int) wrapT);
+            if (Pointer != Constants.UNCONSTRUCTED) {
+                GL.TexParameter(Target, TextureParameterName.TextureWrapS, (int) wrapS);
+                GL.TexParameter(Target, TextureParameterName.TextureWrapT, (int) wrapT);
+            }
         }
         
         public void SetFilters(TextureMinFilter minFilter = TextureMinFilter.Linear,
@@ -117,8 +119,10 @@ namespace FruckEngine.Graphics {
             if (doBind) Bind();
             FilterMin = minFilter;
             FilterMag = magFilter;
-            GL.TexParameter(Target, TextureParameterName.TextureMinFilter, (int) FilterMin);
-            GL.TexParameter(Target, TextureParameterName.TextureMagFilter, (int) FilterMag);
+            if (Pointer != Constants.UNCONSTRUCTED) {
+                GL.TexParameter(Target, TextureParameterName.TextureMinFilter, (int) FilterMin);
+                GL.TexParameter(Target, TextureParameterName.TextureMagFilter, (int) FilterMag);
+            }
         }
 
         public void GenMipMaps(bool doBind = false) {

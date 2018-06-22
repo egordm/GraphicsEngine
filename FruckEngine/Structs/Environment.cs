@@ -11,6 +11,8 @@ namespace FruckEngine.Structs {
         public Texture IrradianceMap { get; private set; } = null;
         public Texture PrefilteredMap { get; private set; } = null;
 
+        public Texture ColorLUT = TextureHelper.GetStandardColorLUTTexture();
+
         public Sun Sun = new Sun(new Vector3(0.0f, -1, 0.5f), new Vector3(0.839f, 0.925f, 1), 0.2f);
         public Vector3 AmbientLight = Vector3.One;
 

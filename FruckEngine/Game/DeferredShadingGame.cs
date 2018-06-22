@@ -19,6 +19,7 @@ namespace FruckEngine.Game {
 
         protected bool EnableBloom = true;
         protected bool EnableGodrays = true;
+        protected bool EnableColorGrade = true;
         
         public override void Init() {
             base.Init();
@@ -29,6 +30,7 @@ namespace FruckEngine.Game {
             InputHelper.CreateClickListener(Key.K);
             InputHelper.CreateClickListener(Key.L);
             InputHelper.CreateClickListener(Key.G);
+            InputHelper.CreateClickListener(Key.N);
 
             PBRHelper.GetBRDFLUT();
             SSAONode = new SSAONode(Width, Height);
@@ -58,6 +60,7 @@ namespace FruckEngine.Game {
             CompositeShader.SetInt("uShaded", 0);
             CompositeShader.SetInt("uBloom", 1);
             CompositeShader.SetInt("uGodrays", 2);
+            CompositeShader.SetInt("uColorLUT", 3);
         }
 
         public override void Render() {
@@ -102,11 +105,14 @@ namespace FruckEngine.Game {
             CompositeShader.Use();
             CompositeShader.SetBool("uApplyBloom", true);
             CompositeShader.SetFloat("uExposure", 1.0f);
+            CompositeShader.SetInt("uColorLUTSize", World.Environment.ColorLUT.Height);
+            CompositeShader.SetBool("uApplyColorGrade", EnableColorGrade);
             //DeferredBuffer.GetAttachment("depth").Activate(0);
             //DeferredBuffer.GetAttachment("color").Activate(0);
             dof.Activate(0);
             bloomTex.Activate(1);
             godrays.Activate(2);
+            World.Environment.ColorLUT.Activate(3);
             
             Projection.ProjectPlane();
         }
@@ -139,6 +145,10 @@ namespace FruckEngine.Game {
             
             if (InputHelper.IsClicked(Key.G)) {
                 EnableGodrays = !EnableGodrays;
+            }
+            
+            if (InputHelper.IsClicked(Key.N)) {
+                EnableColorGrade = !EnableColorGrade;
             }
         }
     }

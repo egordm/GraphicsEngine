@@ -144,6 +144,7 @@ namespace FruckEngine.Helpers {
         private static Texture NormalNullTexture = new Texture();
         private static Texture OneNullTexture = new Texture();
         private static Texture ZeroNullTexture = new Texture();
+        private static Texture StandardColorLUTTexture = new Texture();
 
         public static Texture GetNormalNull() {
             if (NormalNullTexture.Pointer == Constants.UNCONSTRUCTED)
@@ -164,6 +165,16 @@ namespace FruckEngine.Helpers {
                 InitNullTex(ZeroNullTexture, new byte[] {0, 0, 0});
 
             return ZeroNullTexture;
+        }
+        
+        public static Texture GetStandardColorLUTTexture() {
+            if (StandardColorLUTTexture.Pointer == Constants.UNCONSTRUCTED) {
+                StandardColorLUTTexture.FilterMin = TextureMinFilter.Linear;
+                StandardColorLUTTexture.FilterMag = TextureMagFilter.Linear;
+                LoadFromImage(ref StandardColorLUTTexture, "Assets/color_lut.png");
+            }
+
+            return StandardColorLUTTexture;
         }
 
         private static void InitNullTex(Texture texture, byte[] data) {
