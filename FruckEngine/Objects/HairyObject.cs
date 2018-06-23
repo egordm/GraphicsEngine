@@ -17,9 +17,13 @@ namespace FruckEngine.Objects
         public float HairSegmentOffset;
         public int HairInvDensity = 3;
         public int HairThickness = 1;
-        private bool Inited = false;
-        private Matrix4[] history;
-        private uint timer = 0;
+        protected bool Inited = false;
+        protected Matrix4[] layers;
+        
+        public HairyObject()
+        {
+            HairMaterial = new PBRMaterial();
+        }
 
         public HairyObject(Object o) : base(o)
         {
@@ -30,7 +34,9 @@ namespace FruckEngine.Objects
         {
             Inited = true;
             HairMaterial = new PBRMaterial();
-            history = new Matrix4[HairSegmentCount];
+            layers = new Matrix4[HairSegmentCount];
+            for (int i = 0; i < layers.Length; i++)
+                layers[i] = Matrix4.Identity;
             if (Meshes.Count == 0) return;
             
             //copy material of the body
@@ -67,19 +73,16 @@ namespace FruckEngine.Objects
             base.Draw(coordSys, shader, properties);
 
             if (Meshes.Count == 0) return;
+            if (!Inited) InitHair();
 
             var modelM = GetMatrix(coordSys.Model);
-            coordSys.Model = modelM;
 
-            if (!Inited) InitHair();
-            history[timer % history.Length] = modelM;
-            timer++;
-            
             for (int i = 0; i < HairSegmentCount; i++)
             {
-                if (timer > HairSegmentCount)
-                    coordSys.Model = history[(timer - i) % HairSegmentCount];
-
+                if (layers[i] != Matrix4.Identity)
+                    coordSys.Model = layers[i];
+                else
+                    coordSys.Model = modelM;
                 shader.Use();
                 coordSys.Apply(shader);
                 PrepareShader(shader);

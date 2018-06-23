@@ -21,7 +21,7 @@ namespace FruckEngine.Game {
         
         protected abstract void Init(World world);
 
-        public virtual void Update(World world, double dt) { }
+        public virtual void Update(World world, double dt) {  }
     }
 
     public enum LoadAction {

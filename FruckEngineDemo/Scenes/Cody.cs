@@ -69,7 +69,7 @@ namespace FruckEngineDemo.Scenes
             }
             {
                 const string directory = "Assets/models/frog";
-                frog2 = new HairyObject(AssimpLoadHelper.LoadModel(directory + "/frog.obj", true));
+                frog2 = new DelayedHairyObject(AssimpLoadHelper.LoadModel(directory + "/frog.obj", true));
                 var material = frog2.Meshes[0].AsPBR();
                 material.Textures.Clear();
                 material.Textures.Add(TextureHelper.LoadFromImage(directory + "/diffuse.png", ShadeType.TEXTURE_TYPE_ALBEDO));
@@ -86,6 +86,18 @@ namespace FruckEngineDemo.Scenes
                 //child.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45f);
                 frog2.Position = Vector3.UnitY * 70;
                 frog1.Children.Add(frog2);
+            }
+            {
+                Grass grass = new Grass();
+
+                grass.HairSegmentOffset = .003f;
+                grass.HairSegmentCount = 50;
+                grass.HairInvDensity = 15;
+                grass.HairThickness = 5;
+
+                grass.Scale = Vector3.One * 1f;
+                grass.Position = new Vector3(0, 0, 0);
+                world.AddObject(grass);
             }
 
             var lights = new List<Vector3>(){

@@ -47,7 +47,10 @@ namespace FruckEngine.Objects
         /// <summary>
         /// Called every tick if object is in the scene
         /// </summary>
-        public virtual void Update(double dt) { }
+        public virtual void Update(double dt)
+        {
+            foreach (var child in Children) child.Update(dt);
+        }
 
         /// <summary>
         /// Get object space matrix

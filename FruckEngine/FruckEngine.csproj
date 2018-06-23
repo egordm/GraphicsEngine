@@ -76,6 +76,7 @@
     <Compile Include="Helpers\InputHelper.cs" />
     <Compile Include="Helpers\PBRHelper.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
+    <Compile Include="Objects\Grass.cs" />
     <Compile Include="Objects\HairyObject.cs" />
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Object.cs" />
