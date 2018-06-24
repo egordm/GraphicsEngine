@@ -10,12 +10,15 @@ namespace FruckEngine.Objects
 {
     public class Grass : HairyObject
     {
-        private Vector3 dir;
+        private Vector3 dirA, dirB;
         private double time = 0f;
+        private Matrix4 baseM = Matrix4.Identity;
 
-        public Grass()
+        public Grass(int size, Vector3 dirA, Vector3 dirB)
         {
-            Meshes.Add(DefaultModels.GetPlane(false));
+            Meshes.Add(DefaultModels.GetGrassPlane(size));
+            this.dirA = dirA;
+            this.dirB = dirB;
         }
 
         private void InitGrass()
@@ -38,7 +41,7 @@ namespace FruckEngine.Objects
                     else
                         hairmap.SetPixel(x, y, Color.Transparent);
                 }
-
+            
             Texture normalTex = new Texture();
             TextureHelper.LoadFromBitmap(ref normalTex, normal);
             var material = Meshes[0].AsPBR();
@@ -50,25 +53,27 @@ namespace FruckEngine.Objects
             Texture hairTex = new Texture();
             hairTex.PixelType = OpenTK.Graphics.OpenGL.PixelType.UnsignedByte;
             hairTex.Format = OpenTK.Graphics.OpenGL.PixelFormat.Rgb;
+            hairTex.WrapS = OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat;
+            hairTex.WrapT = OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat;
             TextureHelper.LoadFromBitmap(ref hairTex, hairmap);
             HairMaterial.Textures.Add(hairTex);
         }
-
+        
         public override void Update(double dt)
         {
             base.Update(dt);
             time += dt;
-            dir = new Vector3((float)Math.Cos(time), 0, (float)Math.Sin(time));
-            dir *= 0.05f;
-            for(int i = 0; i < layers.Length; i++)
-            {
-                layers[layers.Length - 1 - i] = Matrix4.CreateTranslation(dir / (float)Math.Pow(1.1f, i));
-            }
+            Vector3 d = Vector3.Lerp(dirA, dirB, (float)(Math.Sin(time) + 1) * 0.5f);
+            d *= 0.05f;
+            float str = (float)(Math.Sin(time) + 1) * 0.5f * 0.5f + 0.5f;
+            for (int i = 0; i < layers.Length; i++)
+                layers[layers.Length - 1 - i] = baseM * Matrix4.CreateTranslation(str * d / (float)Math.Pow(1.1f, i));
         }
 
         public override void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties)
         {
             if (!Inited) InitGrass();
+            baseM = GetMatrix(coordSys.Model);
             base.Draw(coordSys, shader, properties);
         }
     }

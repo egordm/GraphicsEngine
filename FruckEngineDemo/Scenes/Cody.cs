@@ -24,17 +24,6 @@ namespace FruckEngineDemo.Scenes
 
             world.MainCamera.Position = new Vector3(0, 0, 5);
             world.MainCamera.SetRotation(0, -180);
-
-            /*const string directory = "Assets/models/frog";
-            var model = AssimpLoadHelper.LoadModel(directory + "/frog.obj", true);
-            var material = model.Meshes[0].AsPBR();
-            material.Textures.Clear();
-            material.Textures.Add(TextureHelper.LoadFromImage(directory + "/diffuse.png", ShadeType.TEXTURE_TYPE_ALBEDO));
-            material.Albedo = Vector3.One;
-            material.Metallic = 0.99f;
-            material.Roughness = 0.01f;
-            model.Scale = Vector3.One * 0.1f;
-            world.AddObject(model);*/
             
             var sm = DefaultModels.GetSphere();
             var orig = new FruckEngine.Objects.Object();
@@ -88,23 +77,24 @@ namespace FruckEngineDemo.Scenes
                 frog1.Children.Add(frog2);
             }
             {
-                Grass grass = new Grass();
+                int size = 100;
+                Grass grass = new Grass(size, new Vector3(1, 0, 0), new Vector3(1, 0, 1).Normalized());
 
                 grass.HairSegmentOffset = .003f;
                 grass.HairSegmentCount = 50;
                 grass.HairInvDensity = 15;
                 grass.HairThickness = 5;
 
-                grass.Scale = Vector3.One * 1f;
+                grass.Scale = new Vector3(size, 1, size);
                 grass.Position = new Vector3(0, 0, 0);
                 world.AddObject(grass);
             }
 
             var lights = new List<Vector3>(){
                 new Vector3(-20.0f, 20.0f, 45.0f),
-               // new Vector3(20.0f, 20.0f, 45.0f),
-               // new Vector3(-20.0f, -20.0f, 45.0f),
-                //new Vector3(20.0f, -20.0f, 45.0f),
+                // new Vector3(20.0f, 20.0f, 45.0f),
+                // new Vector3(-20.0f, -20.0f, 45.0f),
+                // new Vector3(20.0f, -20.0f, 45.0f),
             };
 
             foreach (var lightPos in lights)

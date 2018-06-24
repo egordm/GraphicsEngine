@@ -6,6 +6,23 @@ using OpenTK;
 
 namespace FruckEngine.Helpers {
     public static class DefaultModels {
+        public static Mesh GetGrassPlane(int size)
+        {
+            List<Vertex> vertices;
+            vertices = new List<Vertex>() {
+                    new Vertex(new Vector3(-1, 0, 1), new Vector2(0.0f, size), Vector3.UnitY, Vector3.UnitX,
+                        Vector3.UnitZ),
+                    new Vertex(new Vector3(-1, 0, -1), new Vector2(0.0f, 0.0f), Vector3.UnitY, Vector3.UnitX,
+                        Vector3.UnitZ),
+                    new Vertex(new Vector3(1, 0, 1), new Vector2(size, size), Vector3.UnitY, Vector3.UnitX,
+                        Vector3.UnitZ),
+                    new Vertex(new Vector3(1, 0, -1), new Vector2(size, 0.0f), Vector3.UnitY, Vector3.UnitX,
+                        Vector3.UnitZ)
+                };
+            var indices = new List<uint>() { 0, 1, 2, 1, 2, 3 };
+            return new Mesh(vertices.ToArray(), indices.ToArray(), new PBRMaterial());
+        }
+
         public static Mesh GetPlane(bool vertical) {
             List<Vertex> vertices;
             if (!vertical) {
