@@ -6,6 +6,7 @@ using FruckEngine.Graphics;
 using FruckEngine.Structs;
 using FruckEngine.Utils;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using Material = FruckEngine.Structs.Material;
 using Mesh = FruckEngine.Graphics.Mesh;
 using Object = FruckEngine.Objects.Object;
@@ -216,6 +217,7 @@ namespace FruckEngine.Helpers {
 
             // Otherwise load and save to cache
             var ret = TextureHelper.LoadFromImage(path);
+            ret.SetFilters(TextureMinFilter.Linear, TextureMagFilter.Linear);
             ret.ShadeType = shadeType;
             TextureCache.Add(path, ret);
 
