@@ -29,7 +29,7 @@ namespace FruckEngine.Game {
         /// <summary>
         /// Render function. All the drawing should happen here.
         /// </summary>
-        public abstract void Render();
+        public abstract void Render(double dt);
 
         /// <summary>
         /// Resize everything 

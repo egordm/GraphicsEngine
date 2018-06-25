@@ -4,6 +4,7 @@ using FruckEngine.Graphics.Pipeline;
 using FruckEngine.Helpers;
 using FruckEngine.Objects;
 using FruckEngine.Structs;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
@@ -26,10 +27,10 @@ namespace FruckEngine.Game {
         protected bool EnableBloom = true;
         protected bool EnableGodrays = true;
         protected bool EnableColorGrade = true;
-        
+
         public override void Init() {
             base.Init();
-            
+
             // Register input listeners
             InputHelper.CreateClickListener(Key.O);
             InputHelper.CreateClickListener(Key.I);
@@ -38,6 +39,7 @@ namespace FruckEngine.Game {
             InputHelper.CreateClickListener(Key.L);
             InputHelper.CreateClickListener(Key.G);
             InputHelper.CreateClickListener(Key.N);
+            InputHelper.CreateClickListener(Key.M);
 
             // Add a BRDF lookup table
             PBRHelper.GetBRDFLUT();
@@ -60,12 +62,12 @@ namespace FruckEngine.Game {
             DeferredBuffer.DrawBuffers();
             DeferredBuffer.AssertStatus();
             DeferredBuffer.UnBind();
-            
+
             DeferredPBRNode = new DeferredPBRNode(Width, Height, DeferredBuffer);
-            
+
             // -- Environment Box
             EnvironmentShader = DefaultShaders.CreateEnvironmentBox();
-            
+
             // -- Compositing
             CompositeShader = DefaultShaders.CreateComposite();
             CompositeShader.Use();
@@ -73,29 +75,34 @@ namespace FruckEngine.Game {
             CompositeShader.SetInt("uBloom", 1);
             CompositeShader.SetInt("uGodrays", 2);
             CompositeShader.SetInt("uColorLUT", 3);
+            CompositeShader.SetInt("uUI", 4);
         }
 
-        public override void Render() {
+        public override void Render(double dt) {
+            base.Render(dt);
+
             if (Scenes.CurrentWorld == null) return;
             // Create a basic coordinate system
             var coordSystem = Scenes.CurrentWorld.InitialCoordSystem();
-            
+
             // Pass 1 Geometry
             var PBRGeometry = DeferredPBRNode.DrawGeometry(Scenes.CurrentWorld);
-            
+
             // Pass 2 SSAO
             var SSAOTex = SSAONode.CalculateAO(coordSystem, PBRGeometry.GetAttachment("position"),
                 PBRGeometry.GetAttachment("normal"));
             SSAOTex = BlurNode.Apply(SSAOTex, 2);
-            
+
             // Pass 3 Shading
             DeferredBuffer.Bind(true, false);
             DeferredPBRNode.DrawShading(coordSystem, Scenes.CurrentWorld, SSAOTex, EnvironmentShader);
             DeferredBuffer.UnBind();
-            
+
             // Pass 4 Blur Bloom
-            var bloomTex = EnableBloom ? BlurNode.Apply(DeferredBuffer.GetAttachment("brightness")) : TextureHelper.GetZeroNull();
-            
+            var bloomTex = EnableBloom
+                ? BlurNode.Apply(DeferredBuffer.GetAttachment("brightness"))
+                : TextureHelper.GetZeroNull();
+
             // Pass 4.1 God rays
             Texture godrays;
             if (EnableGodrays) {
@@ -104,14 +111,16 @@ namespace FruckEngine.Game {
                 foreach (var light in World.Lights) {
                     if (light is PointLight) GodrayNode.AddLight(World, (PointLight) light);
                 }
+
                 godrays = GodrayNode.GetResult();
             } else {
                 godrays = TextureHelper.GetZeroNull();
             }
 
             // Pass 5 DOF
-            var dof = DofNode.Apply(World, DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));
-            
+            var dof = DofNode.Apply(World, DeferredBuffer.GetAttachment("color"),
+                DeferredBuffer.GetAttachment("depth"));
+
             // Pass 6 Final render compositing. Combine everything
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             CompositeShader.Use();
@@ -123,14 +132,42 @@ namespace FruckEngine.Game {
             bloomTex.Activate(1);
             godrays.Activate(2);
             World.Environment.ColorLUT.Activate(3); // Color cube / color lookup texture
-            
+            UI.Texture.Activate(4);
+
             Projection.ProjectPlane();
+        }
+
+        public override void RenderUI(double dt) {
+            base.RenderUI(dt);
+            UI.Clear(0);
+            int y = 8;
+            UI.DrawText("Show UI (Toggle: M): " + (EnableColorGrade ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
+            y += 22;
+            UI.DrawText("SSAO (Toggle: O): " + (SSAONode.Enable ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
+            y += 22;
+            UI.DrawText("DOF  (Toggle: J, Debug: K): " + (DofNode.Enable ? "Enabled" : "Disabled") + " Debug: " +
+                (DofNode.Debug ? "True" : "False"), 8, y, 0xFDDDDFF);
+            y += 22;
+            UI.DrawText("Vignette (Toggle: L): " + (DofNode.Vignetting && DofNode.Enable ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
+            y += 22;
+            UI.DrawText("Bloom (Toggle: I): " + (EnableBloom ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
+            y += 22;
+            UI.DrawText("God rays (Toggle: G): " + (EnableGodrays ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
+            y += 22;
+            UI.DrawText("Color Grade (Toggle: N): " + (EnableColorGrade ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
+            y += 22;
+            UI.DrawText("Switch between different scenes: Keys 1 till 9 ", 8, y, 0xFFFDD66);
+
+            int frameTime = (int) MathHelper.Clamp(dt * 1000, 0, 999);
+            int fps = (int) MathHelper.Clamp(1/dt, 0, 99);
+            string frameCounter = $"{frameTime}ms (FPS: {fps})";
+            UI.DrawText(frameCounter, Width-12*frameCounter.Length-8, 8, 0xFDDDDFF);
         }
 
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);
             InputHelper.Update(state);
-            
+
             //Console.WriteLine(World.MainCamera.Direction);
 
             // Toogle the effects with key buttons
@@ -141,25 +178,29 @@ namespace FruckEngine.Game {
             if (InputHelper.IsClicked(Key.J)) {
                 DofNode.Enable = !DofNode.Enable;
             }
-            
+
             if (InputHelper.IsClicked(Key.K)) {
                 DofNode.Debug = !DofNode.Debug;
             }
-            
+
             if (InputHelper.IsClicked(Key.L)) {
                 DofNode.Vignetting = !DofNode.Vignetting;
             }
-            
+
             if (InputHelper.IsClicked(Key.I)) {
                 EnableBloom = !EnableBloom;
             }
-            
+
             if (InputHelper.IsClicked(Key.G)) {
                 EnableGodrays = !EnableGodrays;
             }
-            
+
             if (InputHelper.IsClicked(Key.N)) {
                 EnableColorGrade = !EnableColorGrade;
+            }
+            
+            if (InputHelper.IsClicked(Key.M)) {
+                EnableUI = !EnableUI;
             }
         }
     }

@@ -9,6 +9,7 @@ uniform sampler2D uShaded;
 uniform sampler2D uBloom;
 uniform sampler2D uGodrays;
 uniform sampler2D uColorLUT;
+uniform sampler2D uUI;
 
 uniform int uColorLUTSize = 16;
 uniform bool uApplyBloom;
@@ -20,10 +21,12 @@ void main() {
     vec3 color = texture(uShaded, i.UV).rgb;
     vec3 bloom = texture(uBloom, i.UV).rgb;
     vec3 godrays = texture(uGodrays, i.UV).rgb;
+    vec4 ui = texture(uUI, vec2(i.UV.x, 1 - i.UV.y));
     
     // Apply bloom
     if(uApplyBloom) color += bloom;
     color += godrays;
+    if(ui.a > 0) color = mix(ui.rgb, color,  0.4);
     
     vec3 ret = vec3(1.0) - exp(-color * uExposure);
     

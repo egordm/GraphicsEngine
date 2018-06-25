@@ -91,7 +91,7 @@ namespace FruckEngine {
         /// <param name="e"></param>
         protected override void OnRenderFrame(FrameEventArgs e) {
             Game.Clear();
-            Game.Render();
+            Game.Render(e.Time);
             SwapBuffers();
         }
 

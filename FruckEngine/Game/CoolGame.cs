@@ -1,11 +1,31 @@
-﻿using OpenTK.Input;
+﻿using FruckEngine.Graphics;
+using OpenTK.Input;
 
 namespace FruckEngine.Game {
     public class CoolGame : Game {
         protected float Velocity = 0.1f;
         protected float Sensitivity = 0.1f;
-        
-        public override void Render() {}
+        public Raster UI = null;
+        public bool EnableUI = true;
+
+        public override void Init() {
+            base.Init();
+            
+            UI = new Raster(Width, Height);
+            UI.AttachTexture();
+        }
+
+        public virtual void RenderUI(double dt) {}
+
+        public override void Render(double dt) {
+            if (EnableUI) {
+                RenderUI(dt);
+            } else {
+                UI.Clear(0);
+            }
+
+            UI.PushToTexture();
+        }
 
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);

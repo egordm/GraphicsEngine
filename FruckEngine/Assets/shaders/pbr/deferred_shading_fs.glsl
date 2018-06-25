@@ -95,7 +95,7 @@ void main() {
     // gamma correct
     color = pow(color, vec3(1.0/2.2));
     
-    outColor = vec4(color,1.0);
+    outColor = vec4(color, 1.0);
     
     // Brightness calculation for bloom effect based on thresholding
     float brightness = dot(color, vec3(0.2126, 0.7152, 0.0722)); // TODO: dont hardcode the threshold. Or do?

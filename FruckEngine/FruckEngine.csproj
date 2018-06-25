@@ -68,6 +68,7 @@
     <Compile Include="Graphics\Pipeline\GraphicsPipelineNode.cs" />
     <Compile Include="Graphics\Pipeline\SSAONode.cs" />
     <Compile Include="Graphics\Projection.cs" />
+    <Compile Include="Graphics\Raster.cs" />
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Helpers\DefaultModels.cs" />
@@ -98,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\color_lut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\font.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\shaders\composite_fs.glsl">
