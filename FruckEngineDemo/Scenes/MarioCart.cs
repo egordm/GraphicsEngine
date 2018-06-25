@@ -17,7 +17,7 @@ namespace FruckEngineDemo.Scenes {
             world.Environment.ColorLUT.SetFilters(TextureMinFilter.Linear, TextureMagFilter.Linear);
             TextureHelper.LoadFromImage(ref world.Environment.ColorLUT, "Assets/lut/mario_lut.png");
             
-            var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Mountains", 15000);
+            var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Mountains", 20000);
             world.Environment.SetTexture(env, true);
             
             world.MainCamera.Position = new Vector3(-1.533677f, 7.852062f, 2.867414f);

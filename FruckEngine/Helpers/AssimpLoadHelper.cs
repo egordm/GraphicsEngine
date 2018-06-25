@@ -10,6 +10,7 @@ using OpenTK.Graphics.OpenGL;
 using Material = FruckEngine.Structs.Material;
 using Mesh = FruckEngine.Graphics.Mesh;
 using Object = FruckEngine.Objects.Object;
+using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
 namespace FruckEngine.Helpers {
     /// <summary>
@@ -217,7 +218,8 @@ namespace FruckEngine.Helpers {
 
             // Otherwise load and save to cache
             var ret = TextureHelper.LoadFromImage(path);
-            ret.SetFilters(TextureMinFilter.Linear, TextureMagFilter.Linear);
+            ret.SetFilters(TextureMinFilter.Linear, TextureMagFilter.Linear, true);
+            ret.SetWrapping(TextureWrapMode.Repeat, TextureWrapMode.Repeat, true);
             ret.ShadeType = shadeType;
             TextureCache.Add(path, ret);
 
