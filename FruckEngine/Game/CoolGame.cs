@@ -9,6 +9,7 @@ namespace FruckEngine.Game {
 
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);
+            // Move the camera with the keyboard. up down right left etc
             if (state[Key.W]) Scenes.CurrentWorld.MainCamera.Position += Scenes.CurrentWorld.MainCamera.Direction * Velocity;
             if (state[Key.S]) Scenes.CurrentWorld.MainCamera.Position -= Scenes.CurrentWorld.MainCamera.Direction * Velocity;
             if (state[Key.A]) Scenes.CurrentWorld.MainCamera.Position -= Scenes.CurrentWorld.MainCamera.Right * Velocity;
@@ -22,7 +23,8 @@ namespace FruckEngine.Game {
             
             dx *= Sensitivity;
             dy *= Sensitivity;
-
+            
+            // Rotate camera by delta mouse pos
             float yaw = (float) (Scenes.CurrentWorld.MainCamera.Yaw - dx);
             float pitch = (float) (Scenes.CurrentWorld.MainCamera.Pitch - dy);
 

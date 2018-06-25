@@ -7,6 +7,11 @@ namespace FruckEngine.Utils {
     {
         private static Dictionary<Type, int> _sizes = new Dictionary<Type, int>();
 
+        /// <summary>
+        /// Get size of a type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static int SizeOf(Type type)
         {
             int size;

@@ -17,13 +17,25 @@ namespace FruckEngine.Game {
 
         public virtual void Init() { }
 
+        /// <summary>
+        /// Update function. ALl the input and scheduled movement should happen here
+        /// </summary>
+        /// <param name="dt"></param>
         public virtual void Update(double dt) {
             Time += dt;
             Scenes.Update(dt);
         }
 
+        /// <summary>
+        /// Render function. All the drawing should happen here.
+        /// </summary>
         public abstract void Render();
 
+        /// <summary>
+        /// Resize everything 
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public virtual void Resize(int width, int height) {
             Width = width;
             Height = height;
@@ -32,8 +44,14 @@ namespace FruckEngine.Game {
             }
         }
 
+        /// <summary>
+        /// Deletion of buffers etc should happen here
+        /// </summary>
         public virtual void Destroy() { }
 
+        /// <summary>
+        /// Clear function called before the render call. 
+        /// </summary>
         public virtual void Clear() {
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.Texture2D);

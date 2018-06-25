@@ -10,6 +10,9 @@ namespace FruckEngine.Structs {
         PBR,
     }
     
+    /// <summary>
+    /// Matrial class has textures and is base for shading specific matrials
+    /// </summary>
     public abstract class Material {
         public string Name = "";
         public List<string> Tags = new List<string>();
@@ -20,18 +23,26 @@ namespace FruckEngine.Structs {
             Type = type;
         }
 
+        /// <summary>
+        /// Apply material to the shader. (set the uniforms etc)
+        /// </summary>
+        /// <param name="shader"></param>
         public void Apply(Shader shader) {
             ApplyProperties(shader);
-
+            
+            // Push all textures to the material 
             var textureCounter = new int[Texture.TextureTypeCount];
-            uint textureUnit = 0;
+            uint textureUnit = 0; // Texture unit counter
             foreach (var texture in Textures) {
                 if (ApplyTexture(shader, texture, textureCounter[(int) texture.ShadeType]++, textureUnit,
                     texture.ShadeType)) {
                     textureUnit++;
                 }
             }
-
+            
+            // If some textures are not provided. We replace them by null textures which are used to multiply
+            // The real properties.
+            // This way we can use one shader for textured and untextured materials and everything inbetween.
             if (textureCounter[(int) ShadeType.TEXTURE_TYPE_ALBEDO] == 0) {
                 if (ApplyTexture(shader, TextureHelper.GetOneNull(), 0, textureUnit, ShadeType.TEXTURE_TYPE_ALBEDO)) {
                     textureUnit++;
@@ -63,12 +74,28 @@ namespace FruckEngine.Structs {
             }
         }
 
+        /// <summary>
+        /// Apply shading specific properties
+        /// </summary>
+        /// <param name="shader"></param>
         protected abstract void ApplyProperties(Shader shader);
 
+        /// <summary>
+        /// Apply texture since if different shading types textures have different naming
+        /// </summary>
+        /// <param name="shader"></param>
+        /// <param name="texture"></param>
+        /// <param name="index"></param>
+        /// <param name="textureUnit"></param>
+        /// <param name="shadeType"></param>
+        /// <returns></returns>
         protected abstract bool ApplyTexture(Shader shader, Texture texture, int index, uint textureUnit,
             ShadeType shadeType);
     }
 
+    /// <summary>
+    /// Legacy material represents the old Phong shading model :P
+    /// </summary>
     public class LegacyMaterial : Material {
         public Vector3 Diffuse = Vector3.One;
         public Vector3 Specular = Vector3.Zero;
@@ -93,6 +120,9 @@ namespace FruckEngine.Structs {
         }
     }
 
+    /// <summary>
+    /// PBR Material represents the modern physically based rendering shading model
+    /// </summary>
     public class PBRMaterial : Material {
         public Vector3 Albedo = Vector3.One;
         public float Metallic = 0;

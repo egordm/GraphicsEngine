@@ -8,7 +8,12 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
 namespace FruckEngine.Game {
+    /// <summary>
+    /// Deferred shading game does more than the name suggests.
+    /// It uses exclusively PBR (Physically Based rendering) (metallic and roughness instead of shinyness and the bs)
+    /// </summary>
     public class DeferredShadingGame : CoolGame {
+        // Graphic pipeline nodes
         protected Shader CompositeShader, EnvironmentShader;
         protected FrameBuffer DeferredBuffer;
         protected SSAONode SSAONode;
@@ -17,6 +22,7 @@ namespace FruckEngine.Game {
         protected DeferredPBRNode DeferredPBRNode;
         protected GodrayNode GodrayNode;
 
+        // Some flags to toggle effects
         protected bool EnableBloom = true;
         protected bool EnableGodrays = true;
         protected bool EnableColorGrade = true;
@@ -24,6 +30,7 @@ namespace FruckEngine.Game {
         public override void Init() {
             base.Init();
             
+            // Register input listeners
             InputHelper.CreateClickListener(Key.O);
             InputHelper.CreateClickListener(Key.I);
             InputHelper.CreateClickListener(Key.J);
@@ -32,17 +39,22 @@ namespace FruckEngine.Game {
             InputHelper.CreateClickListener(Key.G);
             InputHelper.CreateClickListener(Key.N);
 
+            // Add a BRDF lookup table
             PBRHelper.GetBRDFLUT();
+            // Create graphic pipeline nodes
             SSAONode = new SSAONode(Width, Height);
             BlurNode = new BlurNode(Width, Height);
             DofNode = new DOFNode(Width, Height);
             GodrayNode = new GodrayNode(Width, Height);
 
             // -- Deferred Shading Buffer
+            // Shading buffer is shared between shading types there fore it is not in PBR node
             DeferredBuffer = new FrameBuffer(Width, Height);
             DeferredBuffer.Bind(false);
             DeferredBuffer.AddAttachment("color", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
             DeferredBuffer.AddAttachment("brightness", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
+            // Warning some (old)gpus dont seem to support storing depth in texture and testing for it at the same time
+            // So toggle the commented thingie. (DOF wont work though)
             DeferredBuffer.AddDepthAttachment(); // Substitutes the frame buffer
             //DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
             DeferredBuffer.DrawBuffers();
@@ -65,6 +77,7 @@ namespace FruckEngine.Game {
 
         public override void Render() {
             if (Scenes.CurrentWorld == null) return;
+            // Create a basic coordinate system
             var coordSystem = Scenes.CurrentWorld.InitialCoordSystem();
             
             // Pass 1 Geometry
@@ -97,22 +110,20 @@ namespace FruckEngine.Game {
                 godrays = TextureHelper.GetZeroNull();
             }
 
-            // Pass 4.5 DOF
+            // Pass 5 DOF
             var dof = DofNode.Apply(World, DeferredBuffer.GetAttachment("color"), DeferredBuffer.GetAttachment("depth"));
             
-            // Pass 5 Final render compositing
+            // Pass 6 Final render compositing. Combine everything
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             CompositeShader.Use();
             CompositeShader.SetBool("uApplyBloom", true);
             CompositeShader.SetFloat("uExposure", 1.0f);
             CompositeShader.SetInt("uColorLUTSize", World.Environment.ColorLUT.Height);
             CompositeShader.SetBool("uApplyColorGrade", EnableColorGrade);
-            //DeferredBuffer.GetAttachment("depth").Activate(0);
-            //DeferredBuffer.GetAttachment("color").Activate(0);
             dof.Activate(0);
             bloomTex.Activate(1);
             godrays.Activate(2);
-            World.Environment.ColorLUT.Activate(3);
+            World.Environment.ColorLUT.Activate(3); // Color cube / color lookup texture
             
             Projection.ProjectPlane();
         }
@@ -123,6 +134,7 @@ namespace FruckEngine.Game {
             
             //Console.WriteLine(World.MainCamera.Direction);
 
+            // Toogle the effects with key buttons
             if (InputHelper.IsClicked(Key.O)) {
                 SSAONode.Enable = !SSAONode.Enable;
             }

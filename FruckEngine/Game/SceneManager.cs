@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 using FruckEngine.Objects;
 
 namespace FruckEngine.Game {
+    /// <summary>
+    /// Scene that is responsible for creating the world
+    /// </summary>
     public abstract class Scene {
         public World World { get; private set; } = null;
 
@@ -19,8 +22,17 @@ namespace FruckEngine.Game {
             // TODO: moet meer dan dat. Delete buffers enz
         }
         
+        /// <summary>
+        /// Function responsible for loading everything into the world
+        /// </summary>
+        /// <param name="world"></param>
         protected abstract void Init(World world);
 
+        /// <summary>
+        /// Function that should update the models in the world
+        /// </summary>
+        /// <param name="world"></param>
+        /// <param name="dt"></param>
         public virtual void Update(World world, double dt) {  }
     }
 
@@ -29,6 +41,9 @@ namespace FruckEngine.Game {
         SWITCH_UNLOAD
     }
 
+    /// <summary>
+    /// Scene manager is responsible for loading scenes and keeping them loaded to allow quick switching
+    /// </summary>
     public class SceneManager {
         public Dictionary<string, Scene> Scenes;
         public Scene CurrentScene { get; private set; } = null;
@@ -44,6 +59,11 @@ namespace FruckEngine.Game {
             CurrentWorld.Update(dt);
         }
 
+        /// <summary>
+        /// Load scene by name. If scene is not inited, this will happen here.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="action"></param>
         public void Load(string name, LoadAction action) {
             if (!Scenes.ContainsKey(name) || CurrentScene == Scenes[name]) return;
 
@@ -62,6 +82,10 @@ namespace FruckEngine.Game {
             CurrentScene = scene;
         }
 
+        /// <summary>
+        /// Destroy the scene and everything inside
+        /// </summary>
+        /// <param name="s"></param>
         public void Destroy(Scene s) {
             s.Destroy();
             GC.Collect();
