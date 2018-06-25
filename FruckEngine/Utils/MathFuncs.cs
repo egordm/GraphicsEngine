@@ -1,4 +1,6 @@
-﻿namespace FruckEngine.Utils
+﻿using OpenTK;
+
+namespace FruckEngine.Utils
 {
     public static class MathFuncs
     {
@@ -22,6 +24,18 @@
         public static float Lerp(float a, float b, float x)
         {
             return a + x * (b - a);
+        }
+
+        /// <summary>
+        /// Calculate a tangent form a normal vector
+        /// </summary>
+        /// <param name="normal"></param>
+        /// <returns></returns>
+        public static Vector3 CalculateTangent(Vector3 normal) {
+            var c1 = Vector3.Cross(normal, Vector3.UnitZ); 
+            var c2 = Vector3.Cross(normal, Vector3.UnitY);
+            if (c1.LengthSquared > c2.LengthSquared) return c1;
+            return c2;
         }
     }
 }

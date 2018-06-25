@@ -104,7 +104,6 @@ namespace FruckEngine.Game {
                 foreach (var light in World.Lights) {
                     if (light is PointLight) GodrayNode.AddLight(World, (PointLight) light);
                 }
-
                 godrays = GodrayNode.GetResult();
             } else {
                 godrays = TextureHelper.GetZeroNull();

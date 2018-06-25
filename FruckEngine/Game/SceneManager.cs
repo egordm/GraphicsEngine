@@ -69,13 +69,13 @@ namespace FruckEngine.Game {
 
             var scene = Scenes[name];
             if (!scene.IsLoaded) {
-                try {
+                //try {
                     scene.Load();
-                } catch (Exception e) {
+                /*} catch (Exception e) {
                     Console.WriteLine("Scene was broken. Loading previous scene.");
                     Console.WriteLine(e);
                     return;
-                }
+                }*/
             }
 
             if (action == LoadAction.SWITCH_UNLOAD) Destroy(CurrentScene);

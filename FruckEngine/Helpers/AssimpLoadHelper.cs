@@ -4,6 +4,7 @@ using System.IO;
 using Assimp;
 using FruckEngine.Graphics;
 using FruckEngine.Structs;
+using FruckEngine.Utils;
 using OpenTK;
 using Material = FruckEngine.Structs.Material;
 using Mesh = FruckEngine.Graphics.Mesh;
@@ -117,8 +118,13 @@ namespace FruckEngine.Helpers {
                     vertex.UV = new Vector2(texCrd.X, texCrd.Y);
                 }
 
-                vertex.Tangent = new Vector3(mesh.Tangents[i].X, mesh.Tangents[i].Y, mesh.Tangents[i].Z);
-                vertex.Bitangent = new Vector3(mesh.BiTangents[i].X, mesh.BiTangents[i].Y, mesh.BiTangents[i].Z);
+                if (mesh.Tangents.Count > 0) {
+                    vertex.Tangent = new Vector3(mesh.Tangents[i].X, mesh.Tangents[i].Y, mesh.Tangents[i].Z);
+                    vertex.Bitangent = new Vector3(mesh.BiTangents[i].X, mesh.BiTangents[i].Y, mesh.BiTangents[i].Z);
+                } else {
+                    vertex.Tangent = MathFuncs.CalculateTangent(vertex.Normal);
+                    vertex.Bitangent = Vector3.Cross(vertex.Tangent, vertex.Normal);
+                }
 
                 vertices.Add(vertex);
             }

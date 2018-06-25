@@ -2,6 +2,7 @@
 using FruckEngine.Helpers;
 using FruckEngine.Objects;
 using FruckEngine.Structs;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Graphics.Pipeline {
@@ -56,9 +57,17 @@ namespace FruckEngine.Graphics.Pipeline {
             
             // Send light info to the shader
             world.Environment.Sun.Apply(DeferredShader, 0);
+            
             int pointLightCounter = 0;
             foreach (var light in world.Lights) {
                 if(light.Type == LightType.PointLight) light.Apply(DeferredShader, pointLightCounter++);
+            }
+            
+            for (int i = pointLightCounter; i < Constants.MAX_LIGHT_COUNT; ++i) {
+                string name = $"uPointLights[{i}].";
+                DeferredShader.SetVec3(name + "position", Vector3.Zero);
+                DeferredShader.SetVec3(name + "color", Vector3.Zero);
+                DeferredShader.SetFloat(name + "intensity", 0);
             }
             
             
