@@ -2,6 +2,10 @@
 using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngine.Graphics.Pipeline {
+    /// <summary>
+    /// Graphics pipeline node to apply depth of field.
+    /// For depth reference we use the depth texture. Method used: Bokeh
+    /// </summary>
     public class DOFNode : GraphicsPipelineNode {
         private FrameBuffer FrameBuffer;
         private Shader Shader;
@@ -36,14 +40,21 @@ namespace FruckEngine.Graphics.Pipeline {
             
         }
 
+        /// <summary>
+        /// Apply depth of field. Using the given texture
+        /// </summary>
+        /// <param name="world"></param>
+        /// <param name="color"></param>
+        /// <param name="depth"></param>
+        /// <returns></returns>
         public Texture Apply(World world, Texture color, Texture depth) {
             if (!Enable) return color;
             
             // TODO: mayby move vignetting to the composer
             FrameBuffer.Bind(true, false);
             Shader.Use();
-            Shader.SetFloat("uFocalLength", world.MainCamera.FocalLength); // TODO: get from fov?
-            Shader.SetFloat("uFstop", world.MainCamera.FStop); // TODO: get from fov?
+            Shader.SetFloat("uFocalLength", world.MainCamera.FocalLength);
+            Shader.SetFloat("uFstop", world.MainCamera.FStop);
             Shader.SetBool("uDebug", Debug);
             Shader.SetBool("uEnableVignetting", Vignetting);
             color.Activate(0);
