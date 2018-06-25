@@ -46,6 +46,7 @@ namespace FruckEngineDemo
             Scenes.Scenes.Add("3", new Yoda());
             Scenes.Scenes.Add("4", new MarioCart());
             Scenes.Scenes.Add("5", new Test());
+            Scenes.Scenes.Add("6", new Car());
             Scenes.Load("0", LoadAction.SWITCH);
         }
 

@@ -70,7 +70,7 @@ void main() {
     
     // Calculate lighting
     vec3 Lo = CalcPointLight(pos, N, V, F0, albedo, metallic, roughness);
-    vec3 Los = CalcDirectionalLight(pos, N, V, F0, albedo, metallic, roughness);
+    Lo += CalcDirectionalLight(pos, N, V, F0, albedo, metallic, roughness);
    
     vec3 F = FresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
     
@@ -78,7 +78,7 @@ void main() {
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;
     
-    vec3 irradiance = texture(uIrradianceMap, N).rgb;
+    vec3 irradiance = texture(uIrradianceMap, N).rgb * uAmbientLight; 
     vec3 diffuse = irradiance * albedo;
     
     const float MAX_REFLECTION_LOD = 4.0;
@@ -86,7 +86,7 @@ void main() {
     vec2 brdf  = texture(uBrdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
     
-    vec3 ambient = (kD * diffuse + specular) * ao * uAmbientLight;
+    vec3 ambient = (kD * diffuse + specular) * ao;
     
     vec3 color = ambient + Lo;
     

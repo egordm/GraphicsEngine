@@ -15,7 +15,7 @@ namespace FruckEngine {
         public float ZNear { get; set; } = 0.1f;
         public float ZFar { get; set; } = 100f;
         public float FocalLength = 28f;
-        public float FStop = 28/4f;
+        public float FStop = 28 / 1f;
 
         public Vector3 Position { get; set; }
 
