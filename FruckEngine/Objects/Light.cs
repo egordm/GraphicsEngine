@@ -10,6 +10,9 @@ namespace FruckEngine.Objects {
         DirectionalLight
     }
 
+    /// <summary>
+    /// Basic light object with properties for different effects
+    /// </summary>
     public abstract class Light {
         public LightType Type;
         public Vector3 Color;
@@ -28,10 +31,18 @@ namespace FruckEngine.Objects {
             Intensity = intensity;
             Position = position;
         }
-
+        
+        /// <summary>
+        /// Put light into a shader
+        /// </summary>
+        /// <param name="shader"></param>
+        /// <param name="index"></param>
         public abstract void Apply(Shader shader, int index);
     }
     
+    /// <summary>
+    /// Point light
+    /// </summary>
     public class PointLight : Light, IDrawable {
        
         public float DrawRadius = 3f;
@@ -48,6 +59,12 @@ namespace FruckEngine.Objects {
             shader.SetFloat(name + "intensity", Intensity);
         }
 
+        /// <summary>
+        /// Draw light as a bright sphere
+        /// </summary>
+        /// <param name="coordSys"></param>
+        /// <param name="shader"></param>
+        /// <param name="properties"></param>
         public void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
             var matrix = Matrix4.CreateScale(DrawRadius);
             matrix *= Matrix4.CreateTranslation(Position);
@@ -61,6 +78,9 @@ namespace FruckEngine.Objects {
         protected static Mesh DisplaySphere = DefaultModels.GetSphere();
     }
 
+    /// <summary>
+    /// Directional light
+    /// </summary>
     public class DirectionalLight : Light {
 
         public DirectionalLight(Vector3 position, Vector3 color, float intensity) 
@@ -75,6 +95,9 @@ namespace FruckEngine.Objects {
         }
     }
 
+    /// <summary>
+    /// Sun = A special directional light
+    /// </summary>
     public class Sun : DirectionalLight {
         public float Radius = 0.3f;
 

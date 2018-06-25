@@ -10,6 +10,9 @@ using System.Drawing;
 
 namespace FruckEngine.Objects
 {
+    /// <summary>
+    /// Hairy object. A object that also has hairs
+    /// </summary>
     public class HairyObject : Object
     {
         public PBRMaterial HairMaterial { get; private set; }

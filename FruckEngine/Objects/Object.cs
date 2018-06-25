@@ -14,7 +14,7 @@ namespace FruckEngine.Objects
     }
     
     /// <summary>
-    /// Basic scene object
+    /// Basic scene object. Aka scene graph node
     /// </summary>
     public class Object : IDrawable
     {
@@ -26,6 +26,10 @@ namespace FruckEngine.Objects
 
         public Object() { }
 
+        /// <summary>
+        /// A copy constructor.
+        /// </summary>
+        /// <param name="obj"></param>
         public Object(Object obj)
         {
             Position = obj.Position;
@@ -35,6 +39,10 @@ namespace FruckEngine.Objects
             Children = obj.Children;
         }
 
+        /// <summary>
+        /// Create from a list of meshes
+        /// </summary>
+        /// <param name="meshes"></param>
         public Object(List<Mesh> meshes) {
             Meshes = meshes;
         }
@@ -64,14 +72,20 @@ namespace FruckEngine.Objects
             return matrix * parent;
         }
 
+        /// <summary>
+        /// Set shader peroperties dependent on the object
+        /// </summary>
+        /// <param name="shader"></param>
         protected virtual void PrepareShader(Shader shader) { }
 
         public virtual void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties) {
             var modelM = GetMatrix(coordSys.Model);
             coordSys.Model = modelM;
 
+            // Draw children
             foreach (var child in Children) child.Draw(coordSys, shader, properties);
 
+            // Draw self if meshes are present.
             if (Meshes.Count > 0) {
                 shader.Use();
                 coordSys.Apply(shader);

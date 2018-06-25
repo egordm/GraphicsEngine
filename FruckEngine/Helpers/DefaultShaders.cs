@@ -1,6 +1,9 @@
 ﻿using FruckEngine.Graphics;
 
 namespace FruckEngine.Helpers {
+    /// <summary>
+    /// A collection of standard shaders. All the uniforms are also registered
+    /// </summary>
     public static class DefaultShaders {
         public static Shader CreateDebugDraw(bool quad) {
             var shader = Shader.Create(

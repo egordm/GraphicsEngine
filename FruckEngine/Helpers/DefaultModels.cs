@@ -5,6 +5,9 @@ using FruckEngine.Structs;
 using OpenTK;
 
 namespace FruckEngine.Helpers {
+    /// <summary>
+    /// Default models / primitives
+    /// </summary>
     public static class DefaultModels {
         public static Mesh GetGrassPlane(int size)
         {
