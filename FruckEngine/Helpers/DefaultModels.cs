@@ -8,6 +8,7 @@ namespace FruckEngine.Helpers {
     /// <summary>
     /// Default models / primitives
     /// </summary>
+    /// Make a plane with a wider range of UV
     public static class DefaultModels {
         public static Mesh GetGrassPlane(int size)
         {

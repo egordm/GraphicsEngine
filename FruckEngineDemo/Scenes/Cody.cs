@@ -31,18 +31,6 @@ namespace FruckEngineDemo.Scenes
             world.MainCamera.SetRotation(0, -186);
             world.MainCamera.FStop = 10;
             
-            /*var sm = DefaultModels.GetSphere();
-            var orig = new FruckEngine.Objects.Object();
-            orig.Meshes.Add(sm);
-            var mat = sm.AsPBR();
-            mat.Metallic = 0f;
-            mat.Roughness = 1f;
-            mat.Albedo = new Vector3(1, 0, 0);
-            orig.Position = Vector3.Zero;
-            orig.Rotation = Quaternion.Identity;
-            orig.Scale = Vector3.One * 0.1f;
-            world.AddObject(orig);*/
-            
             {
                 const string directory = "Assets/models/frog";
                 frog1 = new HairyObject(AssimpLoadHelper.LoadModel(directory + "/frog.obj", true));
@@ -78,7 +66,6 @@ namespace FruckEngineDemo.Scenes
                 frog2.HairThickness = 1;
 
                 frog2.Scale = Vector3.One;
-                //child.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45f);
                 frog2.Position = Vector3.UnitY * 70;
                 frog1.AddChild(frog2);
             }
@@ -98,9 +85,6 @@ namespace FruckEngineDemo.Scenes
 
             var lights = new List<Vector3>(){
                 new Vector3(-20.0f, 20.0f, 45.0f),
-                // new Vector3(20.0f, 20.0f, 45.0f),
-                // new Vector3(-20.0f, -20.0f, 45.0f),
-                // new Vector3(20.0f, -20.0f, 45.0f),
             };
 
             foreach (var lightPos in lights)
