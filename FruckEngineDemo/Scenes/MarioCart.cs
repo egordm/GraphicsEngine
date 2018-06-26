@@ -25,6 +25,7 @@ namespace FruckEngineDemo.Scenes {
             
             world.MainCamera.Position = new Vector3(-5.48f, 9.20f, 2.6f);
             world.MainCamera.SetRotation(-3, -295);
+            world.MainCamera.FStop = world.MainCamera.FocalLength / 2;
             
             // Track
             string directory = "Assets/models/mario_circuit";

@@ -21,6 +21,7 @@ namespace FruckEngineDemo.Scenes {
             
             world.MainCamera.Position = new Vector3(2.28f, 0.89f, 7.20f);
             world.MainCamera.SetRotation(9, -158);
+            world.MainCamera.FStop = world.MainCamera.FocalLength / 2;
             
             const string directory = "Assets/models/Pirate";
             var model = AssimpLoadHelper.LoadModel(directory + "/ship.obj", true);

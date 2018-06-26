@@ -40,7 +40,7 @@ const float VIGN_IN = 0.1; //vignetting inner border
 const float VIGN_FADE = 30.0; //f-stops till vignete fades
 
 //Chromatic aberration
-const float CHR_AB_INTENSITY = 0.01; //The smaller the less intense
+const float CHR_AB_INTENSITY = 0.002; //The smaller the less intense
 
 float linearize(float depth);
 vec2 rand(vec2 coord); //generating noise/pattern texture for dithering
