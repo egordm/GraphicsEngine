@@ -41,6 +41,20 @@ Erwin Glazenburg 6224474, Egor Dmitriev 6100120, Cody Bloemhard	6231888
 * Toggle God rays: **G**
 * Toggle Color Grade: **N**
 
+## Important Datastructures
+* Mesh (FruckEngine.Graphics.Mesh) - Holds vertices, faces and material
+* Object (FruckEngine.Objects.Object) - Holds meshes and children. Is also (scene graph node)
+* Camera (FruckEngine)
+* World (FruckEngine.Objects.World) - Holds Root object and environment
+* Scene (FruckEngine.Game.SceneManager) - Loads models into a world.
+* Game (FruckEngine.Game.Game and FruckEngine.Game.DeferredShadingGame) - Holds the world and game specific features like movement and rendering.
+* Texture (FruckEngine.Graphics.Texture) - Abstraction for opengl textures
+* CoordSystem (FruckEngine.Structs.CoordSystem) - Wraps matrices needed to trasnform the world objects.
+
+Basically all the OpenGL abstractions are in FruckEngine.Graphics
+All the shaders are in FruckEngine/FruckEngine/Assets/shaders
+
+
 ## Sources
 https://bartwronski.com/2014/04/07/bokeh-depth-of-field-going-insane-part-1/
 http://www.codinglabs.net/article_physically_based_rendering.aspx
