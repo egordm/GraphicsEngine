@@ -27,6 +27,7 @@ namespace FruckEngine.Game {
         protected bool EnableBloom = true;
         protected bool EnableGodrays = true;
         protected bool EnableColorGrade = true;
+        protected bool EnableMyPCIsShit = false;
 
         public override void Init() {
             base.Init();
@@ -40,6 +41,7 @@ namespace FruckEngine.Game {
             InputHelper.CreateClickListener(Key.G);
             InputHelper.CreateClickListener(Key.N);
             InputHelper.CreateClickListener(Key.M);
+            InputHelper.CreateClickListener(Key.B);
 
             // Add a BRDF lookup table
             PBRHelper.GetBRDFLUT();
@@ -57,8 +59,8 @@ namespace FruckEngine.Game {
             DeferredBuffer.AddAttachment("brightness", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
             // Warning some (old)gpus dont seem to support storing depth in texture and testing for it at the same time
             // So toggle the commented thingie. (DOF wont work though)
-            DeferredBuffer.AddDepthAttachment(); // Substitutes the frame buffer
-            //DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
+            if(!EnableMyPCIsShit) DeferredBuffer.AddDepthAttachment();
+            else DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
             DeferredBuffer.DrawBuffers();
             DeferredBuffer.AssertStatus();
             DeferredBuffer.UnBind();
@@ -118,8 +120,13 @@ namespace FruckEngine.Game {
             }
 
             // Pass 5 DOF
-            var dof = DofNode.Apply(World, DeferredBuffer.GetAttachment("color"),
+            Texture dof;
+            if(!EnableMyPCIsShit) {
+                dof = DofNode.Apply(World, DeferredBuffer.GetAttachment("color"),
                 DeferredBuffer.GetAttachment("depth"));
+            } else {
+                dof = DeferredBuffer.GetAttachment("color");
+            }
 
             // Pass 6 Final render compositing. Combine everything
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -155,6 +162,8 @@ namespace FruckEngine.Game {
             UI.DrawText("God rays (Toggle: G): " + (EnableGodrays ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
             y += 22;
             UI.DrawText("Color Grade (Toggle: N): " + (EnableColorGrade ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
+            y += 22;
+            UI.DrawText("My pc is shit (Toggle: B): " + (EnableMyPCIsShit ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
             y += 22;
             UI.DrawText("Switch between different scenes: Keys 1 till 9 ", 8, y, 0xFFFDD66);
 
@@ -201,6 +210,10 @@ namespace FruckEngine.Game {
             
             if (InputHelper.IsClicked(Key.M)) {
                 EnableUI = !EnableUI;
+            }
+            
+            if (InputHelper.IsClicked(Key.B)) {
+                EnableMyPCIsShit = !EnableMyPCIsShit;
             }
         }
     }
