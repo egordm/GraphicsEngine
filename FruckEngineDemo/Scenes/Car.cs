@@ -8,7 +8,7 @@ using FruckEngine.Game;
 namespace FruckEngineDemo.Scenes {
     public class Car : Scene {
         protected override void Init(World world) {
-            world.Environment.AmbientLight = Vector3.One*0.0f;
+            world.Environment.AmbientLight = Vector3.One*1.1f;
             world.Environment.Sun.Position = new Vector3(-0.6794168f, 0.7181264f, 0.1506226f);
             world.Environment.Sun.Intensity = 0;
             world.Environment.Sun.HasGodRays = false;
@@ -17,8 +17,8 @@ namespace FruckEngineDemo.Scenes {
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Shanhai", 108000);
             world.Environment.SetTexture(env, true);
             
-            world.MainCamera.Position = new Vector3(0, 0, 15);
-            world.MainCamera.SetRotation(0, -180);
+            world.MainCamera.Position = new Vector3(-6.88f, 3.82f, -5.67f);
+            world.MainCamera.SetRotation(-11, -323);
             
             const string directory = "Assets/models/car";
             var model = AssimpLoadHelper.LoadModel(directory + "/car.obj", true);
@@ -28,7 +28,7 @@ namespace FruckEngineDemo.Scenes {
             material.Textures.Add(TextureHelper.LoadFromImage(directory+"/default_Normal_DirectX.png", ShadeType.TEXTURE_TYPE_NORMAL));
             material.Textures.Add(TextureHelper.LoadFromImage(directory+"/default_Roughness.png", ShadeType.TEXTURE_TYPE_ROUGHNESS));
             material.Textures.Add(TextureHelper.LoadFromImage(directory+"/car2_low_default_AmbientOcclusion.png", ShadeType.TEXTURE_TYPE_AO));
-            material.Albedo = Vector3.One;
+            material.Albedo = Vector3.One * 0.4f;
             material.Metallic = 1f;
             material.Roughness = 1f;
             model.Scale = Vector3.One * 0.8f;
