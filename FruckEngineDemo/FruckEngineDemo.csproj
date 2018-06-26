@@ -51,6 +51,7 @@
     <Compile Include="Scenes\Cerberus.cs" />
     <Compile Include="Scenes\Cody.cs" />
     <Compile Include="Scenes\MarioCart.cs" />
+    <Compile Include="Scenes\Spheres.cs" />
     <Compile Include="Scenes\StormTrooper.cs" />
     <Compile Include="Scenes\Tiki.cs" />
     <Compile Include="Scenes\Yoda.cs" />

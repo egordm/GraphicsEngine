@@ -47,6 +47,7 @@ namespace FruckEngineDemo
             Scenes.Scenes.Add("4", new MarioCart());
             Scenes.Scenes.Add("5", new Tiki());
             Scenes.Scenes.Add("6", new Car());
+            Scenes.Scenes.Add("7", new Spheres());
             Scenes.Load("0", LoadAction.SWITCH);
         }
 
