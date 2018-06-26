@@ -23,8 +23,8 @@ namespace FruckEngineDemo.Scenes {
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Mountains", 20000);
             world.Environment.SetTexture(env, true);
             
-            world.MainCamera.Position = new Vector3(-1.533677f, 7.852062f, 2.867414f)*1.5f;
-            world.MainCamera.SetRotation(-13, -180);
+            world.MainCamera.Position = new Vector3(-5.48f, 9.20f, 2.6f);
+            world.MainCamera.SetRotation(-3, -295);
             
             // Track
             string directory = "Assets/models/mario_circuit";

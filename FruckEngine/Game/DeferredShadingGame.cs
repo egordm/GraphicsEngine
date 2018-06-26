@@ -59,8 +59,10 @@ namespace FruckEngine.Game {
             DeferredBuffer.AddAttachment("brightness", PixelType.Float, PixelInternalFormat.Rgb16f, PixelFormat.Rgb);
             // Warning some (old)gpus dont seem to support storing depth in texture and testing for it at the same time
             // So toggle the commented thingie. (DOF wont work though)
-            if(!EnableMyPCIsShit) DeferredBuffer.AddDepthAttachment();
-            else DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent, FramebufferAttachment.DepthAttachment);
+            if (!EnableMyPCIsShit) DeferredBuffer.AddDepthAttachment();
+            else
+                DeferredBuffer.AddRenderBuffer(RenderbufferStorage.DepthComponent,
+                    FramebufferAttachment.DepthAttachment);
             DeferredBuffer.DrawBuffers();
             DeferredBuffer.AssertStatus();
             DeferredBuffer.UnBind();
@@ -121,9 +123,9 @@ namespace FruckEngine.Game {
 
             // Pass 5 DOF
             Texture dof;
-            if(!EnableMyPCIsShit) {
+            if (!EnableMyPCIsShit) {
                 dof = DofNode.Apply(World, DeferredBuffer.GetAttachment("color"),
-                DeferredBuffer.GetAttachment("depth"));
+                    DeferredBuffer.GetAttachment("depth"));
             } else {
                 dof = DeferredBuffer.GetAttachment("color");
             }
@@ -153,9 +155,10 @@ namespace FruckEngine.Game {
             UI.DrawText("SSAO (Toggle: O): " + (SSAONode.Enable ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
             y += 22;
             UI.DrawText("DOF  (Toggle: J, Debug: K): " + (DofNode.Enable ? "Enabled" : "Disabled") + " Debug: " +
-                (DofNode.Debug ? "True" : "False"), 8, y, 0xFDDDDFF);
+                        (DofNode.Debug ? "True" : "False"), 8, y, 0xFDDDDFF);
             y += 22;
-            UI.DrawText("Vignette (Toggle: L): " + (DofNode.Vignetting && DofNode.Enable ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
+            UI.DrawText("Vignette (Toggle: L): " + (DofNode.Vignetting && DofNode.Enable ? "Enabled" : "Disabled"), 8,
+                y, 0xFDDDDFF);
             y += 22;
             UI.DrawText("Bloom (Toggle: I): " + (EnableBloom ? "Enabled" : "Disabled"), 8, y, 0xFDDDDFF);
             y += 22;
@@ -168,9 +171,12 @@ namespace FruckEngine.Game {
             UI.DrawText("Switch between different scenes: Keys 1 till 9 ", 8, y, 0xFFFDD66);
 
             int frameTime = (int) MathHelper.Clamp(dt * 1000, 0, 999);
-            int fps = (int) MathHelper.Clamp(1/dt, 0, 99);
+            int fps = (int) MathHelper.Clamp(1 / dt, 0, 99);
             string frameCounter = $"{frameTime}ms (FPS: {fps})";
-            UI.DrawText(frameCounter, Width-12*frameCounter.Length-8, 8, 0xFDDDDFF);
+            UI.DrawText(frameCounter, Width - 12 * frameCounter.Length - 8, 8, 0xFDDDDFF);
+            string camera =
+                $"({World.MainCamera.Position.X:0.00}, {World.MainCamera.Position.Y:0.00}, {World.MainCamera.Position.Z:0.00}) ({(int)World.MainCamera.Pitch}, {(int)World.MainCamera.Yaw})";
+            UI.DrawText(camera, Width - 12 * camera.Length - 8, 30, 0xFDDDDFF);
         }
 
         public override void OnKeyboardUpdate(KeyboardState state) {
@@ -207,11 +213,11 @@ namespace FruckEngine.Game {
             if (InputHelper.IsClicked(Key.N)) {
                 EnableColorGrade = !EnableColorGrade;
             }
-            
+
             if (InputHelper.IsClicked(Key.M)) {
                 EnableUI = !EnableUI;
             }
-            
+
             if (InputHelper.IsClicked(Key.B)) {
                 EnableMyPCIsShit = !EnableMyPCIsShit;
             }
