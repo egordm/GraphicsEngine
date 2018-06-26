@@ -24,9 +24,9 @@ namespace FruckEngineDemo.Scenes {
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Shanhai", 100000);
             world.Environment.SetTexture(env, true);
 
-            world.MainCamera.Position = new Vector3(0, 8, 15);
-            world.MainCamera.SetRotation(0, -180);
-            world.Velocity = 0.3f;
+            world.MainCamera.Position = new Vector3(12.55f, 15.48f, 32.42f);
+            world.MainCamera.SetRotation(-15, -159);
+            world.Velocity = 0.5f;
             
             var model = new Object(new List<Mesh>(){DefaultModels.GetPlane(false)});
             model.Scale = new Vector3(50, 1, 50);

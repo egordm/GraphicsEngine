@@ -41,7 +41,7 @@ namespace FruckEngineDemo
         {
             base.Init();
             Scenes.Scenes.Add("0", new Cody());
-            Scenes.Scenes.Add("1", new StormTrooper());
+            Scenes.Scenes.Add("1", new DiscoDragon());
             Scenes.Scenes.Add("2", new Cerberus());
             Scenes.Scenes.Add("3", new Yoda());
             Scenes.Scenes.Add("4", new MarioCart());
