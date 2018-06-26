@@ -47,3 +47,11 @@ http://www.codinglabs.net/article_physically_based_rendering.aspx
 http://john-chapman-graphics.blogspot.com/2013/01/ssao-tutorial.html
 http://ogldev.atspace.co.uk/www/tutorial35/tutorial35.html
 http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
+
+
+https://hdrihaven.com/
+https://sketchfab.com/models/cbcf188a01f54d63a10f10c227c5a6ff#
+https://sketchfab.com/models/9ada9c6edc1c4509bb413b903c0824f4
+https://sketchfab.com/models/ab8efe91d839475e816421ba775029ed
+https://sketchfab.com/models/d08c461f8217491892ad5dd29b436c90
+https://www.models-resource.com/wii_u/mariokart8/
