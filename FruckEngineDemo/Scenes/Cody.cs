@@ -5,6 +5,7 @@ using OpenTK;
 using FruckEngine.Helpers;
 using FruckEngine.Graphics;
 using FruckEngine.Game;
+using OpenTK.Graphics.OpenGL;
 
 namespace FruckEngineDemo.Scenes
 {
@@ -16,14 +17,19 @@ namespace FruckEngineDemo.Scenes
         protected override void Init(World world)
         {
             world.Environment.AmbientLight = Vector3.One;
-            world.Environment.Sun.Position = new Vector3(0, 1, 2f);
-            world.Environment.Sun.Intensity = 0;
+            world.Environment.Sun.Position = new Vector3(0, 1, -2f);
+            world.Environment.Sun.Intensity = 0.5f;
 
             var env = TextureHelper.LoadCubemapFromDir("Assets/cubemaps/Home");
             world.Environment.SetTexture(env, true);
 
-            world.MainCamera.Position = new Vector3(0, 0, 5);
-            world.MainCamera.SetRotation(0, -180);
+            world.Environment.ColorLUT = new Texture();
+            world.Environment.ColorLUT.SetFilters(TextureMinFilter.Linear, TextureMagFilter.Linear);
+            TextureHelper.LoadFromImage(ref world.Environment.ColorLUT, "Assets/lut/mario_lut.png");
+
+            world.MainCamera.Position = new Vector3(0, 1, -1.3f);
+            world.MainCamera.SetRotation(0, -186);
+            world.MainCamera.FStop = 10;
             
             var sm = DefaultModels.GetSphere();
             var orig = new FruckEngine.Objects.Object();
@@ -52,8 +58,8 @@ namespace FruckEngineDemo.Scenes
                 frog1.HairInvDensity = 15;
                 frog1.HairThickness = 5;
 
-                frog1.Scale = Vector3.One * 0.1f;
-                frog1.Position = new Vector3(0, -10, -5);
+                frog1.Scale = Vector3.One * 0.02f;
+                frog1.Position = new Vector3(0, 0, -5);
                 world.AddObject(frog1);
             }
             {
@@ -77,7 +83,7 @@ namespace FruckEngineDemo.Scenes
                 frog1.Children.Add(frog2);
             }
             {
-                int size = 100;
+                int size = 50;
                 Grass grass = new Grass(size, new Vector3(1, 0, 0), new Vector3(1, 0, 1).Normalized());
 
                 grass.HairSegmentOffset = .003f;
@@ -85,7 +91,7 @@ namespace FruckEngineDemo.Scenes
                 grass.HairInvDensity = 15;
                 grass.HairThickness = 5;
 
-                grass.Scale = new Vector3(size, 1, size);
+                grass.Scale = new Vector3(size, 2, size);
                 grass.Position = new Vector3(0, 0, 0);
                 world.AddObject(grass);
             }
