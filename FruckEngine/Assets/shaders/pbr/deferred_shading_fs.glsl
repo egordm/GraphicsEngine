@@ -78,7 +78,7 @@ void main() {
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;
     
-    vec3 irradiance = texture(uIrradianceMap, N).rgb * uAmbientLight; 
+    vec3 irradiance = texture(uIrradianceMap, N).rgb; 
     vec3 diffuse = irradiance * albedo;
     
     const float MAX_REFLECTION_LOD = 4.0;
@@ -86,7 +86,7 @@ void main() {
     vec2 brdf  = texture(uBrdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
     vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
     
-    vec3 ambient = (kD * diffuse + specular) * ao;
+    vec3 ambient = (kD * diffuse + specular) * ao * uAmbientLight;
     
     vec3 color = ambient + Lo;
     
@@ -107,7 +107,7 @@ void main() {
 vec3 CalcDirectionalLight(vec3 pos, vec3 N, vec3 V, vec3 F0, vec3 albedo, float metallic, float roughness) {
     vec3 Lo = vec3(0.0);
 
-    vec3 L = -uDirectionalLight.direction;
+    vec3 L = normalize(-uDirectionalLight.direction);
     vec3 H = normalize(V + L);
     vec3 radiance = uDirectionalLight.color * uDirectionalLight.intensity;
     

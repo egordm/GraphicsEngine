@@ -35,6 +35,10 @@ namespace FruckEngine.Objects {
         /// World environment wihth all the info about environment map and lighting
         /// </summary>
         public Environment Environment = new Environment();
+        
+        //Temporary
+        public float Velocity = 0.1f;
+
 
         public World() {
             // Create default settings

@@ -3,7 +3,6 @@ using OpenTK.Input;
 
 namespace FruckEngine.Game {
     public class CoolGame : Game {
-        protected float Velocity = 0.1f;
         protected float Sensitivity = 0.1f;
         public Raster UI = null;
         public bool EnableUI = true;
@@ -30,12 +29,12 @@ namespace FruckEngine.Game {
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);
             // Move the camera with the keyboard. up down right left etc
-            if (state[Key.W]) Scenes.CurrentWorld.MainCamera.Position += Scenes.CurrentWorld.MainCamera.Direction * Velocity;
-            if (state[Key.S]) Scenes.CurrentWorld.MainCamera.Position -= Scenes.CurrentWorld.MainCamera.Direction * Velocity;
-            if (state[Key.A]) Scenes.CurrentWorld.MainCamera.Position -= Scenes.CurrentWorld.MainCamera.Right * Velocity;
-            if (state[Key.D]) Scenes.CurrentWorld.MainCamera.Position += Scenes.CurrentWorld.MainCamera.Right * Velocity;
-            if (state[Key.Q]) Scenes.CurrentWorld.MainCamera.Position -= Scenes.CurrentWorld.MainCamera.Up * Velocity;
-            if (state[Key.E]) Scenes.CurrentWorld.MainCamera.Position += Scenes.CurrentWorld.MainCamera.Up * Velocity;
+            if (state[Key.W]) Scenes.CurrentWorld.MainCamera.Position += Scenes.CurrentWorld.MainCamera.Direction * World.Velocity;
+            if (state[Key.S]) Scenes.CurrentWorld.MainCamera.Position -= Scenes.CurrentWorld.MainCamera.Direction * World.Velocity;
+            if (state[Key.A]) Scenes.CurrentWorld.MainCamera.Position -= Scenes.CurrentWorld.MainCamera.Right * World.Velocity;
+            if (state[Key.D]) Scenes.CurrentWorld.MainCamera.Position += Scenes.CurrentWorld.MainCamera.Right * World.Velocity;
+            if (state[Key.Q]) Scenes.CurrentWorld.MainCamera.Position -= Scenes.CurrentWorld.MainCamera.Up * World.Velocity;
+            if (state[Key.E]) Scenes.CurrentWorld.MainCamera.Position += Scenes.CurrentWorld.MainCamera.Up * World.Velocity;
         }
 
         public override void OnMouseMove(double dx, double dy) {
