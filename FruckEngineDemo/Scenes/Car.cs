@@ -19,6 +19,7 @@ namespace FruckEngineDemo.Scenes {
             
             world.MainCamera.Position = new Vector3(-6.88f, 3.82f, -5.67f);
             world.MainCamera.SetRotation(-11, -323);
+            world.MainCamera.FStop = world.MainCamera.FocalLength / 2;
             
             const string directory = "Assets/models/car";
             var model = AssimpLoadHelper.LoadModel(directory + "/car.obj", true);

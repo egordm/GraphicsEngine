@@ -40,14 +40,14 @@ namespace FruckEngineDemo
         public override void Init()
         {
             base.Init();
-            Scenes.Scenes.Add("0", new Cody());
-            Scenes.Scenes.Add("1", new DiscoDragon());
-            Scenes.Scenes.Add("2", new Cerberus());
-            Scenes.Scenes.Add("3", new Yoda());
-            Scenes.Scenes.Add("4", new MarioCart());
-            Scenes.Scenes.Add("5", new Tiki());
-            Scenes.Scenes.Add("6", new Car());
-            Scenes.Scenes.Add("7", new Spheres());
+            Scenes.Scenes.Add("0", new Tiki());
+            Scenes.Scenes.Add("1", new Cerberus());
+            Scenes.Scenes.Add("2", new MarioCart());
+            Scenes.Scenes.Add("3", new Cody());
+            Scenes.Scenes.Add("4", new Car());
+            Scenes.Scenes.Add("5", new Spheres());
+            Scenes.Scenes.Add("6", new DiscoDragon());
+            Scenes.Scenes.Add("7", new Yoda());
             Scenes.Load("0", LoadAction.SWITCH);
         }
 
