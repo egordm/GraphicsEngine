@@ -72,24 +72,27 @@ namespace FruckEngine.Objects
 
         public override void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties)
         {
+            //draw the base model
             base.Draw(coordSys, shader, properties);
 
             if (Meshes.Count == 0) return;
 
             var modelM = GetMatrix(coordSys.Model);
-
+            //draw all hair layers
             for (int i = 0; i < HairSegmentCount; i++)
             {
+                //see if we have a custom transformation to use for this layer
                 if (layers[i] != Matrix4.Identity)
                     coordSys.Model = layers[i];
                 else
                     coordSys.Model = modelM;
+                //pppprepare dingennnn
                 shader.Use();
                 coordSys.Apply(shader);
                 PrepareShader(shader);
                 HairMaterial.Apply(shader);
                 shader.SetFloat("uOffset", i * HairSegmentOffset);
-
+                //draw all meshes with current hair layer
                 foreach (var mesh in Meshes)
                 {
                     var tmp = mesh.Material;

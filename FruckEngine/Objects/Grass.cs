@@ -25,11 +25,12 @@ namespace FruckEngine.Objects
         {
             base.Init();
             int size = 512;
-            Bitmap normal = new Bitmap(size, size);
+            //Make a ground texture
+            Bitmap normal = new Bitmap(32, 32);
             for (int x = 0; x < normal.Width; x++)
                 for (int y = 0; y < normal.Height; y++)
                     normal.SetPixel(x, y, Color.Brown);
-
+            //Make hair texture
             Bitmap hairmap = new Bitmap(size, size);
             int step = Math.Max(0, HairInvDensity);
             int thickness = Math.Max(Math.Min(step, HairThickness), 0);
@@ -41,7 +42,7 @@ namespace FruckEngine.Objects
                     else
                         hairmap.SetPixel(x, y, Color.Transparent);
                 }
-            
+            //Load in ground texture
             Texture normalTex = new Texture();
             TextureHelper.LoadFromBitmap(ref normalTex, normal);
             var material = Meshes[0].AsPBR();
@@ -49,7 +50,7 @@ namespace FruckEngine.Objects
             material.Albedo = Vector3.One;
             material.Metallic = 0.3f;
             material.Roughness = 0.7f;
-
+            //load in grass texture with UV tilling
             Texture hairTex = new Texture();
             hairTex.PixelType = OpenTK.Graphics.OpenGL.PixelType.UnsignedByte;
             hairTex.Format = OpenTK.Graphics.OpenGL.PixelFormat.Rgb;
@@ -63,8 +64,10 @@ namespace FruckEngine.Objects
         {
             base.Update(dt);
             time += dt;
+            //Smoothly lerp the direction between the two reference direction
             Vector3 d = Vector3.Lerp(dirA, dirB, (float)(Math.Sin(time) + 1) * 0.5f);
             d *= 0.05f;
+            //The strength of the wind cycles
             float str = (float)(Math.Sin(time) + 1) * 0.5f * 0.5f + 0.5f;
             for (int i = 0; i < layers.Length; i++)
                 layers[layers.Length - 1 - i] = baseM * Matrix4.CreateTranslation(str * d / (float)Math.Pow(1.1f, i));
@@ -72,6 +75,7 @@ namespace FruckEngine.Objects
 
         public override void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties)
         {
+            //Base drawing function can handle everything since we put the transformations in the layers
             baseM = GetMatrix(coordSys.Model);
             base.Draw(coordSys, shader, properties);
         }
@@ -93,13 +97,14 @@ namespace FruckEngine.Objects
 
         public override void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties)
         {
+            //keep history in array, rotate around, use it for the layers
             var modelM = GetMatrix(coordSys.Model);
             history[timer % history.Length] = modelM;
             timer++;
             if (timer > HairSegmentCount)
                 for (int i = 0; i < layers.Length; i++)
                     layers[i] = history[(timer - i) % HairSegmentCount];
-                    
+            //use base draw to handle all drawing   
             base.Draw(coordSys, shader, properties);
         }
     }
