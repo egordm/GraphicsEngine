@@ -39,6 +39,8 @@ namespace FruckEngine {
         public const int PREFILTER_TEXTURE_SIZE = 128;
         public const int PREFILTER_MIPMAP_LEVEL_COUNT = 5;
         public const int BRDF_LUT_SIZE = 512;
+        
+        public const int MAX_LOADED_SCENES = 2;
 
 
         public static readonly Matrix4 CUBEMAP_CAPTURE_PROJECTION =

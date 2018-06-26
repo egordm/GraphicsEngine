@@ -48,6 +48,8 @@ namespace FruckEngine.Game {
         public Dictionary<string, Scene> Scenes;
         public Scene CurrentScene { get; private set; } = null;
         public World CurrentWorld => CurrentScene != null ? CurrentScene.World : null;
+        public List<string> History = new List<string>();
+        
 
         public SceneManager() {
             Scenes = new Dictionary<string, Scene>();
@@ -66,19 +68,27 @@ namespace FruckEngine.Game {
         /// <param name="action"></param>
         public void Load(string name, LoadAction action) {
             if (!Scenes.ContainsKey(name) || CurrentScene == Scenes[name]) return;
+           
 
             var scene = Scenes[name];
             if (!scene.IsLoaded) {
-                //try {
+                try {
                     scene.Load();
-                /*} catch (Exception e) {
+                } catch (Exception e) {
                     Console.WriteLine("Scene was broken. Loading previous scene.");
                     Console.WriteLine(e);
                     return;
-                }*/
+                }
             }
 
+            if (History.Contains(name)) History.Remove(name);
+            History.Add(name);
+            
             if (action == LoadAction.SWITCH_UNLOAD) Destroy(CurrentScene);
+            else if (History.Count > Constants.MAX_LOADED_SCENES) {
+                Destroy(Scenes[History[0]]);
+                History.Remove(History[0]);
+            }
             CurrentScene = scene;
         }
 
