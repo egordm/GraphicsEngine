@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using FruckEngine.Graphics;
 using FruckEngine.Structs;
 using OpenTK;
@@ -22,7 +23,9 @@ namespace FruckEngine.Objects
         public Quaternion Rotation { get; set; } = Quaternion.Identity;
         public Vector3 Scale { get; set; } = Vector3.One;
         public List<Mesh> Meshes = new List<Mesh>();
-        public List<Object> Children = new List<Object>();
+        private List<Object> children = new List<Object>();
+
+        public ReadOnlyCollection<Object> Children => children.AsReadOnly();
 
         public Object() { }
 
@@ -36,7 +39,7 @@ namespace FruckEngine.Objects
             Rotation = obj.Rotation;
             Scale = obj.Scale;
             Meshes = obj.Meshes;
-            Children = obj.Children;
+            children = new List<Object>(obj.Children);
         }
 
         /// <summary>
@@ -58,6 +61,14 @@ namespace FruckEngine.Objects
         public virtual void Update(double dt)
         {
             foreach (var child in Children) child.Update(dt);
+        }
+
+        /// <summary>
+        /// Destroy object and delete things from vram
+        /// </summary>
+        public virtual void Destroy() {
+            foreach (var child in Children) child.Destroy();
+            foreach (var mesh in Meshes) mesh.Destroy();
         }
 
         /// <summary>
@@ -93,6 +104,15 @@ namespace FruckEngine.Objects
 
                 foreach (var mesh in Meshes) mesh.Draw(shader, properties);
             }
+        }
+
+        /// <summary>
+        /// Init child when add to scene
+        /// </summary>
+        /// <param name="obj"></param>
+        public void AddChild(Object obj) {
+            children.Add(obj);
+            obj.Init();
         }
     }
 }

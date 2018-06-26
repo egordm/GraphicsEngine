@@ -21,9 +21,9 @@ namespace FruckEngine.Objects
             this.dirB = dirB;
         }
 
-        private void InitGrass()
+        public override void Init()
         {
-            InitHair();
+            base.Init();
             int size = 512;
             Bitmap normal = new Bitmap(size, size);
             for (int x = 0; x < normal.Width; x++)
@@ -72,7 +72,6 @@ namespace FruckEngine.Objects
 
         public override void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties)
         {
-            if (!Inited) InitGrass();
             baseM = GetMatrix(coordSys.Model);
             base.Draw(coordSys, shader, properties);
         }
@@ -85,16 +84,15 @@ namespace FruckEngine.Objects
 
         public DelayedHairyObject(Object o) : base(o) { }
 
-        protected void InitDelayedHair()
-        {
-            InitHair();
+
+        public override void Init() {
+            base.Init();
             Inited = true;
             history = new Matrix4[layers.Length];
         }
 
         public override void Draw(CoordSystem coordSys, Shader shader, DrawProperties properties)
         {
-            if (!Inited) InitDelayedHair();
             var modelM = GetMatrix(coordSys.Model);
             history[timer % history.Length] = modelM;
             timer++;

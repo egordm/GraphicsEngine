@@ -18,6 +18,7 @@ namespace FruckEngine.Graphics {
         public uint[] Indices;
         public Material Material; // Matrial can be of any shading type. like pbr or legacy. This detemines when object is rendered
         public bool isSimple = false; // If mesh is simple it has no precalculated tangents and bitangents.
+        public bool Indestructible = false;
 
         /// <summary>
         /// Create mesh with all the minimum properties to render it. Otherwise no point in making one
@@ -98,10 +99,14 @@ namespace FruckEngine.Graphics {
         /// <summary>
         /// Deletes the mesh. Make sure that there are no clones in the world first.
         /// </summary>
-        public virtual void Delete() {
-            GL.DeleteBuffer(VAO);
-            GL.DeleteBuffer(VBO);
-            GL.DeleteBuffer(EBO);
+        public virtual void Destroy() {
+            if (!Indestructible) {
+                GL.DeleteBuffer(VBO);
+                GL.DeleteBuffer(EBO);
+                GL.DeleteVertexArray(VAO);
+            }
+
+            Material.Destroy();
         }
 
         /// <summary>

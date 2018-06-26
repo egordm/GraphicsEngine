@@ -18,8 +18,8 @@ namespace FruckEngine.Game {
         }
 
         public void Destroy() {
+            World.Destroy();
             World = null;
-            // TODO: moet meer dan dat. Delete buffers enz
         }
         
         /// <summary>

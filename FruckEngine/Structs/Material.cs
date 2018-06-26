@@ -23,6 +23,13 @@ namespace FruckEngine.Structs {
             Type = type;
         }
 
+        public void Destroy() {
+            foreach (var texture in Textures) {
+                AssimpLoadHelper.UncacheTexture(texture);
+                texture.Destroy();
+            }
+        }
+
         /// <summary>
         /// Apply material to the shader. (set the uniforms etc)
         /// </summary>

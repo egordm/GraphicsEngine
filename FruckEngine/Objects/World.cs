@@ -52,8 +52,7 @@ namespace FruckEngine.Objects {
         /// </summary>
         /// <param name="obj"></param>
         public void AddObject(Object obj) {
-            Root.Children.Add(obj);
-            obj.Init();
+            Root.AddChild(obj);
         }
 
         /// <summary>
@@ -86,6 +85,16 @@ namespace FruckEngine.Objects {
                     ((PointLight) light).Draw(coordSystem, shader, properties);
                 }
             }
+        }
+
+        /// <summary>
+        /// Destroy object and delete things from vram
+        /// </summary>
+        public void Destroy() {
+            Root.Destroy();
+            Environment.Texture.Destroy();
+            Environment.IrradianceMap.Destroy();
+            Environment.PrefilteredMap.Destroy();
         }
 
         /// <summary>

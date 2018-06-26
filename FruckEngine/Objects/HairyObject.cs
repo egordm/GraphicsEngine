@@ -33,9 +33,8 @@ namespace FruckEngine.Objects
             HairMaterial = new PBRMaterial();
         }
 
-        public void InitHair()
-        {
-            Inited = true;
+        public override void Init() {
+            base.Init();
             HairMaterial = new PBRMaterial();
             layers = new Matrix4[HairSegmentCount];
             for (int i = 0; i < layers.Length; i++)
@@ -76,7 +75,6 @@ namespace FruckEngine.Objects
             base.Draw(coordSys, shader, properties);
 
             if (Meshes.Count == 0) return;
-            if (!Inited) InitHair();
 
             var modelM = GetMatrix(coordSys.Model);
 

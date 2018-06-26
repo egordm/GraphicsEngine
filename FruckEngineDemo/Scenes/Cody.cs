@@ -31,7 +31,7 @@ namespace FruckEngineDemo.Scenes
             world.MainCamera.SetRotation(0, -186);
             world.MainCamera.FStop = 10;
             
-            var sm = DefaultModels.GetSphere();
+            /*var sm = DefaultModels.GetSphere();
             var orig = new FruckEngine.Objects.Object();
             orig.Meshes.Add(sm);
             var mat = sm.AsPBR();
@@ -41,7 +41,7 @@ namespace FruckEngineDemo.Scenes
             orig.Position = Vector3.Zero;
             orig.Rotation = Quaternion.Identity;
             orig.Scale = Vector3.One * 0.1f;
-            world.AddObject(orig);
+            world.AddObject(orig);*/
             
             {
                 const string directory = "Assets/models/frog";
@@ -80,7 +80,7 @@ namespace FruckEngineDemo.Scenes
                 frog2.Scale = Vector3.One;
                 //child.Rotation = Quaternion.FromAxisAngle(Vector3.UnitZ, 45f);
                 frog2.Position = Vector3.UnitY * 70;
-                frog1.Children.Add(frog2);
+                frog1.AddChild(frog2);
             }
             {
                 int size = 50;

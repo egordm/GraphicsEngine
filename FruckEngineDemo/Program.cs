@@ -51,16 +51,12 @@ namespace FruckEngineDemo
             Scenes.Load("0", LoadAction.SWITCH);
         }
 
-        public override void Update(double dt) {
-            base.Update(dt);
-        }
-
         public override void OnKeyboardUpdate(KeyboardState state) {
             base.OnKeyboardUpdate(state);
 
             for (int i = 0; i < SceneButtons.Count; i++) {
                 if (state[SceneButtons[i]]) {
-                    Scenes.Load("" + i, LoadAction.SWITCH);
+                    Scenes.Load("" + i, LoadAction.SWITCH_UNLOAD);
                     break;
                 }
             }

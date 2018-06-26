@@ -49,9 +49,9 @@ namespace FruckEngineDemo.Scenes {
                 new Vector3(20.0f, -20.0f, 45.0f),
             };
 
-            foreach (var lightPos in lights) {
+            /*foreach (var lightPos in lights) {
                 world.AddLight(new PointLight(lightPos, Vector3.One, 15000));
-            }
+            }*/
         }
     }
 }

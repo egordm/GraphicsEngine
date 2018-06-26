@@ -218,5 +218,13 @@ namespace FruckEngine.Graphics {
         public object Clone() {
             return this.MemberwiseClone();
         }
+
+        /// <summary>
+        /// Delete from vram
+        /// </summary>
+        public void Destroy() {
+            GL.DeleteTexture(Pointer);
+            Pointer = Constants.UNCONSTRUCTED;
+        }
     }
 }

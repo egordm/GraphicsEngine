@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 using Assimp;
 using FruckEngine.Graphics;
 using FruckEngine.Structs;
@@ -71,6 +72,31 @@ namespace FruckEngine.Helpers {
 
             return new Object(Meshes);
         }
+
+        /// <summary>
+        /// Delete texture from cache
+        /// </summary>
+        /// <param name="texture"></param>
+        public void UncacheTextureL(Texture texture) {
+            string key = null;
+            foreach (var tup in TextureCache) {
+                if (tup.Value == texture) {
+                    key = tup.Key;
+                    break;
+                }
+            }
+
+            if(key != null) TextureCache.Remove(key);
+        }
+
+        /// <summary>
+        /// Delete texture from cache
+        /// </summary>
+        /// <param name="texture"></param>
+        public static void UncacheTexture(Texture texture) {
+            Instance.UncacheTextureL(texture);
+        }
+
 
         /// <summary>
         /// Static function Load the meshes from given file 
