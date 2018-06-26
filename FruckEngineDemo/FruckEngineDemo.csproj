@@ -52,7 +52,7 @@
     <Compile Include="Scenes\Cody.cs" />
     <Compile Include="Scenes\MarioCart.cs" />
     <Compile Include="Scenes\Spheres.cs" />
-    <Compile Include="Scenes\StormTrooper.cs" />
+    <Compile Include="Scenes\DiscoDragon.cs" />
     <Compile Include="Scenes\Tiki.cs" />
     <Compile Include="Scenes\Yoda.cs" />
   </ItemGroup>
@@ -331,6 +331,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\models\cyborg\LICENSE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\models\dragon\stanford.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\models\frog\diffuse.png">
